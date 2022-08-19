@@ -1,0 +1,4 @@
+package org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.web.ctrl.model;
+
+public record LoginRequest(String username, String password) {
+}
