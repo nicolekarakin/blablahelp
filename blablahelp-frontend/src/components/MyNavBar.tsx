@@ -7,10 +7,23 @@ import {useNavigate} from "react-router";
 import axios from "axios";
 import {urls} from "../shared/UrlMapping";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {Link as RouterLink, NavLink as RouterNavLink} from 'react-router-dom';
 
 
-const pages = ['Home', 'About', 'AGB', 'Kontakt'];
-const settings = ['Profile', 'Aktuell', 'Abgelaufen', 'History', 'Shoppinglists'];
+const pages = [
+    {title: 'Wie?', url: '/wie'},
+    {title: 'Datenschutz', url: '/datenschutz'},
+    {title: 'AGB', url: '/agb'},
+    {title: 'Impressum', url: '/impressum'},
+];
+const userPages = [
+    {title: 'Home', url: '/home'},
+    {title: 'Profile', url: '/profile'},
+    {title: 'Aktuell', url: '/aktuell'},
+    {title: 'Abgelaufen', url: '/abgelaufen'},
+    {title: 'History', url: '/history'},
+    {title: 'Shoppinglists', url: '/shoppinglists'}
+];
 
 
 export default function MyNavBar() {
@@ -92,12 +105,17 @@ export default function MyNavBar() {
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center" sx={{
-                                        fontSize: '1rem',
-                                        fontFamily: 'Oswald',
-                                        fontWeight: '400'
-                                    }}>{page}</Typography>
+                                <MenuItem key={page.title} onClick={handleCloseNavMenu}
+                                          sx={{minHeight: '2rem'}}>
+                                    <Typography textAlign="center" component={RouterLink}
+                                                to={page.url}
+                                                sx={{
+                                                    fontSize: '1rem',
+                                                    fontFamily: 'Oswald',
+                                                    fontWeight: '400',
+                                                    textDecoration: 'none',
+                                                    color: 'black',
+                                                }}>{page.title}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -106,8 +124,8 @@ export default function MyNavBar() {
                     <Typography
                         variant="h6"
                         noWrap
-                        component="a"
-                        href="/"
+                        component={RouterLink}
+                        to="/"
                         sx={{
                             mr: 2,
                             display: {xs: 'none', md: 'flex'},
@@ -122,11 +140,12 @@ export default function MyNavBar() {
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map((page) => (
                             <Button
-                                key={page}
+                                component={RouterNavLink} to={page.url}
+                                key={page.title}
                                 onClick={handleCloseNavMenu}
-                                sx={{my: 2, color: 'white', display: 'block'}}
+                                sx={{my: 2, display: 'block', color: 'white', textAlign: 'center'}}
                             >
-                                {page}
+                                {page.title}
                             </Button>
                         ))}
                     </Box>
@@ -156,12 +175,18 @@ export default function MyNavBar() {
                                     open={Boolean(anchorElUser)}
                                     onClose={handleCloseUserMenu}
                                 >
-                                    {settings.map((setting) => (
-                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                            <Typography textAlign="center" sx={{
-                                                fontFamily: 'Oswald',
-                                                fontWeight: 400
-                                            }}>{setting}</Typography>
+                                    {userPages.map((setting) => (
+                                        <MenuItem key={setting.title} onClick={handleCloseUserMenu}
+                                                  sx={{minHeight: '2rem'}}>
+                                            <Typography textAlign="center" component={RouterLink}
+                                                        to={setting.url}
+                                                        sx={{
+                                                            fontFamily: 'Oswald',
+                                                            fontWeight: 400,
+                                                            textDecoration: 'none',
+                                                            color: 'black',
+                                                            fontSize: '1rem',
+                                                        }}>{setting.title}</Typography>
                                         </MenuItem>
                                     ))}
                                 </Menu>
@@ -169,7 +194,6 @@ export default function MyNavBar() {
                         </>
                         : <Button color="inherit" onClick={() => navigate("/login")}>Login</Button>
                     }
-
 
                 </Toolbar>
             </Container>

@@ -27,7 +27,7 @@ export default function Login() {
             .get(urls.PUBLIC[0] + '/login', authdata)
             .then(response => {
                 const user: userType = response?.data
-                setCurrentUser({user});
+                setCurrentUser(user);
                 setUsername("");
                 setPassword("");
                 navigate("/home")

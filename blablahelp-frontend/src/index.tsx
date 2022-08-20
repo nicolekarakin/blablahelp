@@ -6,17 +6,20 @@ import reportWebVitals from './reportWebVitals';
 import {AuthProvider} from "./shared/AuthProvider";
 import {ThemeProvider} from "@mui/material";
 import theme from "./hooks/useTheme";
+import {BrowserRouter} from "react-router-dom";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
     <React.StrictMode>
-        <AuthProvider>
-            <ThemeProvider theme={theme}>
-                <App/>
-            </ThemeProvider>
-        </AuthProvider>
+        <BrowserRouter>
+            <AuthProvider>
+                <ThemeProvider theme={theme}>
+                    <App/>
+                </ThemeProvider>
+            </AuthProvider>
+        </BrowserRouter>
     </React.StrictMode>
 );
 

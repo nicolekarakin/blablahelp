@@ -1,41 +1,47 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {SnackbarProvider} from 'notistack';
 import {Container} from "@mui/material";
-import {BrowserRouter} from "react-router-dom";
 import {Route, Routes} from "react-router";
 import Login from "./views/Login";
 import UserHome from "./views/UserHome";
 import PublicHome from "./views/PublicHome";
-import {AuthContext} from "./shared/AuthProvider";
 import MyNavBar from "./components/MyNavBar";
 import theme from "./hooks/useTheme";
+import Agb from "./views/Agb";
+import Impressum from "./views/Impressum";
+import Profile from "./views/Profile";
 
 
 const App = () => {
-    const {currentUser} = useContext(AuthContext);
-    console.log("currentUser: " + currentUser)
+
     return (
-            <SnackbarProvider maxSnack={3} autoHideDuration={1000} preventDuplicate={true} hideIconVariant>
-                <BrowserRouter>
-                    <MyNavBar/>
+        <SnackbarProvider maxSnack={3} autoHideDuration={1000} preventDuplicate={true} hideIconVariant>
 
-                    <Container maxWidth={'md'} disableGutters
-                               sx={{
-                                   height: "100vh",
-                                   padding: '.7em',
-                                   bgcolor: theme.palette.grey[100]
-                               }}>
-                        <Routes>
-                            {(!currentUser) ? <Route path="/" element={<PublicHome/>}/> : <></>
-                            }
-                            <Route path="/home" element={<UserHome/>}/>
-                            <Route path="/login" element={<Login/>}/>
+            <MyNavBar/>
 
-                        </Routes>
-                        <h2>Hi {currentUser?.firstname}</h2>
-                    </Container>
-                </BrowserRouter>
-            </SnackbarProvider>
+            <Container maxWidth={'md'} disableGutters
+                       sx={{
+                           minHeight: "100vh",
+                           padding: '.7em',
+                           bgcolor: theme.palette.grey[100]
+                       }}>
+
+                <Routes>
+                    {/*{(!currentUser) ? <Route path="/" element={<PublicHome/>}/> : <></>*/}
+                    {/*}*/}
+                    <Route path="/" element={<PublicHome/>}/>
+                    <Route path="/login" element={<Login/>}/>
+
+                    <Route path="/agb" element={<Agb/>}/>
+                    <Route path="/impressum" element={<Impressum/>}/>
+
+                    <Route path="/home" element={<UserHome/>}/>
+                    <Route path="/profile" element={<Profile/>}/>
+                </Routes>
+
+            </Container>
+
+        </SnackbarProvider>
     );
 }
 export default App;
