@@ -3,8 +3,16 @@ import {createTheme} from "@mui/material";
 const theme = createTheme({
     palette: {
         primary: {
-            main: "#ea8922",
+            main: "#ff8401",
         }
+    },
+    typography: {
+        fontFamily: [
+            'Nunito',
+            'sans-serif',
+        ].join(','),
+        fontWeightRegular: 400,
+        fontWeightMedium: 600,
     },
     // breakpoints: {
     //     values: {
@@ -14,6 +22,25 @@ const theme = createTheme({
     //         desktop: 1280,
     //     },
     // },
+    components: {
+        MuiCard: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '6px',
+                }
+            }
+        },
+        MuiButton: {
+            styleOverrides: {
+                // Name of the slot
+                root: {
+                    fontSize: '1rem',
+                    fontFamily: 'Oswald',
+                    fontWeight: '400'
+                },
+            },
+        },
+    },
 });
 
 export default theme;

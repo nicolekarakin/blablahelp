@@ -1,9 +1,19 @@
 import {useSnackbar} from "notistack";
 import {useContext, useEffect, useState} from "react";
-import {Person} from "@mui/icons-material";
 import {useNavigate} from "react-router";
 
-import {Alert, AlertTitle, Box, Card, CardContent, CircularProgress, Container, Grid,} from "@mui/material";
+import {
+    Alert,
+    AlertTitle,
+    Box,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CircularProgress,
+    Stack,
+    Typography,
+} from "@mui/material";
 import axios from "axios";
 import {AuthContext} from "../shared/AuthProvider";
 import {urls} from "../shared/UrlMapping";
@@ -38,55 +48,57 @@ function UserHome() {
 
 
     return (
-        <Container maxWidth={false} disableGutters
-                   sx={{
-                       root: {
-                           height: "100%"
-                       },
-                       grid: {
-                           height: "100%"
-                       },
-                       logoutBtn: {
-                           marginLeft: "auto"
-                       }
-                   }}
+        <Stack direction="column"
+               justifyContent="center"
+               spacing={2}
+               maxWidth={'md'}
         >
 
-            <Grid container
-                  justifyContent={"center"}
-                  alignContent={"center"}
-                  spacing={3}
-            >
-                <Grid item xs={6}>
-                    <Card>
-                        <CardContent>
-                            {loading && (
-                                <CircularProgress/>
-                            )}
+            <Card sx={{minWidth: 275}}>
+                <CardContent>
+                    <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+                        Word of the Day
+                    </Typography>
+                    <Typography variant="h5" component="div">
+                        benevolent
+                    </Typography>
+                    <Typography sx={{mb: 1.5}} color="text.secondary">
+                        adjective
+                    </Typography>
+                    <Typography variant="body2">
+                        well meaning and kindly.
+                        <br/>
+                        {'"a benevolent smile"'}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button size="small">Learn More</Button>
+                </CardActions>
+            </Card>
 
-                            {!!currentUser && (
-                                <Box
-                                    display="flex"
-                                    alignItems={"center"}
-                                    flexDirection="column"
-                                >
-                                    <Person/>
-                                    <Box width={0.5}>
-                                        <Alert>
-                                            <AlertTitle>Hello {currentUser.firstname}!</AlertTitle>
-                                            Welcome back!
-                                        </Alert>
-                                    </Box>
-                                    {!!userData && (
-                                        <Box width={0.5}>{userData}</Box>
-                                    )}
-                                </Box>
+            <Card elevation={3}>
+                <CardContent>
+                    {loading && (
+                        <CircularProgress/>
+                    )}
+
+                    {!!currentUser && (
+                        <Box>
+                            <Alert>
+                                <AlertTitle>Hello {currentUser.firstname}!</AlertTitle>
+                                Welcome back!
+                            </Alert>
+
+                            {!!userData && (
+                                <Typography mt={3}>{userData}</Typography>
                             )}
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
-        </Container>
+                        </Box>
+                    )}
+                </CardContent>
+            </Card>
+
+        </Stack>
+
     );
 }
 
