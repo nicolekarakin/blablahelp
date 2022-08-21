@@ -20,6 +20,9 @@
         <skipTests>false</skipTests>
         <skipUnitTests>${skipTests}</skipUnitTests>
         <skipIntegrationTests>${skipTests}</skipIntegrationTests>
+        <sonar.organization>nicolekarakin</sonar.organization>
+        <sonar.projectKey>nicolekarakin_blablahelp_backend</sonar.projectKey>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencies>
         <dependency>
@@ -73,6 +76,7 @@
     </dependencies>
 
     <build>
+        <finalName>blablahelp</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
