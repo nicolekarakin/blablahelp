@@ -15,7 +15,7 @@ jobs:
           node-version: '16'
       - name: Build Frontend
         run: |
-          cd frontend
+          cd blablahelp-frontend
           npm install
           npm run build
       - uses: actions/upload-artifact@v2
