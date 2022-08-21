@@ -4,6 +4,6 @@ ENV ENVIRONMENT=dev
 
 LABEL maintainer="nnn4eu"
 
-ADD backend/target/blablahelp.jar blablahelp.jar
+ADD blablahelp-backend/target/blablahelp.jar blablahelp.jar
 
 CMD [ "sh", "-c", "java -Dserver.port=$PORT -jar /blablahelp.jar" ]
