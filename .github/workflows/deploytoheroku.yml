@@ -48,7 +48,7 @@ jobs:
     needs: build-backend
     environment:
       name: Produktion Heroku
-      url: https://blablahelp.herokuapp.com
+      url: https://blablashoppinghelp.herokuapp.com
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
     steps:
@@ -60,6 +60,6 @@ jobs:
       - name: Login to Heroku
         run: heroku container:login
       - name: Push Docker Image
-        run: heroku container:push web -a blablahelp
+        run: heroku container:push web -a blablashoppinghelp
       - name: Release Docker Container
-        run: heroku container:release web -a blablahelp
+        run: heroku container:release web -a blablashoppinghelp
