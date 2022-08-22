@@ -75,22 +75,4 @@ class AdminCtrlIT {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    @WithMockUser(authorities = {"ADMIN"})
-    @Test
-    void logout() throws Exception {
-        mockMvc.perform(
-                get(UrlMapping.ADMIN + "/logout")
-        ).andExpect(status().isOk());
-
-    }
-
-    @WithMockUser(authorities = {"BASIC"})
-    @Test
-    void logout_unauthorized() throws Exception {
-        mockMvc.perform(
-                get(UrlMapping.ADMIN + "/logout")
-        ).andExpect(status().isForbidden());
-
-    }
-
 }

@@ -38,16 +38,6 @@ class BasicCtrlIT {
         );
     }
 
-    @WithMockUser(authorities = {"ADMIN"})
-    @Test
-    void getHome_forbidden() throws Exception {
-        mockMvc.perform(
-                get(UrlMapping.BASIC)
-        ).andExpect(
-                status().isForbidden()
-        );
-    }
-
     @WithMockUser(authorities = {"BASIC"})
     @Test
     void getHome_ok() throws Exception {
@@ -59,7 +49,6 @@ class BasicCtrlIT {
 
         String actual = mvcResult.getResponse().getContentAsString();
         assertThat(actual).isEqualToIgnoringWhitespace(expected);
-
     }
 
     @WithMockUser(authorities = {"BASIC"})

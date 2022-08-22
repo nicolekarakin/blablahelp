@@ -11,6 +11,7 @@ import {Link as RouterLink, NavLink as RouterNavLink} from 'react-router-dom';
 
 
 const pages = [
+    {title: 'Home', url: '/'},
     {title: 'Wie?', url: '/wie'},
     {title: 'Datenschutz', url: '/datenschutz'},
     {title: 'AGB', url: '/agb'},
