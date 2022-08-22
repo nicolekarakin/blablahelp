@@ -62,4 +62,20 @@ class BasicCtrlIT {
 
     }
 
+    @WithMockUser(authorities = {"BASIC"})
+    @Test
+    void logout() throws Exception {
+        mockMvc.perform(
+                get(UrlMapping.BASIC + "/logout")
+        ).andExpect(status().isOk());
+
+    }
+
+    @Test
+    void logout_unauthorized() throws Exception {
+        mockMvc.perform(
+                get(UrlMapping.BASIC + "/logout")
+        ).andExpect(status().isUnauthorized());
+
+    }
 }
