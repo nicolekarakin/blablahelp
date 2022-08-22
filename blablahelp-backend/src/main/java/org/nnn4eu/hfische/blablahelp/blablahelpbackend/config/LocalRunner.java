@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +48,7 @@ public class LocalRunner implements ApplicationRunner {
                                 new Account(
                                         passwordEncoder.encode("frank123"),
                                         "frank@", "frank",
-                                        getGranted(Set.of(ERole.ADMIN)),
+                                        Set.of(ERole.ADMIN),
                                         true
                                 )))
         );
@@ -59,7 +58,7 @@ public class LocalRunner implements ApplicationRunner {
                                 new Account(
                                         passwordEncoder.encode("anna123"),
                                         "anna@", "anna",
-                                        getGranted(Set.of(ERole.BASIC)),
+                                        Set.of(ERole.BASIC),
                                         true
                                 )))
         );
@@ -70,16 +69,11 @@ public class LocalRunner implements ApplicationRunner {
                                 new Account(
                                         passwordEncoder.encode("annafrank"),
                                         "annafrank@", "annafrank",
-                                        getGranted(Set.of(ERole.ADMIN, ERole.BASIC)),
+                                        Set.of(ERole.ADMIN, ERole.BASIC),
                                         true
                                 )))
         );
         return accounts;
-    }
-
-    private List<SimpleGrantedAuthority> getGranted(Set<ERole> roles) {
-        return roles.stream().map(a -> new SimpleGrantedAuthority(a.name()))
-                .toList();
     }
 
 }

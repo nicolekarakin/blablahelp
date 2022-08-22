@@ -15,9 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -55,16 +53,17 @@ public class Account implements UserDetails {
     public Account(String password, String username) {
         this.password = password;
         this.username = username;
+        this.authorities = getGranted(Set.of(ERole.BASIC));
     }
 
-    public Account(String password, String username, String firstname, Collection<SimpleGrantedAuthority> authorities) {
+    public Account(String password, String username, String firstname, Set<ERole> roles) {
         this(password, username);
         this.firstname = firstname;
-        this.authorities = authorities;
+        this.authorities = getGranted(roles);
     }
 
-    public Account(String password, String username, String firstname, Collection<SimpleGrantedAuthority> authorities, boolean enabled) {
-        this(password, username, firstname, authorities);
+    public Account(String password, String username, String firstname, Set<ERole> roles, boolean enabled) {
+        this(password, username, firstname, roles);
         this.enabled = enabled;
     }
 
@@ -106,6 +105,11 @@ public class Account implements UserDetails {
     public Account persistAccount() {
         this.accountNonExpired = true;
         return this;
+    }
+
+    private List<SimpleGrantedAuthority> getGranted(Set<ERole> roles) {
+        return roles.stream().map(a -> new SimpleGrantedAuthority(a.name()))
+                .toList();
     }
 }
 
