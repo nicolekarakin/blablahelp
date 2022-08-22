@@ -1,5 +1,6 @@
 package org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.web.ctrl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -9,6 +10,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.ERole;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.SecurityConfig;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.web.ctrl.model.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -43,6 +45,8 @@ class PublicCtrlIT {
     UserDetailsService userDetailsService;
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static Account anna;
 
@@ -80,13 +84,15 @@ class PublicCtrlIT {
 
     @Test
     void getLogin() throws Exception {
-
         when(userDetailsService.loadUserByUsername("anna@")).thenReturn(anna);
-        mockMvc.perform(
+        MvcResult mvcResult = mockMvc.perform(
                         get(UrlMapping.PUBLIC + "/login")
                                 .with(httpBasic("anna@", "anna1234"))
                 ).andExpect(status().isOk())
                 .andReturn();
+        LoginResponse expected = new LoginResponse(anna.getId(), anna.getFirstname());
+        LoginResponse actual = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), LoginResponse.class);
+        assertThat(actual).isEqualTo(expected);
     }
 
 }
