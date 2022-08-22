@@ -2,9 +2,15 @@ import {Box, Stack, Typography} from "@mui/material"
 import {useContext} from "react";
 import {AuthContext} from "../shared/AuthProvider";
 import {capitalise} from "../shared/util";
+import {Navigate} from "react-router-dom";
+
 
 const Profile = () => {
     const {currentUser} = useContext(AuthContext);
+
+    if (currentUser === null) return (
+        <Navigate to={"/login"}/>
+    )
     return (
         <Stack direction="column"
                justifyContent="center"

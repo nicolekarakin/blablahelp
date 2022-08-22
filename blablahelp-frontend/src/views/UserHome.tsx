@@ -26,6 +26,7 @@ function UserHome() {
     const {enqueueSnackbar} = useSnackbar();
     const navigate = useNavigate();
 
+
     const getUserData = (id: string) => {
         return axios.get(urls.BASIC[0])
             .then(response => response.data)
