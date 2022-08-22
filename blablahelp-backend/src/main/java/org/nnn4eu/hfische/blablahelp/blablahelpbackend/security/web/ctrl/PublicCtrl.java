@@ -20,7 +20,7 @@ public class PublicCtrl {
 
     @GetMapping
     public ResponseEntity<String> getPublicHome() {
-        return new ResponseEntity<>("Hi, you are in public home!", HttpStatus.OK);
+        return new ResponseEntity<>("You are in public home!", HttpStatus.OK);
     }
 
     @GetMapping(path = "/login")

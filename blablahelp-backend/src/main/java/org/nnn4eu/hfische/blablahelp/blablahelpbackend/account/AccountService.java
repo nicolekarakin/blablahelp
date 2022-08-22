@@ -3,11 +3,13 @@ package org.nnn4eu.hfische.blablahelp.blablahelpbackend.account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -42,4 +44,12 @@ public class AccountService {
         return accountRepo.count();
     }
 
+    public List<Account> getBasicAccounts(Set<ERole> roles) {
+        return accountRepo.findByAuthoritiesIn(getGranted(roles));
+    }
+
+    private List<SimpleGrantedAuthority> getGranted(Set<ERole> roles) {
+        return roles.stream().map(a -> new SimpleGrantedAuthority(a.name()))
+                .toList();
+    }
 }
