@@ -23,8 +23,8 @@ public class AccountService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account with id: " + id + " not found"));
     }
 
-    public Optional<Account> findAccountByUsername(String name) {
-        List<Account> accounts = accountRepo.findByUsername(name);
+    public Optional<Account> findAccountByEmail(String email) {
+        List<Account> accounts = accountRepo.findByEmail(email);
         if (accounts.isEmpty()) return Optional.empty();
         else if (accounts.size() == 1) return Optional.of(accounts.get(0));
         else {
@@ -37,7 +37,7 @@ public class AccountService {
     public Account save(Account account) {
         if (accountRepo.findById(account.getId()).isEmpty())
             return accountRepo.save(account);
-        else throw new IllegalArgumentException("account with username: " + account.getUsername() + " already in db");
+        else throw new IllegalArgumentException("account with username: " + account.getEmail() + " already in db");
     }
 
     public Long count() {

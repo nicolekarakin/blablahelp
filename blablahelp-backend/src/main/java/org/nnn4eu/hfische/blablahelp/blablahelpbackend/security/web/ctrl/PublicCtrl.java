@@ -39,7 +39,8 @@ public class PublicCtrl {
                 .getContext()
                 .getAuthentication();
         if (auth.getPrincipal() instanceof Account account) {
-            LoginResponse response = new LoginResponse(account.getId(), account.getFirstname());
+            LoginResponse response = new LoginResponse(account.getId(), account.getFirstname(),
+                    account.getEmail(), account.getCity());
             return Optional.of(response);
         }
         return Optional.empty();

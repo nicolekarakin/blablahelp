@@ -7,9 +7,10 @@ import UserHome from "./views/UserHome";
 import PublicHome from "./views/PublicHome";
 import MyNavBar from "./components/MyNavBar";
 import theme from "./hooks/useTheme";
-import Agb from "./views/Agb";
-import Impressum from "./views/Impressum";
-import Profile from "./views/Profile";
+import Agb from "./views/public/Agb";
+import Impressum from "./views/public/Impressum";
+import Profile from "./views/user/Profile";
+import Wie from "./views/public/Wie";
 
 
 const App = () => {
@@ -31,10 +32,12 @@ const App = () => {
                     <Route path="/" element={<PublicHome/>}/>
                     <Route path="/login" element={<Login/>}/>
 
+
                     <Route path="/agb" element={<Agb/>}/>
                     <Route path="/impressum" element={<Impressum/>}/>
+                    <Route path="/wie" element={<Wie/>}/>
 
-                    <Route path="/home" element={<UserHome/>}/>
+                    <Route path="/account" element={<UserHome/>}/>
                     <Route path="/profile" element={<Profile/>}/>
                 </Routes>
 

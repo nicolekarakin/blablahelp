@@ -13,17 +13,12 @@ import {Link as RouterLink, NavLink as RouterNavLink} from 'react-router-dom';
 const pages = [
     {title: 'Home', url: '/'},
     {title: 'Wie?', url: '/wie'},
-    {title: 'Datenschutz', url: '/datenschutz'},
     {title: 'AGB', url: '/agb'},
     {title: 'Impressum', url: '/impressum'},
 ];
 const userPages = [
-    {title: 'Home', url: '/home'},
+    {title: 'Account', url: '/account'},
     {title: 'Profile', url: '/profile'},
-    {title: 'Aktuell', url: '/aktuell'},
-    {title: 'Abgelaufen', url: '/abgelaufen'},
-    {title: 'History', url: '/history'},
-    {title: 'Shoppinglists', url: '/shoppinglists'}
 ];
 
 

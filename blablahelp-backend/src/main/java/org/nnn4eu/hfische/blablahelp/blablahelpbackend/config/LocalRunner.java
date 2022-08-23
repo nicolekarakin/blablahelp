@@ -43,32 +43,32 @@ public class LocalRunner implements ApplicationRunner {
         List<Account> accounts = new ArrayList<>();
 
         accounts.add(
-                accountService.findAccountByUsername("frank@").orElseGet(() ->
+                accountService.findAccountByEmail("frank@gmail.de").orElseGet(() ->
                         accountService.save(
                                 new Account(
                                         passwordEncoder.encode("frank123"),
-                                        "frank@", "frank",
+                                        "frank@gmail.de", "frank","Berlin",
                                         Set.of(ERole.ADMIN),
                                         true
                                 )))
         );
         accounts.add(
-                accountService.findAccountByUsername("anna@").orElseGet(() ->
+                accountService.findAccountByEmail("anna@gmail.de").orElseGet(() ->
                         accountService.save(
                                 new Account(
                                         passwordEncoder.encode("anna123"),
-                                        "anna@", "anna",
+                                        "anna@gmail.de", "anna","München",
                                         Set.of(ERole.BASIC),
                                         true
                                 )))
         );
 
         accounts.add(
-                accountService.findAccountByUsername("annafrank@").orElseGet(() ->
+                accountService.findAccountByEmail("annafrank@gmail.de").orElseGet(() ->
                         accountService.save(
                                 new Account(
                                         passwordEncoder.encode("annafrank"),
-                                        "annafrank@", "annafrank",
+                                        "annafrank@gmail.de", "annafrank","Hulm",
                                         Set.of(ERole.ADMIN, ERole.BASIC),
                                         true
                                 )))

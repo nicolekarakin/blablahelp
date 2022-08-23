@@ -54,7 +54,7 @@ class PublicCtrlIT {
     public void init() {
         anna = new Account(
                 passwordEncoder.encode("anna1234"),
-                "anna@", "anna",
+                "anna@", "anna","München",
                 Set.of(ERole.BASIC),
                 true
         );
@@ -90,7 +90,7 @@ class PublicCtrlIT {
                                 .with(httpBasic("anna@", "anna1234"))
                 ).andExpect(status().isOk())
                 .andReturn();
-        LoginResponse expected = new LoginResponse(anna.getId(), anna.getFirstname());
+        LoginResponse expected = new LoginResponse(anna.getId(), anna.getFirstname(), anna.getEmail(), anna.getCity());
         LoginResponse actual = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), LoginResponse.class);
         assertThat(actual).isEqualTo(expected);
     }

@@ -1,7 +1,7 @@
 import {Box, Stack, Typography} from "@mui/material"
 import {useContext} from "react";
-import {AuthContext} from "../shared/AuthProvider";
-import {capitalise} from "../shared/util";
+import {AuthContext} from "../../shared/AuthProvider";
+import {capitalise} from "../../shared/util";
 import {Navigate} from "react-router-dom";
 
 
@@ -22,8 +22,8 @@ const Profile = () => {
 
                 <Typography component={'p'} mb={'1.2rem'}>
                     {currentUser.firstname} Name<br/>
-                    Anschrift: RollenStr. 89, Poli<br/>
-                    E-Mail: yyxx@gmail.de
+                    Ort: {currentUser.city}<br/>
+                    E-Mail: {currentUser.email}
                 </Typography>
                 <Typography component={'p'} mb={'1.2rem'}>
                     And More

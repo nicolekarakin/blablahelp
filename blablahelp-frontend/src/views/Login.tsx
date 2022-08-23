@@ -30,7 +30,7 @@ export default function Login() {
                 setCurrentUser(user);
                 setUsername("");
                 setPassword("");
-                navigate("/home")
+                navigate("/account")
             })
             .catch(_ => {
                 enqueueSnackbar('Login Failed', {variant: "error"})
