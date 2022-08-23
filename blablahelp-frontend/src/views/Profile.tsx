@@ -22,7 +22,7 @@ const Profile = () => {
 
                 <Typography component={'p'} mb={'1.2rem'}>
                     {currentUser.firstname} Name<br/>
-                    Anschrift: RrrrStr. 89, Poli<br/>
+                    Anschrift: RollenStr. 89, Poli<br/>
                     E-Mail: yyxx@gmail.de
                 </Typography>
                 <Typography component={'p'} mb={'1.2rem'}>

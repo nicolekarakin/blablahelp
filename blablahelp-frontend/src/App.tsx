@@ -27,8 +27,7 @@ const App = () => {
                        }}>
 
                 <Routes>
-                    {/*{(!currentUser) ? <Route path="/" element={<PublicHome/>}/> : <></>*/}
-                    {/*}*/}
+
                     <Route path="/" element={<PublicHome/>}/>
                     <Route path="/login" element={<Login/>}/>
 

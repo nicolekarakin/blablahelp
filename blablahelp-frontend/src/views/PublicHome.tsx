@@ -43,14 +43,14 @@ const PublicHome = () => {
                     BlaBlaHelp?
                 </Typography>
                 <Typography component={'p'} mb={'1.2rem'}>
-                    BlaBlaHelp App bringt Menschen die Hilfe beim Lebenseinkauf brauchen und Menschen die helfen wollen
-                    zusammen.
-                    Registriere dich und je nach Situation kannst du Haupt Shopper oder Mitschopper sein!
+                    BlaBlaHelp App bringt Menschen, die Hilfe beim Lebenseinkauf brauchen, und Menschen, die helfen
+                    wollen, zusammen.
+                    Registriere dich, und je nach Situation, kannst du Hauptshopper oder Mitschopper sein!
                 </Typography>
                 <Typography component={'p'}>
                     Als Shopper, kannst du dein Angebot veröffentlichen. Als Mitschopper, gib deine Adresse ein und
                     finde jemanden, der dir mit Einkaufen hilft.
-                    Wie genau es funktioniert und was du beachten sollst, kannst du in <Link
+                    Wie genau es funktioniert und was du beachten solltest, kannst du in <Link
                     to={'/agb'}>"AGB"</Link> und <Link to={'/wie'}>"Wie?"</Link> Seiten nachlesen.
                 </Typography>
 
