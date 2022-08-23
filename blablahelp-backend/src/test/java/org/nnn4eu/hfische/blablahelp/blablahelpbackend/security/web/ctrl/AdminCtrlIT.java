@@ -128,13 +128,14 @@ class AdminCtrlIT {
     void uploadFile_bad() throws Exception {
         String json = "[{\nstreet\": \"Merkurstraße 24\"";
         String name = "en-DE_name";
-        MockMultipartFile jsonFile = new MockMultipartFile("myjson", "", "application/json",
+        MockMultipartFile jsonFile = new MockMultipartFile("mfile", "", "application/json",
                 json.getBytes());
 
         mockMvc.perform(
                 multipart(UrlMapping.ADMIN + "/uploadJson")
                         .file(jsonFile)
                         .param("name", name)
+                        .with(csrf())
         ).andExpect(status().isBadRequest());
     }
 
