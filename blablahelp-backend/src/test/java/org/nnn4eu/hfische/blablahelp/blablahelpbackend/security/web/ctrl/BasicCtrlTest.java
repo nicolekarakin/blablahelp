@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = BasicCtrl.class)
 @ComponentScan(basePackageClasses = SecurityConfig.class)
-class BasicCtrlIT {
+class BasicCtrlTest {
     @Autowired
     private MockMvc mockMvc;
 

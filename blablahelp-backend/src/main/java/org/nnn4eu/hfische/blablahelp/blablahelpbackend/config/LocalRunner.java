@@ -43,32 +43,32 @@ public class LocalRunner implements ApplicationRunner {
         List<Account> accounts = new ArrayList<>();
 
         accounts.add(
-                accountService.findAccountByUsername("frank@").orElseGet(() ->
-                        accountService.save(
+                accountService.findAccountByEmail("frank@gmail.de").orElseGet(() ->
+                        accountService.saveNew(
                                 new Account(
-                                        passwordEncoder.encode("frank123"),
-                                        "frank@", "frank",
+                                        passwordEncoder.encode("blafr22"),
+                                        "frank@gmail.de", "frank", "Berlin",
                                         Set.of(ERole.ADMIN),
                                         true
                                 )))
         );
         accounts.add(
-                accountService.findAccountByUsername("anna@").orElseGet(() ->
-                        accountService.save(
+                accountService.findAccountByEmail("anna@gmail.de").orElseGet(() ->
+                        accountService.saveNew(
                                 new Account(
-                                        passwordEncoder.encode("anna123"),
-                                        "anna@", "anna",
+                                        passwordEncoder.encode("blaan22"),
+                                        "anna@gmail.de", "anna", "München",
                                         Set.of(ERole.BASIC),
                                         true
                                 )))
         );
 
         accounts.add(
-                accountService.findAccountByUsername("annafrank@").orElseGet(() ->
-                        accountService.save(
+                accountService.findAccountByEmail("annafrank@gmail.de").orElseGet(() ->
+                        accountService.saveNew(
                                 new Account(
                                         passwordEncoder.encode("annafrank"),
-                                        "annafrank@", "annafrank",
+                                        "annafrank@gmail.de", "annafrank","Hulm",
                                         Set.of(ERole.ADMIN, ERole.BASIC),
                                         true
                                 )))

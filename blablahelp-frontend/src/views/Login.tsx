@@ -19,7 +19,7 @@ export default function Login() {
     const {enqueueSnackbar} = useSnackbar();
 
 
-    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    const handleLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         const authdata = {auth: {username: username, password: password}}
@@ -30,7 +30,7 @@ export default function Login() {
                 setCurrentUser(user);
                 setUsername("");
                 setPassword("");
-                navigate("/home")
+                navigate("/account")
             })
             .catch(_ => {
                 enqueueSnackbar('Login Failed', {variant: "error"})

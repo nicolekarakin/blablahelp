@@ -14,6 +14,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.*;
 
@@ -24,17 +27,24 @@ import java.util.*;
 public class Account implements UserDetails {
     @Id
     private String id = UUID.randomUUID().toString();
+    @NotBlank @Email
     @Indexed(unique = true, direction = IndexDirection.ASCENDING)
-    private String username;//email
+    private String email;
     @Version
     private Long version;
+    @NotBlank @Size(max = 10,min=5)
     private String password;
+    @NotBlank @Size(min=1)
     private Collection<SimpleGrantedAuthority> authorities = new HashSet<>();
+    @NotBlank
     private String firstname;
+    @NotBlank
+    private String city;
     private boolean enabled = false;
     private boolean credentialsNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean accountNonExpired = true;
+
     @CreatedDate
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     Instant createdAt;
@@ -42,74 +52,37 @@ public class Account implements UserDetails {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     Instant modifiedAt;
 
-    public void addAuthority(ERole role) {
-        authorities.add(new SimpleGrantedAuthority(role.name()));
-    }
-
-    public void removeAuthority(ERole role) {
-        authorities.remove(new SimpleGrantedAuthority(role.name()));
-    }
-
-    public Account(String password, String username) {
+    public Account(String password, String email) {
         this.password = password;
-        this.username = username;
+        this.email = email;
         this.authorities = getGranted(Set.of(ERole.BASIC));
     }
-
-    public Account(String password, String username, String firstname, Set<ERole> roles) {
-        this(password, username);
+    public Account(String password, String email, String firstname,String city) {
+        this.password = password;
+        this.email = email;
         this.firstname = firstname;
+        this.city = city;
+        this.authorities = getGranted(Set.of(ERole.BASIC));
+    }
+    public Account(String password, String email, String firstname,String city, Set<ERole> roles) {
+        this(password, email,firstname,city);
+
         this.authorities = getGranted(roles);
     }
 
-    public Account(String password, String username, String firstname, Set<ERole> roles, boolean enabled) {
-        this(password, username, firstname, roles);
+    public Account(String password, String email, String firstname,String city, Set<ERole> roles, boolean enabled) {
+        this(password, email, firstname, city,roles);
         this.enabled = enabled;
-    }
-
-    public Account enable() {
-        this.enabled = true;
-        return this;
-    }
-
-    public Account disable() {
-        this.enabled = false;
-        return this;
-    }
-
-    public Account lock() {
-        this.accountNonLocked = true;
-        return this;
-    }
-
-    public Account unlock() {
-        this.accountNonLocked = false;
-        return this;
-    }
-
-    public Account expireCredentials() {
-        this.credentialsNonExpired = false;
-        return this;
-    }
-
-    public Account persistCredentials() {
-        this.credentialsNonExpired = true;
-        return this;
-    }
-
-    public Account expireAccount() {
-        this.accountNonExpired = false;
-        return this;
-    }
-
-    public Account persistAccount() {
-        this.accountNonExpired = true;
-        return this;
     }
 
     private List<SimpleGrantedAuthority> getGranted(Set<ERole> roles) {
         return roles.stream().map(a -> new SimpleGrantedAuthority(a.name()))
                 .toList();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 }
 

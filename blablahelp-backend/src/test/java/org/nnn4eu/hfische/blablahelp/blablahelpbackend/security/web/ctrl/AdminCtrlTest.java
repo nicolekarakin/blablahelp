@@ -34,8 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = AdminCtrl.class)
-@ComponentScan(basePackageClasses = SecurityConfig.class)
-class AdminCtrlIT {
+@ComponentScan(basePackageClasses = {SecurityConfig.class})
+class AdminCtrlTest {
 
     @Autowired
     private MockMvc mockMvc;
