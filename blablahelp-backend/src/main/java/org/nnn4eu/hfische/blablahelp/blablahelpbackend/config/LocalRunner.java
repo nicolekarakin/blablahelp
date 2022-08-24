@@ -44,7 +44,7 @@ public class LocalRunner implements ApplicationRunner {
 
         accounts.add(
                 accountService.findAccountByEmail("frank@gmail.de").orElseGet(() ->
-                        accountService.save(
+                        accountService.saveNew(
                                 new Account(
                                         passwordEncoder.encode("blafr22"),
                                         "frank@gmail.de", "frank", "Berlin",
@@ -54,7 +54,7 @@ public class LocalRunner implements ApplicationRunner {
         );
         accounts.add(
                 accountService.findAccountByEmail("anna@gmail.de").orElseGet(() ->
-                        accountService.save(
+                        accountService.saveNew(
                                 new Account(
                                         passwordEncoder.encode("blaan22"),
                                         "anna@gmail.de", "anna", "München",
@@ -65,7 +65,7 @@ public class LocalRunner implements ApplicationRunner {
 
         accounts.add(
                 accountService.findAccountByEmail("annafrank@gmail.de").orElseGet(() ->
-                        accountService.save(
+                        accountService.saveNew(
                                 new Account(
                                         passwordEncoder.encode("annafrank"),
                                         "annafrank@gmail.de", "annafrank","Hulm",

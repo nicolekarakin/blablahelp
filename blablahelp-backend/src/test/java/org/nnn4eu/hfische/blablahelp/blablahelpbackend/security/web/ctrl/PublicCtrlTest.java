@@ -21,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan(basePackageClasses = {SecurityConfig.class})
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = PublicCtrl.class)
-class PublicCtrlIT {
+class PublicCtrlTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -91,7 +92,7 @@ class PublicCtrlIT {
                 ).andExpect(status().isOk())
                 .andReturn();
         LoginResponse expected = new LoginResponse(anna.getId(), anna.getFirstname(), anna.getEmail(), anna.getCity());
-        LoginResponse actual = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), LoginResponse.class);
+        LoginResponse actual = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), LoginResponse.class);
         assertThat(actual).isEqualTo(expected);
     }
 

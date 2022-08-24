@@ -1,5 +1,6 @@
 package org.nnn4eu.hfische.blablahelp.blablahelpbackend.account;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,10 +35,18 @@ public class AccountService {
         }
     }
 
-    public Account save(Account account) {
-        if (accountRepo.findById(account.getId()).isEmpty())
+    public Account saveNew(Account account) {
+        if (!accountRepo.existsById(account.getId()) && !accountWithEmailExists(account.getEmail()))
             return accountRepo.save(account);
-        else throw new IllegalArgumentException("account with username: " + account.getEmail() + " already in db");
+        else throw new IllegalArgumentException("account with email: " + account.getEmail() + " already in db");
+    }
+
+    public Account save(Account account) {
+        return accountRepo.save(account);
+    }
+
+    public boolean accountWithEmailExists(String email){
+        return !accountRepo.findByEmail(email).isEmpty();
     }
 
     public Long count() {

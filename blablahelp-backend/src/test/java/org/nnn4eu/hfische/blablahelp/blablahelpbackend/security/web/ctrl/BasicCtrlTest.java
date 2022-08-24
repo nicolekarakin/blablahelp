@@ -9,23 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = AdminCtrl.class)
-@ComponentScan(basePackageClasses = SecurityConfig.class)
-class AdminCtrlIT {
 
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(controllers = BasicCtrl.class)
+@ComponentScan(basePackageClasses = SecurityConfig.class)
+class BasicCtrlTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -35,7 +32,7 @@ class AdminCtrlIT {
     @Test
     void getHome_unauthorized() throws Exception {
         mockMvc.perform(
-                get(UrlMapping.ADMIN)
+                get(UrlMapping.BASIC)
         ).andExpect(
                 status().isUnauthorized()
         );
@@ -43,36 +40,31 @@ class AdminCtrlIT {
 
     @WithMockUser(authorities = {"BASIC"})
     @Test
-    void getHome_forbidden() throws Exception {
-        mockMvc.perform(
-                get(UrlMapping.ADMIN)
-        ).andExpect(
-                status().isForbidden()
-        );
-    }
-
-    @WithMockUser(authorities = {"ADMIN"})
-    @Test
     void getHome_ok() throws Exception {
         MvcResult mvcResult = mockMvc.perform(
-                        get(UrlMapping.ADMIN)
+                        get(UrlMapping.BASIC)
                 ).andExpect(status().isOk())
                 .andReturn();
-        String expected = "You are in admin home!";
+        String expected = "You are in private home!";
 
         String actual = mvcResult.getResponse().getContentAsString();
         assertThat(actual).isEqualToIgnoringWhitespace(expected);
-
     }
 
-    @WithMockUser(authorities = {"ADMIN"})
+    @WithMockUser(authorities = {"BASIC"})
     @Test
-    void getBasicAccounts() throws Exception {
+    void logout() throws Exception {
         mockMvc.perform(
-                        get(UrlMapping.ADMIN + "/accounts")
-                                .accept(MediaType.APPLICATION_JSON)
-                ).andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
+                get(UrlMapping.BASIC + "/logout")
+        ).andExpect(status().isOk());
+
     }
 
+    @Test
+    void logout_unauthorized() throws Exception {
+        mockMvc.perform(
+                get(UrlMapping.BASIC + "/logout")
+        ).andExpect(status().isUnauthorized());
+
+    }
 }

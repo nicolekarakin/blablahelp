@@ -34,12 +34,12 @@ class AccountServiceTest {
     void findAccountById_throw() {
         String id = UUID.randomUUID().toString();
         final Exception generalEx = new ResponseStatusException(HttpStatus.NOT_FOUND, "Account with id: " + id + " not found");
-        when(accountRepo.findById(id)).thenThrow(generalEx);
+        when(accountRepo.findById(id)).thenReturn(Optional.empty());
         Throwable exception = Assertions.assertThrows(ResponseStatusException.class, () -> {
             throw generalEx;
         });
         Assertions.assertEquals("404 NOT_FOUND \"Account with id: " + id + " not found\"", exception.getMessage());
-        Assertions.assertThrowsExactly(ResponseStatusException.class, () -> accountRepo.findById(id));
+        Assertions.assertThrowsExactly(ResponseStatusException.class, () -> accountService.findAccountById(id));
     }
 
     @Test
@@ -56,7 +56,7 @@ class AccountServiceTest {
     void save() {
         Account expected = new Account("pass1234", "Rosy@");
         when(accountRepo.save(expected)).thenReturn(expected);
-        Account actual = accountService.save(expected);
+        Account actual = accountService.saveNew(expected);
         Assertions.assertEquals(expected, actual);
     }
 
@@ -66,11 +66,5 @@ class AccountServiceTest {
         when(accountRepo.count()).thenReturn(expected);
         Long actual = accountService.count();
         Assertions.assertEquals(expected, actual);
-    }
-    @Test
-    void logTime(){
-        Instant n1=Instant.now().plus(20L, DAYS);
-        Instant n2=Instant.now().plus(25L, DAYS);
-        log.info("Sum of x+y = " + n2.getEpochSecond());
     }
 }

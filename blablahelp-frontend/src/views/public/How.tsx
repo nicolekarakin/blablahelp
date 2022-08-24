@@ -1,6 +1,6 @@
 import {Box, Stack, Typography} from "@mui/material"
 
-const Wie = () => {
+const How = () => {
 
     return (
         <Stack direction="column"
@@ -20,4 +20,4 @@ const Wie = () => {
         </Stack>
     )
 }
-export default Wie
+export default How

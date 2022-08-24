@@ -10,7 +10,7 @@ import theme from "./hooks/useTheme";
 import Agb from "./views/public/Agb";
 import Impressum from "./views/public/Impressum";
 import Profile from "./views/user/Profile";
-import Wie from "./views/public/Wie";
+import How from "./views/public/How";
 
 
 const App = () => {
@@ -35,7 +35,7 @@ const App = () => {
 
                     <Route path="/agb" element={<Agb/>}/>
                     <Route path="/impressum" element={<Impressum/>}/>
-                    <Route path="/wie" element={<Wie/>}/>
+                    <Route path="/wie" element={<How/>}/>
 
                     <Route path="/account" element={<UserHome/>}/>
                     <Route path="/profile" element={<Profile/>}/>
