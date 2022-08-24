@@ -16,7 +16,7 @@ import java.util.Set;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AdminCtrlTest {
+class AdminCtrlUnitTest {
 
     private final AccountService accountService = mock(AccountService.class);
     private final ShopService shopService = mock(ShopService.class);
