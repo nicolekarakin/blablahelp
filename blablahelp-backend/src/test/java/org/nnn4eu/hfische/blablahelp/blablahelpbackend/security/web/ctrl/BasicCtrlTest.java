@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.SecurityConfig;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,6 +29,9 @@ class BasicCtrlTest {
 
     @MockBean
     AccountService accountService;
+
+    @MockBean
+    ShopService shopService;
 
     @Test
     void getHome_unauthorized() throws Exception {

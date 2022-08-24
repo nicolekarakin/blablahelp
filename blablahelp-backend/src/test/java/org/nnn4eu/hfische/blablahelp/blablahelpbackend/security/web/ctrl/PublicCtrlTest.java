@@ -11,6 +11,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.ERole;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.SecurityConfig;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.web.ctrl.model.LoginResponse;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -41,6 +42,8 @@ class PublicCtrlTest {
 
     @MockBean
     AccountService accountService;
+    @MockBean
+    ShopService shopService;
 
     @MockBean
     UserDetailsService userDetailsService;
