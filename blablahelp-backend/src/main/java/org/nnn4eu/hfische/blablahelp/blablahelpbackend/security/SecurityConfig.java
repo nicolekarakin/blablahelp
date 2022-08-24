@@ -78,8 +78,13 @@ public class SecurityConfig implements WebSecurityCustomizer {
         web.ignoring().antMatchers(
                 "/resources/**",
                 "/static/**",
-                "manifest.json",
-                "favicon.ico"
+                "/manifest.json",
+                "/favicon.ico",
+                "/logo192.png",
+                "/logo512.png",
+                "/asset-manifest.json",
+                "/robots.txt",
+                "/index.html"
         );
     }
 
