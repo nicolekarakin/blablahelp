@@ -75,7 +75,12 @@ public class SecurityConfig implements WebSecurityCustomizer {
 
     @Override
     public void customize(WebSecurity web) {
-        web.ignoring().antMatchers("/resources/**");
+        web.ignoring().antMatchers(
+                "/resources/**",
+                "/static/**",
+                "manifest.json",
+                "favicon.ico"
+        );
     }
 
 }
