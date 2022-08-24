@@ -27,7 +27,7 @@ export default function CurrentPublicOffers(){
             <Typography variant={'h1'} ml={2} mr={2}>
                 Aktuelle Angebote
             </Typography>
-            { fakeData.map(a=>(<CurrentPublicOffer {...a}/>))}
+            {fakeData.map((a, index) => (<CurrentPublicOffer key={index} {...a}/>))}
         </Box>
     )
 }

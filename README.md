@@ -9,8 +9,9 @@ To run backend locally you need:
  - set active profile to `local`
 
 For front end:
- - npm install
- - use demo user:anna@gmai.de | pass:anna123 
+
+- npm install
+- use demo user:anna@gmai.de | pass:blaan22
 
 excalidraw draft - v1 - [process](https://excalidraw.com/#json=wIjhotfj6wie27cewGeKW,hW-czwpHf0636T4YJzLsag)
 
