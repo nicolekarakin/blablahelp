@@ -59,6 +59,7 @@ public class SecurityConfig implements WebSecurityCustomizer {
                 .and();
 
         http.authorizeRequests()
+                .antMatchers( "/").permitAll()
                 .antMatchers(UrlMapping.PUBLIC, UrlMapping.PUBLIC + "/**").permitAll()
 
                 .antMatchers(UrlMapping.BASIC, UrlMapping.BASIC + "/**").authenticated()
