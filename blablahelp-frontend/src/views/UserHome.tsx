@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 import {AuthContext} from "../shared/AuthProvider";
 import {urls} from "../shared/UrlMapping";
+import OfferForm from "../components/user/OfferForm";
 
 
 function UserHome() {
@@ -74,6 +75,7 @@ function UserHome() {
                 </CardContent>
             </Card>
 
+            <OfferForm/>
         </Stack>
 
     );
