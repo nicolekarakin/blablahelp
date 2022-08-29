@@ -17,11 +17,12 @@ type OwnOfferType = {
     maxArticles:number|null,
     maxDistanceKm:number|null,
 
-    agbAccepted?:boolean,
     isVisible?:boolean,
     isReviewed?:boolean,
     isCanceled?:boolean,
     isExpired?:boolean,
+
+    notes?:string,
     priceOffer:string| undefined, //TODO how to handle currency? for now assume euro
 
 }

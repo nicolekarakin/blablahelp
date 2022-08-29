@@ -30,6 +30,5 @@ public class MitshopperInquiry {
     private boolean isReviewed=false;
     private boolean isCanceled=false;
     private boolean isExpired=false;
-    private boolean agbAccepted=false;
 
 }

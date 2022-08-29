@@ -1,11 +1,11 @@
 import {useSnackbar} from "notistack";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router";
-
+import {Link as RouterLink} from 'react-router-dom';
 import {
     Alert,
     AlertTitle,
-    Box,
+    Box, Button,
     Card,
     CardContent,
     CircularProgress,
@@ -15,7 +15,6 @@ import {
 import axios from "axios";
 import {AuthContext} from "../shared/AuthProvider";
 import {urls} from "../shared/UrlMapping";
-import OfferForm from "../components/user/OfferForm";
 
 
 function UserHome() {
@@ -85,7 +84,12 @@ function UserHome() {
                 </CardContent>
             </Card>
 
-            <OfferForm/>
+            <Button
+                variant="contained"
+                component={RouterLink} to={"/newOffer"}
+            >Neues Angebot erstellen
+            </Button>
+
         </Stack>
 
     );

@@ -5,13 +5,11 @@ import {TimePicker} from '@mui/x-date-pickers/TimePicker';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import React, {useEffect, useState} from 'react';
 import {ClockPickerView, LocalizationProvider} from "@mui/x-date-pickers";
-import {addMinutes,addHours} from 'date-fns'
+import {addMinutes} from 'date-fns'
 
 const shouldDisableMyTime=(timeValue:number, clockType:ClockPickerView) => {
-    if (clockType === 'minutes' && timeValue % 15) {
-        return true;
-    }
-    return false;
+    const mod=timeValue % 15
+    return (clockType === 'minutes' && (!!mod));
 }
 type DateTimeOfferFormPartProps={
     shoppingDate:Date | null,
@@ -22,10 +20,7 @@ type DateTimeOfferFormPartProps={
     setTimeFrom: React.Dispatch<React.SetStateAction<Date | null>>,
 }
 export default function DateTimeOfferFormPart(p:DateTimeOfferFormPartProps) {
-    // const [shoppingDate, setShoppingDate] = useState<Date | null>(null);
-    // const [timeFrom, setTimeFrom] = useState<Date | null>(null);
     const [timeFromDisabled, setTimeFromDisabled] = useState<boolean>(true);
-    // const [timeTo, setTimeTo] = useState<Date | null>(null);
     const [timeToDisabled, setTimeToDisabled] = useState<boolean>(true);
     const [minTimeTo, setMinTimeTo] = useState<Date | null>(null);
 
@@ -45,10 +40,6 @@ export default function DateTimeOfferFormPart(p:DateTimeOfferFormPartProps) {
     const finalTime=(inputTime:Date|null)=>{
         const newMin=(inputTime?.getMinutes() || 0)+60*(inputTime?.getHours() || 0)
         return addMinutes(p.shoppingDate?p.shoppingDate:0,newMin)
-        // const newFromMin=(p.timeFrom?.getMinutes() || 0)+60*(p.timeFrom?.getHours() || 0)
-        // const newFrom=addMinutes(p.shoppingDate?p.shoppingDate:0,newFromMin)
-        // const newToMin=(p.timeTo?.getMinutes() || 0)+60*(p.timeTo?.getHours() || 0)
-        // const newTo=addMinutes(p.shoppingDate?p.shoppingDate:0,newToMin)
 
     }
 

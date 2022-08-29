@@ -11,6 +11,7 @@ import Agb from "./views/public/Agb";
 import Impressum from "./views/public/Impressum";
 import Profile from "./views/user/Profile";
 import How from "./views/public/How";
+import OfferForm from "./components/user/OfferForm";
 
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
 
                     <Route path="/account" element={<UserHome/>}/>
                     <Route path="/profile" element={<Profile/>}/>
+                    <Route path="/newOffer" element={<OfferForm/>}/>
                 </Routes>
 
             </Container>

@@ -3,8 +3,8 @@ import AddressType from "./AddressType";
 import OwnInquiryType from "./OwnInquiryType";
 type UserDataType={
     usedAddresses:AddressType[],
-    allOffers:OwnOfferType[],
-    allInquiries:OwnInquiryType[],
+    currentOffers:OwnOfferType[],
+    currentInquiries:OwnInquiryType[],
 }
 type UserType = {
     id: string,

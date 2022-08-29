@@ -1,5 +1,7 @@
 import {Card, CardActions, CardContent, Rating, Typography} from "@mui/material";
 import {capitalise, dateFromInstant} from "../../shared/util";
+import {useContext} from "react";
+import {AuthContext} from "../../shared/AuthProvider";
 
 type CurrentPublicOfferProp = {
     name: string,
@@ -10,6 +12,8 @@ type CurrentPublicOfferProp = {
     rating:number,
 }
 export default function CurrentPublicOffer(props: CurrentPublicOfferProp) {
+    const {currentLang, currentCountry} = useContext(AuthContext);
+    const locale=currentLang+"-"+currentCountry
 
     return (
 
@@ -22,7 +26,7 @@ export default function CurrentPublicOffer(props: CurrentPublicOfferProp) {
                     {capitalise(props.name)}
                 </Typography>
                 <Typography sx={{mb: 1.5}} color="text.secondary">
-                    {props.city}, {dateFromInstant(props.date)}
+                    {props.city}, {dateFromInstant(props.date, locale)}
                 </Typography>
                 <Typography variant="body2">
                     {props?.motto}

@@ -42,7 +42,6 @@ public class Offer {
     private boolean isReviewed=false;
     private boolean isCanceled=false;
     private boolean isExpired=false;
-    private boolean agbAccepted=false;
 
     private List<MitshopperInquiry> inquiries;
 
