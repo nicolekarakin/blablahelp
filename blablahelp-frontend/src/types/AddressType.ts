@@ -6,5 +6,6 @@ type AddressType = {
     street: string,
     zip:string,
     loc?:LocType,
+    type?:string,
 }
 export default AddressType

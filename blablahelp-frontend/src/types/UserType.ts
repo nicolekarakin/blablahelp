@@ -1,10 +1,16 @@
 import OwnOfferType from "./OwnOfferType";
-
+import AddressType from "./AddressType";
+import OwnInquiryType from "./OwnInquiryType";
+type UserDataType={
+    usedAddresses:AddressType[],
+    allOffers:OwnOfferType[],
+    allInquiries:OwnInquiryType[],
+}
 type UserType = {
     id: string,
     firstname: string,
     email: string,
     city: string,
-    ownOffers?:OwnOfferType[],
+    userData?:UserDataType,
 }
 export default UserType
