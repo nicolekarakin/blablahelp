@@ -2,25 +2,35 @@ import React, {FormEvent, useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../shared/AuthProvider";
 import {CloseSharp as ClearIcon} from "@mui/icons-material";
 import {
-    Button, ButtonGroup,
+    Button,
+    ButtonGroup,
     Card,
     CardActions,
     CardContent,
     CardHeader,
-    FormControl, FormControlLabel, FormLabel,
-    Grid, IconButton, InputLabel, MenuItem, Radio, RadioGroup, Select,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Grid,
+    IconButton,
+    InputLabel,
+    MenuItem,
+    Radio,
+    RadioGroup,
+    Select,
     Stack,
-    TextField, Typography
+    TextField,
+    Typography
 } from "@mui/material";
 
 import {useSnackbar} from "notistack";
 import OwnOfferType from "../../types/OwnOfferType";
 import AddressType from "../../types/AddressType";
-import DateTimeOfferFormPart from "./DateTimeOfferFormPart";
+import DateTimeOfferFormPart from "../../components/user/DateTimeOfferFormPart";
 
-import DynamicTextInput from "./DynamicTextInput";
-import useOfferForm from "./useOfferForm";
-import ConfirmationNewOfferDialog from "./ConfirmationNewOfferDialog";
+import DynamicTextInput from "../../components/user/DynamicTextInput";
+import useOfferForm from "../../hooks/useOfferForm";
+import ConfirmationNewOfferDialog from "../../components/user/ConfirmationNewOfferDialog";
 import {useNavigate} from "react-router";
 
 

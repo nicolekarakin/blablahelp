@@ -21,8 +21,6 @@ type ConfirmationNewOfferDialogProps={
 export default function ConfirmationNewOfferDialog(props:ConfirmationNewOfferDialogProps){
     const { onClose, open, data } = props;
     const {currentLang, currentCountry} = useContext(AuthContext);
-    console.log("data received " + JSON.stringify(data))
-
 
     return(
         <Dialog

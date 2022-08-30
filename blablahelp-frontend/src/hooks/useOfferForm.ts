@@ -1,23 +1,24 @@
 import axios from "axios";
-import {urls} from "../../shared/UrlMapping";
-import AddressType from "../../types/AddressType";
+import {urls} from "../shared/UrlMapping";
+import AddressType from "../types/AddressType";
 import {useContext} from "react";
-import {AuthContext} from "../../shared/AuthProvider";
-type T={title:string,item:any}
+import {AuthContext} from "../shared/AuthProvider";
+
+type T = { title: string, item: any }
 
 export default function useOfferForm() {
     //TODO for addresses, check their geolocation, if null get it with mapbox and save in db
 
-    const {currentUser,currentCountry,currentLang} = useContext(AuthContext);
+    const {currentUser, currentCountry, currentLang} = useContext(AuthContext);
 
 
-    const getShopNames = ()=>{
+    const getShopNames = () => {
         return axios
-            .get(urls.BASIC[0] + '/'+currentCountry+urls.SHOP[0])
+            .get(urls.BASIC[0] + '/' + currentCountry + urls.SHOP[0])
             .then(response => {
-                const dataOb:{shopnames:string[]}=response.data
-                const result:T[]=[]
-                dataOb.shopnames.map(a=>result.push({title:a,item:a}))
+                const dataOb: { shopnames: string[] } = response.data
+                const result: T[] = []
+                dataOb.shopnames.forEach(a => result.push({title: a, item: a}))
                 return result
             })
     }
@@ -34,7 +35,7 @@ export default function useOfferForm() {
             .then(response => {
                 const dataOb:AddressType[]=response.data
                 const result:T[]=[]
-                dataOb.map(a=>result.push({title:a.street+", "+a.zip+" "+a.city,item:a}))
+                dataOb.forEach(a => result.push({title: a.street + ", " + a.zip + " " + a.city, item: a}))
                 return result
             })
     }

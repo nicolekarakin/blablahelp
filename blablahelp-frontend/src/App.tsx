@@ -11,7 +11,7 @@ import Agb from "./views/public/Agb";
 import Impressum from "./views/public/Impressum";
 import Profile from "./views/user/Profile";
 import How from "./views/public/How";
-import OfferForm from "./components/user/OfferForm";
+import OfferForm from "./views/user/OfferForm";
 
 
 const App = () => {
