@@ -9,7 +9,7 @@ type T = { title: string, item: any }
 export default function useOfferForm() {
     //TODO for addresses, check their geolocation, if null get it with mapbox and save in db
 
-    const {currentUser, currentCountry, currentLang} = useContext(AuthContext);
+    const {currentCountry, currentLang} = useContext(AuthContext);
 
 
     const getShopNames = () => {
