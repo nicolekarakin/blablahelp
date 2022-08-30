@@ -56,19 +56,21 @@ export default function Login() {
                             >
                                 <Grid item>
                                     <TextField
+                                        required
                                         variant="outlined"
-                                        placeholder={"Username"}
+                                        placeholder={"Email"}
                                         value={username ?? ""}
                                         autoComplete={"username"}
                                         onChange={e => setUsername(e.target.value)}
                                         fullWidth
                                         error={false}
                                         label="Email"
-                                        helperText="Incorrect email."
+                                        helperText="Falsche E-Mail Adresse"
                                     />
                                 </Grid>
                                 <Grid item>
                                     <TextField
+                                        required
                                         variant="outlined"
                                         placeholder={"Password"}
                                         type={"password"}
@@ -78,7 +80,7 @@ export default function Login() {
                                         fullWidth
                                         error={false}
                                         label="Password"
-                                        helperText="Incorrect entry."
+                                        helperText="Falsche Eingabe"
                                     />
                                 </Grid>
                                 <Grid item>

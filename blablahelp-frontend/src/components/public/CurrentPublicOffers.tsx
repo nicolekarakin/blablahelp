@@ -4,7 +4,7 @@ import CurrentPublicOffer from "./CurrentPublicOffer";
 const fakeData=[
     {
     name: "Agneschka",
-    date: 1663022076,
+    date: 1663022076000,
     motto: "well meaning and kindly",
     shopname:"Lidl",
     city:"Ulm",
@@ -12,7 +12,7 @@ const fakeData=[
 },
     {
         name: "Bernd",
-        date: 1663454491,
+        date: 1663454491000,
         motto: "Jede Woche eine neue Welt",
         shopname:"Lidl",
         city:"Hannover",
