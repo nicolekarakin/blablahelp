@@ -1,14 +1,14 @@
-import React, {FormEvent, useContext, useState} from "react";
+import React, {FormEvent, useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../shared/AuthProvider";
+import {CloseSharp as ClearIcon} from "@mui/icons-material";
 import {
-
     Button, ButtonGroup,
     Card,
     CardActions,
     CardContent,
     CardHeader,
     FormControl, FormControlLabel, FormLabel,
-    Grid, InputLabel, MenuItem, Radio, RadioGroup, Select,
+    Grid, IconButton, InputLabel, MenuItem, Radio, RadioGroup, Select,
     Stack,
     TextField, Typography
 } from "@mui/material";
@@ -54,6 +54,11 @@ export default function OfferForm() {
     const {enqueueSnackbar} = useSnackbar();
 
     const navigate=useNavigate()
+
+    useEffect(() => {
+        if (!currentUser) navigate("/login")
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleDummySubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -121,19 +126,6 @@ export default function OfferForm() {
 
                     <Stack spacing={2}>
 
-                        <TextField
-                            required
-                            variant="outlined"
-                            placeholder={"Deine Stadt"}
-                            value={shopCity ?? ""}
-                            autoComplete={"username"}
-                            onChange={e => setShopCity(e.target.value)}
-                            fullWidth
-                            error={false}
-                            label="Stadt wo du einkaufst"
-                            helperText=""
-                        />
-
                         <DynamicTextInput
                             label={"Shop Brand"}
                             required={true}
@@ -145,8 +137,33 @@ export default function OfferForm() {
                             setSelectValue={setShopname}
                             selectValue={shopname}
                         />
+                        <TextField
+                            required
+                            variant="outlined"
+                            placeholder={"Deine Stadt"}
+                            value={shopCity ?? ""}
+                            onChange={e => setShopCity(e.target.value)}
+                            fullWidth
+                            error={false}
+                            label="Stadt wo du einkaufst"
+                            helperText=""
+                            sx={{
+                                "& .Mui-focused .MuiIconButton-root": { color: "primary.main" }
+                            }}
+                            InputProps={{
+                                endAdornment: (
+                                    <IconButton
+                                        sx={{ visibility: shopCity ? "visible" : "hidden" }}
+                                        onClick={()=>setShopCity(undefined)}
+                                    >
+                                        <ClearIcon />
+                                    </IconButton>
+                                ),
+                            }}
+                        />
                         {
-                            (!!shopname && shopname.length > 0) ?
+                            ((!!shopname && shopname.length > 0) &&
+                                (!!shopCity && shopCity.length > 0)) ?
                                 <DynamicTextInput
                                     label={"Shop Adresse"}
                                     required={true}
@@ -225,6 +242,19 @@ export default function OfferForm() {
                                             }
                                             }
                                             label="Stadt"
+                                            sx={{
+                                                "& .Mui-focused .MuiIconButton-root": { color: "primary.main" }
+                                            }}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <IconButton
+                                                        sx={{ visibility: shopCity ? "visible" : "hidden" }}
+                                                        onClick={()=>setShopCity(undefined)}
+                                                    >
+                                                        <ClearIcon />
+                                                    </IconButton>
+                                                ),
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item md={4} xs={12} sx={{paddingLeft:"1rem",paddingBottom:"1.2rem"}}>
@@ -239,6 +269,19 @@ export default function OfferForm() {
                                             }
                                             }
                                             label="Postleitzahl"
+                                            sx={{
+                                                "& .Mui-focused .MuiIconButton-root": { color: "primary.main" }
+                                            }}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <IconButton
+                                                        sx={{ visibility: shopCity ? "visible" : "hidden" }}
+                                                        onClick={()=>setShopCity(undefined)}
+                                                    >
+                                                        <ClearIcon />
+                                                    </IconButton>
+                                                ),
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item md={12} xs={12} sx={{paddingLeft:"1rem"}}>
@@ -253,6 +296,19 @@ export default function OfferForm() {
                                             }
                                             }
                                             label="Straße und Hausnummer"
+                                            sx={{
+                                                "& .Mui-focused .MuiIconButton-root": { color: "primary.main" }
+                                            }}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <IconButton
+                                                        sx={{ visibility: shopCity ? "visible" : "hidden" }}
+                                                        onClick={()=>setShopCity(undefined)}
+                                                    >
+                                                        <ClearIcon />
+                                                    </IconButton>
+                                                ),
+                                            }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -358,6 +414,7 @@ export default function OfferForm() {
                             maxRows={10}
                             value={notes}
                             onChange={e=>setNotes(e.target.value)}
+
                         />
 
                         <Typography component={'span'} sx={{fontSize: "1.2rem"}}>

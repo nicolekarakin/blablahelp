@@ -19,7 +19,8 @@ export default function DynamicTextInput(props:DynamicTextInputProps){
 
     const [options,setOptions]= useState<readonly T[]>([])
     const [open, setOpen] = useState(false);
-    const loading = open && options.length === 0;
+    const [errorMessage, setErrorMessage] = useState("");
+    const loading = open && options.length === 0 && (errorMessage.length===0);
 
     const {enqueueSnackbar} = useSnackbar();
 
@@ -29,7 +30,12 @@ export default function DynamicTextInput(props:DynamicTextInputProps){
         (async () => {
                 if (active) {
                     props.getData(props.axiosProps)
-                        .then(data => setOptions([...data]))
+                        .then(data => {
+                            if(data.length===0){
+                                setErrorMessage('Sorry, we don\'t have any data entries for your query')
+                            }
+                            setOptions([...data])
+                        })
                         .catch(_ => {
                             enqueueSnackbar('Failed to load data', {variant: "error"})
                         });
@@ -62,6 +68,7 @@ export default function DynamicTextInput(props:DynamicTextInputProps){
             onClose={() => {
                 setOpen(false);
             }}
+            noOptionsText={props.noOptionsText}
             isOptionEqualToValue={(option, value) => option.title === value.title}
             getOptionLabel={(option) => option.title}
             options={options}
