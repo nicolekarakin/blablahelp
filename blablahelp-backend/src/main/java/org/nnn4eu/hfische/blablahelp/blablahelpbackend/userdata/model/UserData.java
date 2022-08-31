@@ -1,21 +1,16 @@
-package org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata;
+package org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.AddressWrap;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
-//@NoArgsConstructor
 @RequiredArgsConstructor
 @Document(collection = "userdata")
 public class UserData {
@@ -24,6 +19,4 @@ public class UserData {
     @Version
     private Long version;
     private Set<AddressWrap> usedAddresses=new HashSet<>();
-    private List<Offer> currentOffers =new ArrayList<>();
-    private List<MitshopperInquiry> currentInquiries =new ArrayList<>();
 }

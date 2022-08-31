@@ -45,7 +45,8 @@ public class SecurityConfig implements WebSecurityCustomizer {
         http = http.cors()
                 .and().csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and();
+                .and()
+        ;
 
         http = http
                 .exceptionHandling()
@@ -60,11 +61,11 @@ public class SecurityConfig implements WebSecurityCustomizer {
 
         http.authorizeRequests()
                 .antMatchers( "/").permitAll()
-                .antMatchers(UrlMapping.PUBLIC, UrlMapping.PUBLIC + "/**").permitAll()
+                .antMatchers(UrlMapping.PUBLIC + "/**",UrlMapping.PUBLIC).permitAll()
 
-                .antMatchers(UrlMapping.BASIC, UrlMapping.BASIC + "/**").authenticated()
-                .antMatchers(UrlMapping.ADMIN, UrlMapping.ADMIN + "/**").hasAuthority("ADMIN")//hasRole("BASIC")//
-                .anyRequest().denyAll()//for some reason .denyAll() and frontend don't like each other
+                .antMatchers(UrlMapping.BASIC + "/**",UrlMapping.BASIC).authenticated()
+                .antMatchers(UrlMapping.ADMIN + "/**",UrlMapping.PUBLIC).hasAuthority("ADMIN")//hasRole("BASIC")//
+                .anyRequest().denyAll()
                 .and().httpBasic()
         ;
 
