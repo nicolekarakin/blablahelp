@@ -61,10 +61,10 @@ public class SecurityConfig implements WebSecurityCustomizer {
 
         http.authorizeRequests()
                 .antMatchers( "/").permitAll()
-                .antMatchers(UrlMapping.PUBLIC + "/**",UrlMapping.PUBLIC).permitAll()
+                .antMatchers(UrlMapping.PUBLIC,UrlMapping.PUBLIC + "/**").permitAll()
 
-                .antMatchers(UrlMapping.BASIC + "/**",UrlMapping.BASIC).authenticated()
-                .antMatchers(UrlMapping.ADMIN + "/**",UrlMapping.PUBLIC).hasAuthority("ADMIN")//hasRole("BASIC")//
+                .antMatchers(UrlMapping.BASIC,UrlMapping.BASIC + "/**").authenticated()
+                .antMatchers(UrlMapping.PUBLIC,UrlMapping.ADMIN + "/**").hasAuthority("ADMIN")//hasRole("BASIC")//
                 .anyRequest().denyAll()
                 .and().httpBasic()
         ;
