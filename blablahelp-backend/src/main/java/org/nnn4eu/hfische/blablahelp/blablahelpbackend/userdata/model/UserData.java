@@ -1,6 +1,5 @@
 package org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.AddressWrap;
 import org.springframework.data.annotation.Id;
