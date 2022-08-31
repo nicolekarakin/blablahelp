@@ -72,7 +72,7 @@ public class Offer {
 
     public void removeId(@NotBlank String id){
         inquiryIds.remove(id);
-        if(inquiryIds.size() == 0){
+        if(inquiryIds.isEmpty()){
             isBooked=false;
         }
         if(inquiryIds.size() < maxMitshopper){
