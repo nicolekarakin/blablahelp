@@ -16,7 +16,6 @@ import axios from "axios";
 import {AuthContext} from "../shared/AuthProvider";
 import {urls} from "../shared/UrlMapping";
 
-
 function UserHome() {
     const [userData, setUserData] = useState<string>()
     const [loading, setLoading] = useState(false);
@@ -37,7 +36,9 @@ function UserHome() {
     const getUserData = (id: string) => {
         return axios.get(urls.BASIC[0]+urls.BASIC[2]+"/"+id)
             .then(response => response.data)
-            .then(data => setCurrentUser({...currentUser,userData:data}))
+            .then(data => {
+                setCurrentUser({...currentUser, userData: data})
+            })
             .catch(_ => {
                 enqueueSnackbar("Fetching data for user with id "+id+" failed!", {variant: "error"});
             });
