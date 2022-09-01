@@ -77,7 +77,7 @@ export default function ConfirmationNewOfferDialog(props:ConfirmationNewOfferDia
 
                 <Typography sx={{fontSize: "1rem", fontWeight:"bold",mb: 1.5}} color="text.primary">
                     Produktartikel**, maximal {data.maxArticles}<br/>
-                    Flüssigkeiten, maximal {data.maxDrinks!} Liter<br/>
+                    Flüssigkeiten, maximal {data.maxLiter!} Liter<br/>
                     <Box component={"span"} sx={{fontSize:".8rem"}}>**ohne Flüssigkeiten</Box>
                 </Typography>
 

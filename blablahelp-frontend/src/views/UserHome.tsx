@@ -52,8 +52,6 @@ function UserHome() {
                 .finally(() => setLoading(false));
             getUserData(currentUser.id);
         }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 

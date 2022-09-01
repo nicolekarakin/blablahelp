@@ -31,6 +31,9 @@ import DynamicTextInput from "../../components/user/DynamicTextInput";
 import useOfferForm from "../../hooks/useOfferForm";
 import ConfirmationNewOfferDialog from "../../components/user/ConfirmationNewOfferDialog";
 import {useNavigate} from "react-router";
+import {urls} from "../../shared/UrlMapping";
+import axios from "axios";
+import userType, {UserDataType} from "../../types/UserType";
 
 
 export default function OfferForm() {
@@ -66,7 +69,6 @@ export default function OfferForm() {
 
     useEffect(() => {
         if (!currentUser) navigate("/login")
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleDummySubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -77,13 +79,12 @@ export default function OfferForm() {
             shoppingDay: shoppingDate?.getTime(),
             timeFrom: timeFrom?.getTime(),
             timeTo: timeTo?.getTime(),
-            city: shopCity,
             shopname: shopname,
             shopAddress: shopAddress,
 
             destinationAddress: destinationAddress,
             maxMitshoppers: maxMitshoppers,
-            maxDrinks: maxDrinksInLiter,
+            maxLiter: maxDrinksInLiter,
             maxArticles: maxArticles,
             maxDistanceKm: maxDistanceKm,
             notes:notes,
@@ -103,19 +104,20 @@ export default function OfferForm() {
     const handleNewOfferSubmit = () => {
         console.debug(JSON.stringify(newOfferData))
         console.debug("agreed and submiting!!");
-        // axios
-        //     .post(urls.BASIC[0]+"/"+currentUser.id+ "/"+urls.BASIC[1], newOfferData)
-        //     .then(response => {
-        //         const ownOfferData:OwnOfferType = response?.data
-        //         setCurrentUser((currentUser:userType) => ({
-        //             ...currentUser,
-        //             ownOffers: [...(currentUser?.ownOffers ?? []), ownOfferData]
-        //         }));
-        //
-        //     })
-        //     .catch(_ => {
-        //         enqueueSnackbar('New Offer Submission Failed', {variant: "error"})
-        //     });
+        axios
+            .post(urls.BASIC[0]+urls.BASIC[2]+"/"+currentUser.id+urls.BASIC[3], newOfferData)
+            .then(response => {
+                const ownOfferData:OwnOfferType = response?.data
+                const updatedOffers:OwnOfferType[]=[...currentUser?.userData?.currentOffers ?? [], ownOfferData]
+                const updatedUserData:UserDataType={...currentUser?.userData, currentOffers:updatedOffers}
+                setCurrentUser((currentUser:userType) => ({
+                    ...currentUser, userData: updatedUserData
+                }));
+
+            })
+            .catch(_ => {
+                enqueueSnackbar('New Offer Submission Failed', {variant: "error"})
+            });
         navigate("/account")
     }
 
