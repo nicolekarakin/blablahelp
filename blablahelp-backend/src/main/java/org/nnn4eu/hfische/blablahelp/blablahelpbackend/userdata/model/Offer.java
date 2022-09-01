@@ -41,8 +41,9 @@ public class Offer {
     private Address destinationAddress;
     @NotNull
     private BigDecimal priceOffer;//TODO how to handle currency? for now assume euro
+    private String notes;
     @NotNull
-    private int maxMitshopper;
+    private int maxMitshoppers;
     @NotNull
     private int maxLiter;
     @NotNull
@@ -60,12 +61,12 @@ public class Offer {
     private Collection<String> inquiryIds = new HashSet<>();
 
     public void addInquiryId(@NotBlank MitshopperInquiry inquiry){
-        if(inquiryIds.size() < maxMitshopper){
+        if(inquiryIds.size() < maxMitshoppers){
             inquiryIds.add(inquiry.getInquiryId());
             inquiry.setOfferId(offerId);
             isBooked=true;
         }
-        if(inquiryIds.size() == maxMitshopper){
+        if(inquiryIds.size() == maxMitshoppers){
             isFullyBooked=true;
         }
     }
@@ -75,7 +76,7 @@ public class Offer {
         if(inquiryIds.isEmpty()){
             isBooked=false;
         }
-        if(inquiryIds.size() < maxMitshopper){
+        if(inquiryIds.size() < maxMitshoppers){
             isFullyBooked=false;
         }
     }

@@ -54,9 +54,9 @@ class ShopCtrlTest {
     }
 
     void addShops(String id){
-        Set<Address> addresses=Set.of(new Address("Street 1","12345","City",null),
-                new Address("Street 2","12345","City",null),
-                new Address("Some Str 33","12345","City",null));
+        Set<Address> addresses=Set.of(new Address("Street 1","12345","City",null,null),
+                new Address("Street 2","12345","City",null,"DE"),
+                new Address("Some Str 33","12345","City",null,null));
         shopService.addAddresses(id,addresses);
     }
     @WithMockUser(authorities = {"BASIC"})
@@ -64,7 +64,7 @@ class ShopCtrlTest {
     @Test
     void getShopAddressesByCountry() throws Exception {
         String id="de-DE_aldi";
-        Set<Address> expected = Set.of(new Address("Some Str 33","12345","City",null));
+        Set<Address> expected = Set.of(new Address("Some Str 33","12345","City",null,null));
         addShops(id);
 
         MvcResult mvcResult = mockMvc.perform(

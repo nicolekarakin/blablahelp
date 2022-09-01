@@ -4,5 +4,5 @@ import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
 
-public record Address(@NotBlank String street, @NotBlank String zip, @NotBlank String city, @Nullable Loc loc) {
+public record Address(@NotBlank String street, @NotBlank String zip, @NotBlank String city, @Nullable Loc loc,@Nullable String country) {
 }
