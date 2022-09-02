@@ -60,11 +60,11 @@ public class SecurityConfig implements WebSecurityCustomizer {
                 .and();
 
         http.authorizeRequests()
-                .antMatchers( "/").permitAll()
-                .antMatchers(UrlMapping.PUBLIC,UrlMapping.PUBLIC + "/**").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers(UrlMapping.PUBLIC, UrlMapping.PUBLIC + "/**").permitAll()
 
-                .antMatchers(UrlMapping.BASIC,UrlMapping.BASIC + "/**").authenticated()
-                .antMatchers(UrlMapping.ADMIN,UrlMapping.ADMIN + "/**").hasAuthority("ADMIN")//hasRole("BASIC")//
+                .antMatchers(UrlMapping.BASIC, UrlMapping.BASIC + "/**").authenticated()
+                .antMatchers(UrlMapping.ADMIN, UrlMapping.ADMIN + "/**").hasAuthority("ADMIN")
                 .anyRequest().denyAll()
                 .and().httpBasic()
         ;

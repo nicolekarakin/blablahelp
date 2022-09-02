@@ -66,7 +66,6 @@ export default function OfferForm() {
 
     useEffect(() => {
         if (!currentUser) navigate("/login")
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleDummySubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -103,19 +102,7 @@ export default function OfferForm() {
     const handleNewOfferSubmit = () => {
         console.debug(JSON.stringify(newOfferData))
         console.debug("agreed and submiting!!");
-        // axios
-        //     .post(urls.BASIC[0]+"/"+currentUser.id+ "/"+urls.BASIC[1], newOfferData)
-        //     .then(response => {
-        //         const ownOfferData:OwnOfferType = response?.data
-        //         setCurrentUser((currentUser:userType) => ({
-        //             ...currentUser,
-        //             ownOffers: [...(currentUser?.ownOffers ?? []), ownOfferData]
-        //         }));
-        //
-        //     })
-        //     .catch(_ => {
-        //         enqueueSnackbar('New Offer Submission Failed', {variant: "error"})
-        //     });
+
         navigate("/account")
     }
 
