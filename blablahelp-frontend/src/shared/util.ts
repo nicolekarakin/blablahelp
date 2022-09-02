@@ -31,3 +31,7 @@ export const timeFromInstant=(instant:number,locale:string)=>{
 export const addressToString=(address:AddressType)=>{
     return address.street+", "+address.zip+" "+address.city;
 }
+
+export const getShortMonthString=(instant:number)=>{
+    return new Date(instant).toLocaleString('default', { month: 'short' });
+}

@@ -1,6 +1,13 @@
-import {createTheme} from "@mui/material";
+import {createTheme, Theme} from "@mui/material";
 
-const theme = createTheme({
+
+
+const defaultTheme = createTheme()
+const { breakpoints, typography: { pxToRem } } = defaultTheme
+
+
+const theme:Theme = createTheme({
+    ...defaultTheme,
     palette: {
         primary: {
             main: "#ff8401",
@@ -23,12 +30,14 @@ const theme = createTheme({
     },
     // breakpoints: {
     //     values: {
-    //         mobile: 0,
-    //         tablet: 640,
-    //         laptop: 1024,
-    //         desktop: 1280,
+    //         xs: 0,
+    //         sm: 640,
+    //         md: 900,
+    //         lg: 1280,
+    //         xl: 1536,
     //     },
     // },
+
     components: {
         MuiCard: {
             styleOverrides: {
@@ -62,34 +71,52 @@ const theme = createTheme({
                 h1: {
                     color: '#1402ff',
                     fontSize: '3rem',
+                    [breakpoints.only("xs")]: {
+                        fontSize: "2rem"
+                    },
                     fontWeight: '600',
                     lineHeight: '1.8'
                 },
                 h2: {
                     color: '#1402ff',
                     fontSize: '2.5rem',
+                    [breakpoints.only("xs")]: {
+                        fontSize: "1.7rem"
+                    },
                     fontWeight: '600',
                     lineHeight: '1.6'
                 },
                 h3: {
                     color: '#1402ff',
                     fontSize: '2rem',
+                    [breakpoints.only("xs")]: {
+                        fontSize: "1.5rem"
+                    },
                     fontWeight: '600',
                     lineHeight: '1.4'
                 },
                 h4: {
                     color: '#1402ff',
                     fontSize: '1.5rem',
+                    [breakpoints.only("xs")]: {
+                        fontSize: "1.3rem"
+                    },
                     fontWeight: '600',
                     lineHeight: '1.4'
                 },
                 h5: {
                     fontSize: '1.4rem',
+                    [breakpoints.only("xs")]: {
+                        fontSize: "1.2rem"
+                    },
                     fontWeight: '600',
                 },
                 h6: {
                     fontWeight: '600',
                     lineHeight: '1.4',
+                    [breakpoints.only("xs")]: {
+                        fontSize: "1.1rem"
+                    },
                 },
                 root: {
                     "a": {

@@ -15,9 +15,11 @@ import {
 import axios from "axios";
 import {AuthContext} from "../shared/AuthProvider";
 import {urls} from "../shared/UrlMapping";
+import CurrentOwnOfferList from "../components/user/CurrentOwnOfferList";
+import {UserDataType} from "../types/UserType";
 
 function UserHome() {
-    const [userData, setUserData] = useState<string>()
+    const [userMessage, setUserMessage] = useState<string>()
     const [loading, setLoading] = useState(false);
     const {currentUser,setCurrentUser} = useContext(AuthContext);
     const {enqueueSnackbar} = useSnackbar();
@@ -27,7 +29,7 @@ function UserHome() {
     const getPrivateHomeData = (id: string) => {
         return axios.get(urls.BASIC[0])
             .then(response => response.data)
-            .then(data => setUserData(data))
+            .then(data => setUserMessage(data))
             .catch(_ => {
                 enqueueSnackbar("Fetching private home data for user with id "+id+" failed!", {variant: "error"});
             });
@@ -44,13 +46,32 @@ function UserHome() {
             });
     }
 
+    const getUserOffers = (id: string) => {
+        return axios.get(urls.BASIC[0]+urls.BASIC[2]+"/"+id+"/"+urls.BASIC[1])
+            .then(response => response.data)
+            .then(data => {
+                const userDataUpdated:UserDataType={...currentUser.userData, currentOffers: data }
+                setCurrentUser({...currentUser, userData: userDataUpdated})
+            })
+            .catch(_ => {
+                enqueueSnackbar("Fetching data for user with id "+id+" failed!", {variant: "error"});
+            });
+    }
+
     useEffect(() => {
         if (!currentUser) navigate("/login")
         else {
-            setLoading(true);
-            getPrivateHomeData(currentUser.id)
-                .finally(() => setLoading(false));
-            getUserData(currentUser.id);
+            getPrivateHomeData(currentUser.id);
+
+            if(!currentUser.userData || !currentUser.userData.accountId) {
+                setLoading(true);
+                getUserData(currentUser.id).then(_ => getUserOffers(currentUser.id)).finally(() => setLoading(false))
+            }
+            else if(currentUser.userData && !currentUser.userData.userOffers) {
+                setLoading(true);
+                getUserOffers(currentUser.id).finally(() => setLoading(false))
+            }
+
         }
     }, []);
 
@@ -64,9 +85,6 @@ function UserHome() {
 
             <Card elevation={3}>
                 <CardContent>
-                    {loading && (
-                        <CircularProgress/>
-                    )}
 
                     {!!currentUser && (
                         <Box>
@@ -75,8 +93,8 @@ function UserHome() {
                                 Willkommen zurück!
                             </Alert>
 
-                            {!!userData && (
-                                <Typography mt={3}>{userData}</Typography>
+                            {!!userMessage && (
+                                <Typography mt={3}>{userMessage}</Typography>
                             )}
                         </Box>
                     )}
@@ -88,6 +106,14 @@ function UserHome() {
                 component={RouterLink} to={"/newOffer"}
             >Neues Angebot erstellen
             </Button>
+
+            {loading && (
+                <CircularProgress/>
+            )}
+
+            {(!!currentUser && ( currentUser?.userData?.currentOffers?.length > 0)) &&(
+                <CurrentOwnOfferList offers={currentUser.userData?.currentOffers}/>
+            )}
 
         </Stack>
 
