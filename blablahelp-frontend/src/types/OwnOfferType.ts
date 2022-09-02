@@ -1,9 +1,9 @@
 import AddressType from "./AddressType";
 
 type OwnOfferType = {
-    id?: string,
+    offerId?: string,
     accountId: string,
-    date: number | undefined,
+    shoppingDay: number | undefined,
     timeFrom: number | undefined,
     timeTo: number | undefined,
     city:string | undefined,
@@ -17,13 +17,15 @@ type OwnOfferType = {
     maxArticles:number|null,
     maxDistanceKm:number|null,
 
-    isVisible?:boolean,
+    isBooked?:boolean,
+    isFullyBooked?:boolean,
     isReviewed?:boolean,
     isCanceled?:boolean,
     isExpired?:boolean,
 
     notes?:string,
-    priceOffer:string| undefined, //TODO how to handle currency? for now assume euro
+    priceOffer:string|undefined, //TODO how to handle currency? for now assume euro,
+    inquiryIds?:string[],
 
 }
 export default OwnOfferType

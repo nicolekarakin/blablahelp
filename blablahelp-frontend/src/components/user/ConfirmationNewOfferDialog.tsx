@@ -34,7 +34,7 @@ export default function ConfirmationNewOfferDialog(props:ConfirmationNewOfferDia
                     Lebensmitteleinkauf ist geplannt!
                 </Typography>
                 <Typography variant="h6" color={"primary"}>
-                    {data.shopAddress?.city}, {dateFromInstant(data.date!, currentLang+"-"+currentCountry)}
+                    {data.shopAddress?.city}, {dateFromInstant(data.shoppingDay!, currentLang+"-"+currentCountry)}
                 </Typography>
                 <Typography sx={{mb: 1.5}} color="text.secondary">
                     Lieferung an die Haustür zwischen <br/>

@@ -3,7 +3,6 @@ import {AuthContext} from "../../shared/AuthProvider";
 import {CloseSharp as ClearIcon} from "@mui/icons-material";
 import {
     Button,
-    ButtonGroup,
     Card,
     CardActions,
     CardContent,
@@ -25,7 +24,7 @@ import {
 
 import {useSnackbar} from "notistack";
 import OwnOfferType from "../../types/OwnOfferType";
-import AddressType from "../../types/AddressType";
+import AddressType, {AddressWrapType} from "../../types/AddressType";
 import DateTimeOfferFormPart from "../../components/user/DateTimeOfferFormPart";
 
 import DynamicTextInput from "../../components/user/DynamicTextInput";
@@ -48,9 +47,9 @@ export default function OfferForm() {
 
     const [shopAddress, setShopAddress] = useState<AddressType | null>(null);
     const [destinationAddress, setDestinationAddress] = useState<AddressType>({
-        city: "", country: currentCountry, street: "", zip: "", type: "PRIVATE"
+        city: "", country: currentCountry, street: "", zip: ""
     });
-    const [useSaved, setUseSaved] = useState<string | undefined>(undefined);
+    const [useSaved, setUseSaved] = useState<string | undefined>("true");
 
     const [maxMitshoppers, setMaxMitshoppers] = useState<number>(1);
     const [maxDrinksInLiter, setMaxDrinksInLiter] = useState<number>(1);
@@ -67,15 +66,14 @@ export default function OfferForm() {
 
     useEffect(() => {
         if (!currentUser) navigate("/login")
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleDummySubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const offerData: OwnOfferType = {
-            id: undefined,
+            offerId: undefined,
             accountId: currentUser.id,
-            date: shoppingDate?.getTime(),
+            shoppingDay: shoppingDate?.getTime(),
             timeFrom: timeFrom?.getTime(),
             timeTo: timeTo?.getTime(),
             city: shopCity,
@@ -96,35 +94,23 @@ export default function OfferForm() {
 
     const handleClose = (value:boolean) => {
         setOpen(false);
-        console.debug("handleClose argument passed: "+value);
-
         if (value) {
             handleNewOfferSubmit()
         }
     };
 
     const handleNewOfferSubmit = () => {
+        console.debug(JSON.stringify(newOfferData))
+        console.debug("agreed and submiting!!");
 
-        console.debug("agreed and submiting!! ");
-        // axios
-        //     .post(urls.BASIC[0]+"/"+currentUser.id+ "/"+urls.BASIC[1], newOfferData)
-        //     .then(response => {
-        //         const ownOfferData:OwnOfferType = response?.data
-        //         setCurrentUser((currentUser:userType) => ({
-        //             ...currentUser,
-        //             ownOffers: [...(currentUser?.ownOffers ?? []), ownOfferData]
-        //         }));
-        //
-        //     })
-        //     .catch(_ => {
-        //         enqueueSnackbar('New Offer Submission Failed', {variant: "error"})
-        //     });
         navigate("/account")
     }
 
     const getUsedPrivateAddresses = () => {
-        return currentUser.userData.usedAddresses
-            .filter((a: AddressType) => a.type === "PRIVATE")
+        if(currentUser && currentUser.userData && currentUser.userData.usedAddresses)
+            return currentUser.userData.usedAddresses
+                .filter((a: AddressWrapType) => a.type === "PRIVATE")
+        else return []
     }
 
     return (
@@ -191,15 +177,23 @@ export default function OfferForm() {
                         <Typography component={'p'} sx={{fontSize: "1.2rem"}}>Endzieladresse</Typography>
 
                         {
-                            (!!currentUser?.userData
-                                && !!currentUser?.userData.usedAddresses
+                            (!!(currentUser?.userData)
+                                && !!(currentUser?.userData.usedAddresses)
                                 && getUsedPrivateAddresses().length > 0) ?
                                 <FormControl>
                                     <FormLabel id="useSaved-radio-buttons-group-label">
-                                        Geben Sie Ihr Endziel</FormLabel>
-                                    <RadioGroup aria-labelledby="useSaved-radio-buttons-group-label"
-                                                value={useSaved}
-                                                onChange={(e) => setUseSaved(e.target.value)}
+                                        Gespeicherte oder neue Adresse</FormLabel>
+                                    <RadioGroup aria-labelledby="useSaved-radio-buttons-group-label" row
+                                                value={useSaved ?? ""}
+                                                onChange={(e) => {
+                                                        setDestinationAddress({
+                                                            city: "",
+                                                            country: currentCountry,
+                                                            street: "",
+                                                            zip: ""
+                                                        })
+                                                    setUseSaved(e.target.value)
+                                                }}
                                     >
                                         <FormControlLabel value={"true"} control={<Radio/>}
                                                           label="Gespeicherte Adressen"/>
@@ -211,34 +205,31 @@ export default function OfferForm() {
                         }
 
                         {
-                            (useSaved === "true") ?
+                            (useSaved === "true" && getUsedPrivateAddresses().length > 0) ?
 
                                 <FormControl fullWidth>
-                                    <InputLabel id={"usedBefore"}>Ihre zuvor verwendeten Adressen</InputLabel>
+                                    <InputLabel id={"usedBefore"}>Gespeicherte Adressen</InputLabel>
                                     <Select
                                         required
                                         labelId="usedBefore"
-                                        value={JSON.stringify(destinationAddress) || ""}
-                                        label="Ihre zuvor verwendeten Adressen"
+                                        value={(!!destinationAddress.zip)?JSON.stringify(destinationAddress): ""}
+                                        label="Gespeicherte Adressen"
 
                                         onChange={(e) => {
                                             setDestinationAddress(JSON.parse(e.target.value))
                                         }}
                                     >
                                         {
-                                            getUsedPrivateAddresses().map((address: AddressType, index: React.Key | null | undefined) =>
-                                                <MenuItem value={JSON.stringify(address)} key={index}>
-                                                    {address.street + ", " + address.zip + " " + address.city}
-                                                </MenuItem>
-                                            )
+                                            getUsedPrivateAddresses()
+                                                .map((addressWrap: AddressWrapType, index: React.Key | null | undefined) =>
+                                                    <MenuItem value={JSON.stringify(addressWrap.address)} key={index}>
+                                                         {addressWrap.address.street + ", " + addressWrap.address.zip + " " + addressWrap.address.city}
+                                                    </MenuItem>
+                                                )
                                         }
                                     </Select>
                                 </FormControl>
-                                : <></>
-                        }
-
-                        {
-                            (useSaved === "false" || useSaved === undefined) ?
+                                :
                                 <Grid container >
                                     <Grid item md={8} xs={12} sx={{paddingLeft:"1rem",paddingBottom:"1.2rem"}}>
                                         <TextField
@@ -273,7 +264,7 @@ export default function OfferForm() {
                                             required
                                             variant="outlined"
                                             placeholder={"Postleitzahl"}
-                                            value={destinationAddress?.zip}
+                                            value={destinationAddress?.zip ?? ""}
                                             onChange={e => {
                                                 setDestinationAddress({...destinationAddress, zip: e.target.value})
                                             }
@@ -300,7 +291,7 @@ export default function OfferForm() {
                                             required
                                             variant="outlined"
                                             placeholder={"Straße und Hausnummer"}
-                                            value={destinationAddress?.street}
+                                            value={destinationAddress?.street ?? ""}
                                             onChange={e => {
                                                 setDestinationAddress({...destinationAddress, street: e.target.value})
                                             }
@@ -322,9 +313,8 @@ export default function OfferForm() {
                                         />
                                     </Grid>
                                 </Grid>
-                                :
-                                <></>
                         }
+
                         <Typography component={'span'} sx={{fontSize: "1.2rem"}}>Maximale Distance Breite (1 – 20 km)</Typography>
                         <TextField
                             required
@@ -357,18 +347,21 @@ export default function OfferForm() {
                             timeTo={timeTo}
                         />
 
-                        <Typography component={'span'} sx={{fontSize: "1.2rem"}}>Maximale Anzahl an
-                            Mitshoppern {maxMitshoppers}</Typography>
-                        <ButtonGroup variant="outlined"
-                                     onClick={(e) => {
-                                         const val = (e.target as HTMLInputElement).value;
-                                         setMaxMitshoppers(Number(val))
-                                     }}
-                                     aria-label="Maximale Anzahl an Mitshoppern">
-                            <Button value={"1"}>Eins</Button>
-                            <Button value={"2"}>Zwei</Button>
-                            <Button value={"3"}>Drei</Button>
-                        </ButtonGroup>
+                        <FormControl>
+                            <FormLabel id=",maxMitshopper-radio-buttons-group-label">
+                                Maximale Anzahl an Mitshoppern</FormLabel>
+                            <RadioGroup aria-labelledby="maxMitshopper-radio-buttons-group-label" row
+                                        value={maxMitshoppers ?? ""}
+                                        onChange={(e) => {
+                                            const val = (e.target as HTMLInputElement).value;
+                                            setMaxMitshoppers(Number(val))
+                                        }}
+                            >
+                                <FormControlLabel value={"1"} control={<Radio/>} label="Eins"/>
+                                <FormControlLabel value={"2"} control={<Radio/>} label="Zwei"/>
+                                <FormControlLabel value={"3"} control={<Radio/>} label="Drei"/>
+                            </RadioGroup>
+                        </FormControl>
 
                         <Typography component={'span'} sx={{fontSize: "1.2rem"}}>
                             Höchstzahl für Flüssigkeiten in Liter (1 – 20 l)</Typography>

@@ -1,10 +1,10 @@
 import OwnOfferType from "./OwnOfferType";
-import AddressType from "./AddressType";
+import {AddressWrapType} from "./AddressType";
 import OwnInquiryType from "./OwnInquiryType";
-type UserDataType={
-    usedAddresses:AddressType[],
-    currentOffers:OwnOfferType[],
-    currentInquiries:OwnInquiryType[],
+export type UserDataType={
+    usedAddresses:AddressWrapType[],
+    currentOffers?:OwnOfferType[],
+    currentInquiries?:OwnInquiryType[],
 }
 type UserType = {
     id: string,

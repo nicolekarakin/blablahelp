@@ -1,10 +1,12 @@
 import AddressType from "./AddressType";
 
 type OwnInquiryType = {
-    id?: string,
+    inquiryId?: string,
     accountId: string,
+    mitshopperAccountId:string,
+    offerId: string,
 
-    mitshopperAddress:AddressType |null,
+    mitshopperAddress:AddressType|null,
 
     inquiryStatus:string|undefined,
     shoppingList?:{}|null,

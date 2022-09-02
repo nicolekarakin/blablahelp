@@ -4,12 +4,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class ProductWrapper {
+    @Valid
     private Product product;
     private String note;
-    private boolean isBought;
+    @NotNull
+    private boolean isBought=false;
 
 }

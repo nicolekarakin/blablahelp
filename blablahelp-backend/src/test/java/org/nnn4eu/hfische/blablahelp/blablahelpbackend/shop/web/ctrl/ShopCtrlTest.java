@@ -7,6 +7,8 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.web.model.ShopNameList;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.UserDataService;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
