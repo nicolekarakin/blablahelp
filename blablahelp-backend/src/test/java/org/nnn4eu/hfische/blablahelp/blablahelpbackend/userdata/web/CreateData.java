@@ -35,13 +35,17 @@ public class CreateData {
         return offer;
     }
     public static Offer createOffer(String accountId) throws JsonProcessingException {
+        Long day=LocalDate.now().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
+        Long from=LocalDate.now().plusDays(1).atTime(14,15,0).toInstant(ZoneOffset.UTC).toEpochMilli();
+        Long to=LocalDate.now().plusDays(1).atTime(17,15,0).toInstant(ZoneOffset.UTC).toEpochMilli();
+
         String str=
                 """
                 {
                         "accountId":"%s",
-                        "shoppingDay":1661896800000,
-                        "timeFrom":1661911200000,
-                        "timeTo":1661926500000,
+                        "shoppingDay":%d,
+                        "timeFrom":%d,
+                        "timeTo":%d,
                         "shopname":"LIDL",
                         "shopAddress":{
                         "street":"Balanstraße 188",
@@ -62,7 +66,7 @@ public class CreateData {
                         "priceOffer":"0"
                 }
                 """;
-        String jsonString=str.formatted(accountId);
+        String jsonString=str.formatted(accountId,day,from,to);
         return new ObjectMapper().readValue(jsonString,Offer.class);
     }
 }

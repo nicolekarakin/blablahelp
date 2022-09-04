@@ -28,7 +28,7 @@ public class UserDataCtrl {
 
     @GetMapping(path = "/{accountId}/offers")
     public ResponseEntity<List<Offer>> getUserOffers(@NotBlank @PathVariable String accountId) {
-        List<Offer> offers=userDataService.findOffersByAccountId(accountId);
+        List<Offer> offers=userDataService.findOffersByAccountIdAndIsExpired(accountId,false);
         return  new ResponseEntity<>(offers, HttpStatus.OK);
     }
 
@@ -40,5 +40,13 @@ public class UserDataCtrl {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         Offer offer=userDataService.saveNewOffer(newOffer);
         return  new ResponseEntity<>(offer, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/{accountId}/offers/{offerId}")
+    public ResponseEntity<List<Offer>> deleteUserOffer(@NotBlank @PathVariable String accountId,
+                                                       @NotBlank @PathVariable String offerId) {
+
+        userDataService.deleteOfferByOfferId(accountId,offerId);
+        return  ResponseEntity.noContent().build();
     }
 }

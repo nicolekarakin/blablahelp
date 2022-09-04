@@ -12,7 +12,7 @@ export default function CurrentOwnOfferList(props:CurrentOwnOfferListProps){
     return (
         <Box>
             <Typography variant={'h1'} ml={2} mr={2}>
-                Aktuelle Angebote
+                Angebote
             </Typography>
             <List sx={{ width: '100%', bgcolor: 'background.paper', paddingBottom:"1rem" }}  >
             {

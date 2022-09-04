@@ -33,8 +33,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -137,4 +136,37 @@ class UserDataCtrlTest {
     }
 
 
+    @WithMockUser(authorities = {"BASIC"})
+    @DirtiesContext
+    @Test
+    void deleteOffer() throws Exception {
+        String accountId= account.getId();
+        accountService.saveNew(account);
+        Offer offer=CreateData.createOffer(accountId);
+        offer.setAccountId(accountId);
+        MvcResult mvcResult = mockMvc.perform(
+                        post(UrlMapping.USERDATA+"/"+accountId+"/newOffer")
+                                .contentType(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8)
+                                .accept(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8)
+                                .content(objectMapper.writeValueAsString(offer))
+                                .with(user(account))
+                                .with(csrf())
+                )
+                .andExpect(status().isCreated()).andReturn();
+
+        String actualStr = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Offer actual = objectMapper.readValue(actualStr, Offer.class);
+
+        mockMvc.perform(
+                        delete(UrlMapping.USERDATA+"/"+accountId+"/offers/"+actual.getOfferId())
+                                .with(csrf()))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(
+                        get(UrlMapping.USERDATA+"/"+accountId+"/offers"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(0)));
+
+    }
 }
