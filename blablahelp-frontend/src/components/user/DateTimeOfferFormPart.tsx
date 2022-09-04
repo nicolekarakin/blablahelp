@@ -42,13 +42,18 @@ export default function DateTimeOfferFormPart(p:DateTimeOfferFormPartProps) {
         return addMinutes(p.shoppingDate?p.shoppingDate:0,newMin)
 
     }
+    const getYesterday=()=>{
+        const yesterday=new Date();
+        yesterday.setDate(yesterday.getDate() - 1)
+        return yesterday
+    }
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
                 disablePast
                 label="Shopping Tag"
-                minDate={new Date()}
+                minDate={getYesterday()}
                 value={p.shoppingDate}
                 onChange={(newValue) => {
                     p.setShoppingDate(newValue);

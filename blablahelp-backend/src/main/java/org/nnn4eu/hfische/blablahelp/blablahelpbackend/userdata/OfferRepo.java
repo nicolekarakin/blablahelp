@@ -8,4 +8,8 @@ import java.util.List;
 public interface OfferRepo extends MongoRepository<Offer, String> {
 
     List<Offer> findByAccountId(String accountId);
+
+    List<Offer> findByIsExpired(boolean b);
+
+    List<Offer> findByAccountIdAndIsExpired(String accountId, boolean b);
 }

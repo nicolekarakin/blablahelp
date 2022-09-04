@@ -16,7 +16,7 @@ const getElementText=(response: Document, elementName: string)=>{
 
 function getIpAddress(currentLang:string, setCurrenCountry: (s: string) => void) {
     //TODO implement manual country switch
-    fetch('http://api.hostip.info').then(response => {
+    fetch('https://api.hostip.info').then(response => {
         return response.text();
     }).then(xml => {
         return (new window.DOMParser()).parseFromString(xml, "text/xml");
@@ -28,7 +28,7 @@ function getIpAddress(currentLang:string, setCurrenCountry: (s: string) => void)
 
 const AuthProvider = ({children}: AuthProviderType) => {
     const [currentLang, setCurrenLang] = useState<string>("de");
-    const [currentCountry, setCurrentCountry] = useState<string | null>(null);
+    const [currentCountry, setCurrentCountry] = useState<string >("DE");
     const [currentUser, setCurrentUser] = useState<UserType | null>(null);
     useEffect(()=>{
         getIpAddress(currentLang,setCurrentCountry)

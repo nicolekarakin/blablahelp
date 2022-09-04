@@ -33,15 +33,14 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserDataCtrlTest {
 
-    private Account account=createAccount();
+    private final Account account=CreateData.createAccount();
     private final String id= "97a6c939-0919-44f5-99b3-1df1543c7427";
     @Autowired
     private MockMvc mockMvc;
@@ -77,7 +76,7 @@ class UserDataCtrlTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(userData)));
 
-        Offer offer=createOffer(accountId);
+        Offer offer=CreateData.createOffer(accountId);
         offer=createNewOfferTest(offer);
 
         AddressWrap wrap=new AddressWrap(EAddressType.PRIVATE, offer.getDestinationAddress());
@@ -114,14 +113,6 @@ class UserDataCtrlTest {
 
         assertThat(actual.get(0)).isEqualTo(offer);
     }
-    private Account createAccount() {
-        return new Account(
-                new BCryptPasswordEncoder().encode("blafr22"),
-                "frank@gmail.de", "frank", "Berlin",
-                Set.of(ERole.BASIC),
-                true
-        );
-    }
 
     Offer createNewOfferTest(Offer offer) throws Exception {
         String accountId=offer.getAccountId();
@@ -144,37 +135,38 @@ class UserDataCtrlTest {
         return actual;
     }
 
-    private Offer createOffer(String accountId) throws JsonProcessingException {
-        String str=
-        """
-        {
-                "accountId":"%s",
-                "shoppingDay":1661896800000,
-                "timeFrom":1661911200000,
-                "timeTo":1661926500000,
-                "city":"münchen",
-                "shopname":"LIDL",
-                "shopAddress":{
-                "street":"Balanstraße 188",
-                    "zip":"81549",
-                    "city":"München",
-                    "loc":null
-        },
-            "destinationAddress":{
-                "city":"München",
-                 "country":"DE",
-                 "street":"Kaspar-Spät-Straße 20 A",
-                 "zip":"81549",
-                 "type":"PRIVATE"
-        },
-            "maxMitshoppers":1,
-                "maxDrinks":1,
-                "maxArticles":10,
-                "maxDistanceKm":1,
-                "priceOffer":"0"
-        }
-        """;
-        String jsonString=str.formatted(accountId);
-        return objectMapper.readValue(jsonString,Offer.class);
+
+    @WithMockUser(authorities = {"BASIC"})
+    @DirtiesContext
+    @Test
+    void deleteOffer() throws Exception {
+        String accountId= account.getId();
+        accountService.saveNew(account);
+        Offer offer=CreateData.createOffer(accountId);
+        offer.setAccountId(accountId);
+        MvcResult mvcResult = mockMvc.perform(
+                        post(UrlMapping.USERDATA+"/"+accountId+"/newOffer")
+                                .contentType(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8)
+                                .accept(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8)
+                                .content(objectMapper.writeValueAsString(offer))
+                                .with(user(account))
+                                .with(csrf())
+                )
+                .andExpect(status().isCreated()).andReturn();
+
+        String actualStr = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Offer actual = objectMapper.readValue(actualStr, Offer.class);
+
+        mockMvc.perform(
+                        delete(UrlMapping.USERDATA+"/"+accountId+"/offers/"+actual.getOfferId())
+                                .with(csrf()))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(
+                        get(UrlMapping.USERDATA+"/"+accountId+"/offers"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(0)));
+
     }
 }

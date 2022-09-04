@@ -3,14 +3,17 @@ import {capitalise, dateFromInstant} from "../../shared/util";
 import {useContext} from "react";
 import {AuthContext} from "../../shared/AuthProvider";
 
-type CurrentPublicOfferProp = {
-    name: string,
-    date: number,
+export type CurrentPublicOfferProp = {
+    firstname: string,
+    shoppingDay: number,
     motto: string,
     shopname:string,
-    city:string,
-    rating:number,
+    shopCity:string,
+    shoppingRating:number,
+    shoppingCount:number,
+    shoppingCancellation:number,
 }
+
 export default function CurrentPublicOffer(props: CurrentPublicOfferProp) {
     const {currentLang, currentCountry} = useContext(AuthContext);
     const locale=currentLang+"-"+currentCountry
@@ -23,17 +26,21 @@ export default function CurrentPublicOffer(props: CurrentPublicOfferProp) {
                     {props.shopname} – Lebensmitteleinkauf ist geplannt
                 </Typography>
                 <Typography variant="h5" component="div">
-                    {capitalise(props.name)}
+                    {capitalise(props.firstname)}
                 </Typography>
                 <Typography sx={{mb: 1.5}} color="text.secondary">
-                    {props.city}, {dateFromInstant(props.date, locale)}
+                    {props.shopCity}, {dateFromInstant(props.shoppingDay, locale)}
                 </Typography>
-                <Typography variant="body2">
-                    {props?.motto}
+
+                <Typography sx={{fontSize: "1rem", fontWeight:"bold",mb: 1.5}} color="text.primary">
+                    Eingekauft – {props.shoppingCount}<br/>
+                    Dabei Storniert – {props.shoppingCancellation}<br/>
                 </Typography>
+
+                <Typography variant="body2">{props?.motto}</Typography>
             </CardContent>
             <CardActions>
-                <Rating name="read-only" value={props.rating} readOnly />
+                <Rating name="read-only" value={props.shoppingRating} readOnly />
             </CardActions>
         </Card>
     )

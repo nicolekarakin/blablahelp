@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 
 class ShopServiceTest {
 
-    private ShopListRepo shopRepo=mock(ShopListRepo.class);
+    private final ShopListRepo shopRepo=mock(ShopListRepo.class);
     @Mock
     private final ShopService shopService=new ShopService(shopRepo);
 
@@ -30,7 +30,7 @@ class ShopServiceTest {
     @Test
     void findAddressesByListId() {
         String id="de-DE_aldi";
-        ShopList shopList=new ShopList(id, Set.of(new Address("Street","12345","City",null)));
+        ShopList shopList=new ShopList(id, Set.of(new Address("Street","12345","City",null,null)));
         Optional<ShopList> value = Optional.of(shopList);
         when(shopRepo.findById(id)).thenReturn(value);
         Set<Address> actual=shopService.findAddressesByListId(id);

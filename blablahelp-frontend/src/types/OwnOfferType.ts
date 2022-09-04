@@ -6,14 +6,14 @@ type OwnOfferType = {
     shoppingDay: number | undefined,
     timeFrom: number | undefined,
     timeTo: number | undefined,
-    city:string | undefined,
+    // city:string | undefined,
 
     shopname:string | undefined,
     shopAddress:AddressType | null,
     destinationAddress:AddressType |null,
 
     maxMitshoppers:number|null,
-    maxDrinks:number|null,
+    maxLiter:number|null,
     maxArticles:number|null,
     maxDistanceKm:number|null,
 
@@ -29,3 +29,4 @@ type OwnOfferType = {
 
 }
 export default OwnOfferType
+
