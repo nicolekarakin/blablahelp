@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,15 +69,15 @@ class PublicUserDataCtrlTest {
                         get(UrlMapping.PUBLIC+"/offers"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andReturn();
 
         String actualStr = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
         List<OfferResponse> actual=objectMapper.readValue(actualStr, new TypeReference<>() {});
 
         assertThat(actual.get(0).firstname()).isEqualTo(account.getFirstname());
-        assertThat(actual.get(0).shopname()).isEqualTo(offer2.getShopname()).isEqualTo("my shop");
-        assertThat(actual.get(0).shopCity()).isEqualTo(offer2.getShopAddress().city());
+        assertThat(actual.get(1).shopname()).isEqualTo(offer2.getShopname()).isEqualTo("my shop");
+        assertThat(actual.get(1).shopCity()).isEqualTo(offer2.getShopAddress().city());
         assertThat(actual.get(0).shoppingCount()).isEqualTo(userData.getShoppingCount());
         assertThat(actual.get(0).shoppingRating()).isEqualTo(userData.getShoppingRating());
 
@@ -86,9 +87,17 @@ class PublicUserDataCtrlTest {
         Instant offerResponse=Instant.ofEpochMilli(offer2Day);
         Long offerResponseLong=offerResponse.toEpochMilli();
         assertThat(offerResponseLong).isEqualTo(offer2Day);
-        assertThat(actual.get(0).shoppingDay().toEpochMilli()).isEqualTo(offer2Day);
+        assertThat(actual.get(1).shoppingDay().toEpochMilli()).isEqualTo(offer2Day);
 
-        oldOfferSetToExpiredAndFound(offer1.getOfferId());
+        Offer offer3=CreateData.createOffer(accountId);
+        Long day = LocalDate.of(2021,10,10).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
+        Long from = LocalDate.of(2021,10,10).atTime(16,30).toInstant(ZoneOffset.UTC).toEpochMilli();
+        Long to = LocalDate.of(2021,10,10).atTime(20,30).toInstant(ZoneOffset.UTC).toEpochMilli();
+        offer3.setShoppingDay(day);
+        offer3.setTimeFrom(from);
+        offer3.setTimeTo(to);
+        offer3=userDataService.saveNewOffer(offer3);
+        oldOfferSetToExpiredAndFound(offer3.getOfferId());
     }
 
     public void instantTest(){
@@ -99,8 +108,10 @@ class PublicUserDataCtrlTest {
         assertThat(now).isNotEqualTo(nowLI);
     }
     public void oldOfferSetToExpiredAndFound(String offerId){
-        List<Offer> oldOffers=userDataService.findOffersByIsExpired(true);
-        assertThat(oldOffers.size()).isEqualTo(1);
-        assertThat(oldOffers.get(0).getOfferId()).isEqualTo(offerId);
+
+        List<Offer> oldOffers=userDataService.findOffersByIsExpired(false);
+        assertThat(oldOffers.size()).isEqualTo(2);
+        assertThat(oldOffers.get(0).getOfferId()).isNotEqualTo(offerId);
+        assertThat(oldOffers.get(1).getOfferId()).isNotEqualTo(offerId);
     }
 }
