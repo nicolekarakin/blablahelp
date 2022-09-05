@@ -47,7 +47,7 @@ function UserHome() {
     }
 
     const getUserOffers = (id: string) => {
-        return axios.get(urls.BASIC[0]+urls.BASIC[2]+"/"+id+"/"+urls.BASIC[1])
+        return axios.get(urls.BASIC[0]+urls.BASIC[2]+"/"+id+urls.BASIC[1])
             .then(response => response.data)
             .then(data => {
                 const userDataUpdated:UserDataType={...currentUser.userData, currentOffers: data }
@@ -65,7 +65,9 @@ function UserHome() {
 
             if(!currentUser.userData || !currentUser.userData.accountId) {
                 setLoading(true);
-                getUserData(currentUser.id).then(_ => getUserOffers(currentUser.id)).finally(() => setLoading(false))
+                getUserData(currentUser.id)
+                    .then(_ => getUserOffers(currentUser.id))
+                    .finally(() => setLoading(false))
             }
             else if(currentUser.userData && !currentUser.userData.userOffers) {
                 setLoading(true);
