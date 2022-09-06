@@ -8,6 +8,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.Account;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.ERole;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopList;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +31,7 @@ public class AdminCtrl {
 
     private final AccountService accountService;
     private final ShopService shopService;
+    private final GeoService geoService;
 
     @GetMapping
     public ResponseEntity<String> getAdminHome() {
@@ -74,6 +77,12 @@ public class AdminCtrl {
             log.debug("You upload an empty file");
             return false;
         }
+    }
+
+    @GetMapping("/addCoordinatesToShops")
+    public ResponseEntity<Void> getBasicAccounts(@NotNull @RequestParam String shopListId) {
+        geoService.addCoordinatesToShops(shopListId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

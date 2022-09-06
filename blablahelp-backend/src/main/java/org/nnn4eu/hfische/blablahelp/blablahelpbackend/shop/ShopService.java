@@ -33,14 +33,13 @@ public class ShopService {
 
     public Set<Address> findAddressesByListIdCitySearch(@NotBlank String id, @NotBlank String city, String search) {
         Set<Address> addresses = findAddressesByListId(id);
-        Stream<Address> filtered=addresses.stream()
-                .filter(a -> city.equalsIgnoreCase(a.city()));
-        if(search!=null || !search.trim().isEmpty()) {
-            return filtered.filter(a -> (a.street().toLowerCase().contains(search.toLowerCase()) ||
-                            a.zip().toLowerCase().contains(search.toLowerCase())))
+        Stream<Address> filtered = addresses.stream()
+                .filter(a -> city.equalsIgnoreCase(a.getCity()));
+        if (search != null && !search.trim().isEmpty()) {
+            return filtered.filter(a -> (a.getStreet().toLowerCase().contains(search.toLowerCase()) ||
+                            a.getZip().toLowerCase().contains(search.toLowerCase())))
                     .collect(Collectors.toSet());
-        }
-        else
+        } else
             return filtered.collect(Collectors.toSet());
     }
 

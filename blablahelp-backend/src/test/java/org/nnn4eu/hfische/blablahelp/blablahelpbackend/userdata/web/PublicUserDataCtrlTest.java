@@ -1,12 +1,13 @@
 package org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.Account;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.UserDataService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
@@ -14,25 +15,22 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferR
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class PublicUserDataCtrlTest {
-    private final Account account=CreateData.createAccount();
+    private final Account account = CreateData.createAccount();
     @Autowired
     AccountService accountService;
     @Autowired
@@ -50,40 +48,47 @@ class PublicUserDataCtrlTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @MockBean
+    GeoService geoService;
+
     @DirtiesContext
     @Test
     void getUserOffers() throws Exception {
-        String accountId= account.getId();
+        String accountId = account.getId();
         accountService.saveNew(account);
-        UserData userData=userDataService.findUserDataById(accountId);
+        UserData userData = userDataService.findUserDataById(accountId);
 
-        Offer offer1=CreateData.createOffer(accountId);
-        offer1=userDataService.saveNewOffer(offer1);
+        GeoJsonPoint point = new GeoJsonPoint(11.53559, 48.121563);
+        when(geoService.getCoordinatesForAddress(any(Address.class))).thenReturn(point);
 
-        Offer offer2=CreateData.createOffer(accountId);
-        offer2=CreateData.changeDate(offer2, LocalDate.now().plusDays(20));
+        Offer offer1 = CreateData.createOffer(accountId);
+        offer1 = userDataService.saveNewOffer(offer1);
+
+        Offer offer2 = CreateData.createOffer(accountId);
+        offer2 = CreateData.changeDate(offer2, LocalDate.now().plusDays(20));
         offer2.setShopname("my shop");
-        offer2=userDataService.saveNewOffer(offer2);
+        offer2 = userDataService.saveNewOffer(offer2);
 
-        MvcResult result=  mockMvc.perform(
-                        get(UrlMapping.PUBLIC+"/offers"))
+        MvcResult result = mockMvc.perform(
+                        get(UrlMapping.PUBLIC + "/offers"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andReturn();
 
         String actualStr = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        List<OfferResponse> actual=objectMapper.readValue(actualStr, new TypeReference<>() {});
+        List<OfferResponse> actual = objectMapper.readValue(actualStr, new TypeReference<>() {
+        });
 
         assertThat(actual.get(0).firstname()).isEqualTo(account.getFirstname());
         assertThat(actual.get(1).shopname()).isEqualTo(offer2.getShopname()).isEqualTo("my shop");
-        assertThat(actual.get(1).shopCity()).isEqualTo(offer2.getShopAddress().city());
+        assertThat(actual.get(1).shopCity()).isEqualTo(offer2.getShopAddress().getCity());
         assertThat(actual.get(0).shoppingCount()).isEqualTo(userData.getShoppingCount());
         assertThat(actual.get(0).shoppingRating()).isEqualTo(userData.getShoppingRating());
 
         instantTest();
 
-        Long offer2Day=offer2.getShoppingDay();
+        Long offer2Day = offer2.getShoppingDay();
         Instant offerResponse=Instant.ofEpochMilli(offer2Day);
         Long offerResponseLong=offerResponse.toEpochMilli();
         assertThat(offerResponseLong).isEqualTo(offer2Day);
@@ -110,7 +115,7 @@ class PublicUserDataCtrlTest {
     public void oldOfferSetToExpiredAndFound(String offerId){
 
         List<Offer> oldOffers=userDataService.findOffersByIsExpired(false);
-        assertThat(oldOffers.size()).isEqualTo(2);
+        assertThat(oldOffers).hasSize(2);
         assertThat(oldOffers.get(0).getOfferId()).isNotEqualTo(offerId);
         assertThat(oldOffers.get(1).getOfferId()).isNotEqualTo(offerId);
     }
