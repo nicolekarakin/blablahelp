@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.web.model.ShopNameList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,11 +34,14 @@ class ShopCtrlTest {
     @Autowired
     ShopService shopService;
 
+    @MockBean
+    GeoService geoService;
+
     @WithMockUser(authorities = {"BASIC"})
     @DirtiesContext
     @Test
     void getShopNames() throws Exception {
-        String id="de-DE_aldi";
+        String id = "de-DE_aldi";
         ShopNameList expected = new ShopNameList(Set.of("ALDI"));
         addShops(id);
 
