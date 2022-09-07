@@ -2,14 +2,15 @@ package org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata;
 
 import lombok.RequiredArgsConstructor;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.AddressWrap;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.EAddressType;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferResponse;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,8 +19,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -33,6 +32,7 @@ public class UserDataService {
     private final UserDataRepo userDataRepo;
     private final OfferRepo offerRepo;
     private final AccountService accountService;
+    private final GeoService geoService;
 
     public UserData findUserDataById(@NotBlank String accountId){
         boolean ok=accountService.accountExistsById(accountId);
@@ -49,6 +49,8 @@ public class UserDataService {
     }
     public Offer saveNewOffer(@NotBlank @Valid Offer newOffer) {
         newOffer.setOfferId(UUID.randomUUID().toString());
+        GeoJsonPoint geoJson = geoService.getCoordinatesForAddress(newOffer.getDestinationAddress());
+        newOffer.getDestinationAddress().setLoc(geoJson);
         addNewUsedAddress(newOffer.getDestinationAddress(), newOffer.getAccountId());
         return offerRepo.save(newOffer);
     }
@@ -71,7 +73,7 @@ public class UserDataService {
             UserData userData = findUserDataById(a.getAccountId());
             OfferResponse response=new OfferResponse(
                     name,
-                    a.getShopAddress().city(),
+                    a.getShopAddress().getCity(),
                     a.getShopname(),
                     Instant.ofEpochMilli(a.getShoppingDay()),
                     userData.getMotto(),
@@ -93,14 +95,14 @@ public class UserDataService {
 
     @Transactional
     public List<Offer> findOffersByAccountIdAndIsExpired(String accountId, boolean b) {
-        List<Offer> offers=offerRepo.findByAccountIdAndIsExpired(accountId,b);
-        checkForExpired(offers,0);
+        List<Offer> offers = offerRepo.findByAccountIdAndIsExpired(accountId, b);
+        checkForExpired(offers, 0);
         offerRepo.saveAll(offers);
         deleteAllExpiredAndNotBooked(offers);
 
-        Predicate<Offer> showEvenIfExpired=(a)->
-                (!b)? !a.isExpired() || (a.isExpired() && a.isBooked() && (!a.isCanceled() || !a.isReviewed())):
-                                        (a.isExpired() && a.isBooked()) && (a.isCanceled() || a.isReviewed());
+        Predicate<Offer> showEvenIfExpired = a ->
+                (!b) ? !a.isExpired() || (a.isExpired() && a.isBooked() && (!a.isCanceled() || !a.isReviewed())) :
+                        (a.isExpired() && a.isBooked()) && (a.isCanceled() || a.isReviewed());
 
         return offers.stream().filter(showEvenIfExpired::test)
                 .sorted(Comparator.comparingLong(Offer::getTimeFrom))
@@ -108,9 +110,10 @@ public class UserDataService {
     }
 
     private void deleteAllExpiredAndNotBooked(List<Offer> offers) {
-        List<Offer> offersToDelete=offers.stream()
-                .filter(a->a.isExpired() && !a.isBooked())
-                .collect(Collectors.toList());
+        List<Offer> offersToDelete = offers.stream()
+                .filter(a -> a.isExpired() && !a.isBooked())
+                .toList();
+
         offerRepo.deleteAll(offersToDelete);
     }
 

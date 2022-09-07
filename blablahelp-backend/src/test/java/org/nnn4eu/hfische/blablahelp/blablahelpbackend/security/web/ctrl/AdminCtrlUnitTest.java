@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopList;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopService;
@@ -13,6 +14,8 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -20,8 +23,8 @@ class AdminCtrlUnitTest {
 
     private final AccountService accountService = mock(AccountService.class);
     private final ShopService shopService = mock(ShopService.class);
-
-    AdminCtrl adminCtrl = new AdminCtrl(accountService, shopService);
+    private final GeoService geoService = mock(GeoService.class);
+    AdminCtrl adminCtrl = new AdminCtrl(accountService, shopService, geoService);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
@@ -44,9 +47,21 @@ class AdminCtrlUnitTest {
         Set<Address> addresses = objectMapper.readValue(json, new TypeReference<>() {
         });
         ShopList shopList = new ShopList(name, addresses);
-        when(shopService.addAddresses(name, addresses)).thenReturn(shopList);
+        when(shopService.addAddresses(eq(name), anySet())).thenReturn(shopList);
 
         boolean ok = adminCtrl.processFile(jsonFile, name);
         Assertions.assertTrue(ok);
+    }
+
+    @Test
+    void testReg() {
+        final String path = "C:\\Users\\SXR8036\\Downloads\\LANE-914.xls";
+        final String normalizedPath = path.replaceAll("\\\\", " ");
+        Assertions.assertFalse(normalizedPath.contains("\\"));
+
+        final String path2 = "Trea/Mora /568L o$plg\\jh@j\\kj j&shk|h| :kjhk";
+        final String normalizedPath3 = path2.replaceAll("[:.,;@$&\\\\|/]", " ");
+        Assertions.assertFalse(normalizedPath3.contains("@"));
+
     }
 }

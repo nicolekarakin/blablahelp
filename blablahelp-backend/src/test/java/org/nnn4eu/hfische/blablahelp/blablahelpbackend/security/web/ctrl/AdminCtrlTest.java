@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.SecurityConfig;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopList;
@@ -25,6 +26,8 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -45,6 +48,9 @@ class AdminCtrlTest {
 
     @MockBean
     ShopService shopService;
+
+    @MockBean
+    GeoService geoService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
@@ -112,7 +118,7 @@ class AdminCtrlTest {
         Set<Address> addresses = objectMapper.readValue(json, new TypeReference<>() {
         });
         ShopList shopList = new ShopList(name, addresses);
-        when(shopService.addAddresses(name, addresses)).thenReturn(shopList);
+        when(shopService.addAddresses(eq(name), anySet())).thenReturn(shopList);
         MockMultipartFile jsonFile = new MockMultipartFile("mfile", "", "application/json",
                 json.getBytes());
         mockMvc.perform(
