@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
@@ -22,6 +24,7 @@ public class Address {
     @NotBlank
     private String city;
     @Nullable
+    @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
     private GeoJsonPoint loc;
     @Nullable
     private String country;
@@ -37,5 +40,12 @@ public class Address {
     @Override
     public int hashCode() {
         return Objects.hash(street, zip, city);
+    }
+
+    @Override
+    public String toString() {
+        String strLoc = (loc != null) ? ", loc[" + loc.getX() + ", " + loc.getY() + ", " + loc.getType() + "] " : "";
+        return "Address{ " + street + ", " + zip + ' ' + city + ' ' + country
+                + strLoc + " }";
     }
 }
