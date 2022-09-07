@@ -23,9 +23,9 @@ import java.util.Set;
 @Slf4j
 @Service
 public class GeoService {
-    @Value("${pstoken}")
+    @Value("${pstoken:nourlfortests}")
     private String token;
-    private final String defaultCountry = "DE";
+    private static final String DEFAULT_COUNTRY = "DE";
     private final ShopService shopService;
     private final WebClient webClient = WebClient.create("http://api.positionstack.com");
 
@@ -46,7 +46,7 @@ public class GeoService {
 
     public GeoJsonPoint getCoordinatesForAddress(Address address) {
         String country = (address.getCountry() == null) ?
-                new Locale("de", defaultCountry).getISO3Country()
+                new Locale("de", DEFAULT_COUNTRY).getISO3Country()
                 : address.getCountry();
         String addressStr = address.getStreet() + " " + address.getZip() + " " + address.getCity() + " " + country;
 
