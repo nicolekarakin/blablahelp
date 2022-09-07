@@ -2,16 +2,7 @@ import {useSnackbar} from "notistack";
 import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {Link as RouterLink} from 'react-router-dom';
-import {
-    Alert,
-    AlertTitle,
-    Box, Button,
-    Card,
-    CardContent,
-    CircularProgress,
-    Stack,
-    Typography,
-} from "@mui/material";
+import {Alert, AlertTitle, Box, Button, Card, CardContent, CircularProgress, Stack, Typography,} from "@mui/material";
 import axios from "axios";
 import {AuthContext} from "../shared/AuthProvider";
 import {urls} from "../shared/UrlMapping";
@@ -39,7 +30,8 @@ function UserHome() {
         return axios.get(urls.BASIC[0]+urls.BASIC[2]+"/"+id)
             .then(response => response.data)
             .then(data => {
-                setCurrentUser({...currentUser, userData: data})
+                currentUser.userData = data;
+                setCurrentUser({...currentUser})
             })
             .catch(_ => {
                 enqueueSnackbar("Fetching data for user with id "+id+" failed!", {variant: "error"});
@@ -66,7 +58,9 @@ function UserHome() {
             if(!currentUser.userData || !currentUser.userData.accountId) {
                 setLoading(true);
                 getUserData(currentUser.id)
-                    .then(_ => getUserOffers(currentUser.id))
+                    .then(_ => {
+                        getUserOffers(currentUser.id)
+                    })
                     .finally(() => setLoading(false))
             }
             else if(currentUser.userData && !currentUser.userData.userOffers) {
