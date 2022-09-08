@@ -53,16 +53,16 @@ export default function OwnOfferDetails(props:OwnOfferDetailsProps){
                     {props.data.shopAddress?.city}, {dateFromInstant(props.data.shoppingDay!, currentLang+"-"+currentCountry)}
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    <DialogContentText component={"div"}>
                         <Typography sx={{mb: 1.5}} color="text.secondary">
                             Lieferung an die Haustür zwischen <br/>
-                            {timeFromInstant(props.data.timeFrom!,currentLang+"-"+currentCountry)} und {timeFromInstant(props.data.timeTo!,currentLang+"-"+currentCountry)} Uhr
+                            {timeFromInstant(props.data.timeFrom!, currentLang + "-" + currentCountry)} und {timeFromInstant(props.data.timeTo!, currentLang + "-" + currentCountry)} Uhr
                         </Typography>
                         <Typography variant="h6" color={"primary"}>Angebot – {props.data.priceOffer} Euro</Typography>
-                        <Typography  color="text.secondary">
+                        <Typography color="text.secondary">
                             Barzahlung für Assistance und gekaufte Produkte aus der Einkaufsliste bei Lieferung
                         </Typography>
-                        <Typography sx={{fontSize: "1rem", fontWeight:"bold",mb: 1.5}} color="text.primary">
+                        <Typography sx={{fontSize: "1rem", fontWeight: "bold", mb: 1.5}} color="text.primary">
                             Mitshoppern, maximal {props.data.maxMitshoppers}
                         </Typography>
 
