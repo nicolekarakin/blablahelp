@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoSearchService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.SecurityConfig;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopService;
@@ -35,6 +36,8 @@ class BasicCtrlTest {
     ShopService shopService;
     @MockBean
     GeoService geoService;
+    @MockBean
+    GeoSearchService geoSearchService;
 
     @Test
     void getHome_unauthorized() throws Exception {

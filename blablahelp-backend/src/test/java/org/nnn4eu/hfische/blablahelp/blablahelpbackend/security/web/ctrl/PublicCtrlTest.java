@@ -9,6 +9,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.Account;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.ERole;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoSearchService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.SecurityConfig;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.web.ctrl.model.LoginResponse;
@@ -47,6 +48,8 @@ class PublicCtrlTest {
     ShopService shopService;
     @MockBean
     GeoService geoService;
+    @MockBean
+    GeoSearchService geoSearchService;
     @MockBean
     UserDetailsService userDetailsService;
     @Autowired

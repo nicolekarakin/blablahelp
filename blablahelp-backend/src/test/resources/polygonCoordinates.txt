@@ -1,0 +1,125 @@
+https://www.gpsvisualizer.com/map_input?form=data
+----------------------------------
+
+Name, latitude,longitude
+A1, 48.15524302377601, 11.565899268083408
+A2, 48.160652976223986, 11.558706731916592
+A3, 48.123765976223986, 11.530961731916593
+A4, 48.11835602377601, 11.538154268083408 
+  
+AIN, 48.139356983477, 11.546708857432789
+
+
+
+B1, 48.030787772834664, 11.532441652137999
+B2, 48.21073822716533, 11.536672347862
+B3, 48.21021622716533, 11.558875347862001
+B4, 48.03026577283467, 11.554644652138
+
+BIN, 48.203102, 11.545334
+
+
+
+C1, 48.14408036709524, 11.677919067790043
+C2, 48.26449963290476, 11.544130932209956
+C3, 48.15551863290476, 11.446039932209956
+C4, 48.03509936709524, 11.579828067790043
+
+CIN, 48.15625109174207, 11.62514623928711
+
+
+NOT0, 48.065418484874556, 11.68044766052047
+
+----------------------------------
+A
+"_id": "72092723-66c7-4f13-a760-b6b958d4f5c5",
+"maxDistanceKm": 1,
+"shopAddress": {
+    "street": "Schleißheimer Str. 85-87",
+    "zip": "80797",
+    "city": "München",
+    "loc": {
+      "type": "Point",
+      "coordinates": [
+        11.562303,
+        48.157948
+      ]
+    }
+  },
+  "destinationAddress": {
+    "street": "Hansastraße 132",
+    "zip": "81373",
+    "city": "München",
+    "loc": {
+      "type": "Point",
+      "coordinates": [
+        11.534558,
+        48.121061
+      ]
+    },
+    "country": "DE"
+  }
+
+----------------------------------
+
+B
+"_id": "2d05dac9-96d6-4704-8693-ad1115d4b0a4",
+"maxDistanceKm": 20,
+"shopAddress": {
+    "street": "Dreimühlenstraße 42",
+    "zip": "81371",
+    "city": "München",
+    "loc": {
+      "type": "Point",
+      "coordinates": [
+        11.55676,
+        48.120241
+      ]
+    }
+  },
+"destinationAddress": {
+    "street": "Hansastraße 134",
+    "zip": "81373",
+    "city": "München",
+    "loc": {
+      "type": "Point",
+      "coordinates": [
+        11.534557,
+        48.120763
+      ]
+    },
+    "country": "DE"
+  }
+
+
+
+
+C
+
+"_id": "cf7cc615-8474-4bac-b0b1-ee2ea0eb5aa6",
+"maxDistanceKm": 20,
+"shopAddress": {
+    "street": "Kistlerhofstraße 152",
+    "zip": "81379",
+    "city": "München",
+    "loc": {
+      "type": "Point",
+      "coordinates": [
+        11.512934,
+        48.095309
+      ]
+    }
+  },
+  "destinationAddress": {
+    "street": "Schlößlanger 10",
+    "zip": "80939",
+    "city": "München",
+    "loc": {
+      "type": "Point",
+      "coordinates": [
+        11.611025,
+        48.20429
+      ]
+    },
+    "country": "DE"
+  }

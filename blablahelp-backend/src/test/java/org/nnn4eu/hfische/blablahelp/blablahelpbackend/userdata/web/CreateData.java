@@ -132,6 +132,27 @@ public class CreateData {
         return objectMapper.readValue(jsonString, Offer.class);
     }
 
+    public static Address createAddressWithLocNothEast() throws JsonProcessingException {
+        String jsonString =
+                """
+                                {
+                                      "street": "Ludwigsfelder Str. 15",
+                                      "zip": "80999",
+                                      "city": "München",
+                                      "loc": {
+                                        "type": "Point",
+                                        "coordinates": [
+                                          11.463639891661815,
+                                          48.19931734961919
+                                        ]
+                                      }
+                                }
+                                 
+                        """;
+
+        return objectMapper.readValue(jsonString, Address.class);
+    }
+
     public static Address createAddressWithLocNoth() throws JsonProcessingException {
         String jsonString =
                 """
