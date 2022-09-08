@@ -7,19 +7,17 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.web.model.Loc;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
-
 @Slf4j
 @Service
 public class GeoService {
@@ -53,7 +51,7 @@ public class GeoService {
         return getCoordinates(addressStr);
     }
 
-    private GeoJsonPoint getCoordinates(String addressStr) {
+    public GeoJsonPoint getCoordinates(String addressStr) {
         String query = addressStr.replaceAll("[:.,;@$&\\\\|/]", " ");
         log.info("token ok " + (!token.isEmpty()) + ", Looking for address: " + addressStr);
         ForwardResponse response = webClient.get()
@@ -80,4 +78,53 @@ public class GeoService {
         else iso2 = infoStr[1].split("_")[0];
         return new Locale("de", iso2).getISO3Country();
     }
+
+    public GeoJsonPolygon calculatePolygon(GeoJsonPoint loc1, GeoJsonPoint loc2, double maxDistanceKm) {
+        Point a, b;
+        if (loc2.getY() >= loc1.getY()) {
+            a = new Point(loc1.getX(), loc1.getY());
+            b = new Point(loc2.getX(), loc2.getY());
+        } else {
+            b = new Point(loc1.getX(), loc1.getY());
+            a = new Point(loc2.getX(), loc2.getY());
+        }
+
+        double m = (a.getX() - b.getX()) / (b.getY() - a.getY());
+        double maxDistanceDegree = maxDistanceKm / 111.111;
+
+        double coef = maxDistanceDegree / 2;
+        double v = coef / Math.sqrt(1 + (m * m));
+        double sx, rx, tx, ux, sy, ry, ty, uy;
+        if (m <= 0) {
+            sx = b.getX() - v;
+            rx = b.getX() + v;
+            tx = a.getX() + v;
+            ux = a.getX() - v;
+        } else {
+            sx = b.getX() + v;
+            rx = b.getX() - v;
+            tx = a.getX() - v;
+            ux = a.getX() + v;
+        }
+        ry = m * (rx - b.getX()) + b.getY();
+        sy = m * (sx - b.getX()) + b.getY();
+        ty = m * (tx - a.getX()) + a.getY();
+        uy = m * (ux - a.getX()) + a.getY();
+
+        List<GeoJsonPoint> geoJsonPoints = new ArrayList<>();
+
+        geoJsonPoints.add(new GeoJsonPoint(rx, ry));
+        geoJsonPoints.add(new GeoJsonPoint(sx, sy));
+
+        geoJsonPoints.add(new GeoJsonPoint(ux, uy));
+        geoJsonPoints.add(new GeoJsonPoint(tx, ty));
+
+        geoJsonPoints.add(new GeoJsonPoint(rx, ry));
+        List<Point> points = geoJsonPoints.stream()
+                .map(ap -> new Point(ap.getX(), ap.getY())).toList();
+
+        return new GeoJsonPolygon(points);
+    }
+
+
 }

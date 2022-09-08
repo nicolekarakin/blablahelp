@@ -8,10 +8,13 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.Account;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.ERole;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoSearchService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopList;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopService;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +35,7 @@ public class AdminCtrl {
     private final AccountService accountService;
     private final ShopService shopService;
     private final GeoService geoService;
-
+    private final GeoSearchService geoSearchService;
     @GetMapping
     public ResponseEntity<String> getAdminHome() {
         return new ResponseEntity<>("You are in admin home!", HttpStatus.OK);
@@ -83,6 +86,13 @@ public class AdminCtrl {
     public ResponseEntity<Void> getBasicAccounts(@NotNull @RequestParam String shopListId) {
         geoService.addCoordinatesToShops(shopListId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping(path = "/match")
+    public ResponseEntity<List<Offer>> searchOffers(@NotBlank @RequestParam double lat, @NotBlank @RequestParam double lng) {
+        GeoJsonPoint point = new GeoJsonPoint(lng, lat);
+        List<Offer> offers = geoSearchService.findMatchingOffer(point);
+        return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 
 }

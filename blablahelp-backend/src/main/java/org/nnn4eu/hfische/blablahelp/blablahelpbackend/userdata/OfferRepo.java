@@ -1,11 +1,9 @@
 package org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata;
 
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
-import org.springframework.data.geo.Box;
-import org.springframework.data.geo.Circle;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -17,9 +15,6 @@ public interface OfferRepo extends MongoRepository<Offer, String> {
 
     List<Offer> findByAccountIdAndIsExpired(String accountId, boolean b);
 
-    List<Offer> findByShopAddress_LocWithin(Circle c);
-
-    List<Offer> findByShopAddress_LocWithin(Box b);
-
-    List<Offer> findByShopAddress_LocNear(GeoJsonPoint point, Distance distance);
+    @Query(value = "{'shopAddress.loc' :{'$geoWithin': { '$centerSphere' : [ [ ?0, ?1], ?2 ] }}}")
+    List<Offer> findByShopAddrWithinCircle(@Param("lng") Double lng, @Param("lat") Double lat, @Param("dist") Double dist);
 }
