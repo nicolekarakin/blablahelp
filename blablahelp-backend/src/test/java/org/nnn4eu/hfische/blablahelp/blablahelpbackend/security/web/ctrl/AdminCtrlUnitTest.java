@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoSearchService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shop.ShopList;
@@ -24,7 +25,8 @@ class AdminCtrlUnitTest {
     private final AccountService accountService = mock(AccountService.class);
     private final ShopService shopService = mock(ShopService.class);
     private final GeoService geoService = mock(GeoService.class);
-    AdminCtrl adminCtrl = new AdminCtrl(accountService, shopService, geoService);
+    private final GeoSearchService geoSearchService = mock(GeoSearchService.class);
+    AdminCtrl adminCtrl = new AdminCtrl(accountService, shopService, geoService, geoSearchService);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test

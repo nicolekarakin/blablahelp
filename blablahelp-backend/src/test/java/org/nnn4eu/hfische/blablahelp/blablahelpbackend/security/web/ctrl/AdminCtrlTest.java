@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.config.UrlMapping;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoSearchService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.security.SecurityConfig;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
@@ -51,6 +52,8 @@ class AdminCtrlTest {
 
     @MockBean
     GeoService geoService;
+    @MockBean
+    GeoSearchService geoSearchService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test

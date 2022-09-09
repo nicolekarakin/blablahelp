@@ -102,7 +102,6 @@ export default function OfferForm() {
     };
 
     const handleNewOfferSubmit = () => {
-        console.debug(JSON.stringify(newOfferData))
         console.debug("agreed and submiting!!");
         axios
             .post(urls.BASIC[0]+urls.BASIC[2]+"/"+currentUser.id+urls.BASIC[3], newOfferData)

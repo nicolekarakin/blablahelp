@@ -10,6 +10,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferResponse;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,9 +52,15 @@ public class UserDataService {
         newOffer.setOfferId(UUID.randomUUID().toString());
         GeoJsonPoint geoJson = geoService.getCoordinatesForAddress(newOffer.getDestinationAddress());
         newOffer.getDestinationAddress().setLoc(geoJson);
+
+        GeoJsonPolygon area = geoService.calculatePolygon(newOffer.getDestinationAddress().getLoc(),
+                newOffer.getShopAddress().getLoc(), newOffer.getMaxDistanceKm());
+        newOffer.setMpolygon(area);
+
         addNewUsedAddress(newOffer.getDestinationAddress(), newOffer.getAccountId());
         return offerRepo.save(newOffer);
     }
+
 
     public List<Offer> findOffersByIsExpired(boolean b) {
         List<Offer> offers=offerRepo.findByIsExpired(b);
