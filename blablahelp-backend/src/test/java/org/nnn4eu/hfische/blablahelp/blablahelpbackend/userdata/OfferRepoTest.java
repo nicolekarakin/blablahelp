@@ -211,6 +211,8 @@ db.offer.find({
  "shopAddress.loc" : { $geoWithin: { $centerSphere: [ [  11.5372926, 48.125021 ], 100/6371 ] } }
 })
 
+db.offer.find({"isExpired":false})
+
 //works, only one result for Mühlfeldweg 46, 85748 Garching bei München
 db.offer.find({
              "destinationAddress.loc" : { $geoWithin: { $centerSphere: [ [  11.655268759092749, 48.24623592757452 ], 2/6371 ] } }
@@ -263,7 +265,7 @@ db.shopList.createIndex({"addresses.loc":"2dsphere"})
 db.offer.createIndex({"shopAddress.loc":"2dsphere"})
 db.offer.createIndex({"destinationAddress.loc":"2dsphere"})
 //only if all polygons are closed and have correct order of points
-db.offer.ensureIndex({"mpolygon": "2dsphere" });
+db.offer.createIndex({"mpolygon": "2dsphere" });
 
 ----not
 

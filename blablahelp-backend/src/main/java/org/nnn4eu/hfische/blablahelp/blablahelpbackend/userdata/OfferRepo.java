@@ -11,6 +11,7 @@ public interface OfferRepo extends MongoRepository<Offer, String> {
 
     List<Offer> findByAccountId(String accountId);
 
+    @Query(value = "{'isExpired':?0})")
     List<Offer> findByIsExpired(boolean b);
 
     List<Offer> findByAccountIdAndIsExpired(String accountId, boolean b);

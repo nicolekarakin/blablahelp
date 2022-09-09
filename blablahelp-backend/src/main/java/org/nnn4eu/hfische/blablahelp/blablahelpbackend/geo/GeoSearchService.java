@@ -24,7 +24,7 @@ public class GeoSearchService {
     public List<Offer> findMatchingOffer(GeoJsonPoint p) {
         Query query = new Query();
         query.with(Sort.by(Sort.Direction.DESC, "timeFrom"));
-        query.addCriteria(Criteria.where("polygon").intersects(p));
+        query.addCriteria(Criteria.where("mpolygon").intersects(p));
         return mongoTemplate.find(query, Offer.class);
     }
 
