@@ -1,6 +1,6 @@
 import axios from "axios";
 import {urls} from "../shared/UrlMapping";
-import {UserDataType} from "../types/UserType";
+import {UserType} from "../types/UserType";
 import {useContext} from "react";
 import {AuthContext} from "../shared/AuthProvider";
 import {useSnackbar} from "notistack";
@@ -23,8 +23,7 @@ export default function useUserHome() {
         return axios.get(urls.BASIC[0] + urls.BASIC[2] + "/" + currentUser.id)
             .then(response => response.data)
             .then(data => {
-                currentUser.userData = data;
-                setCurrentUser({...currentUser})
+                setCurrentUser((currentUser: UserType) => ({...currentUser, userData: data}))
             })
             .catch(_ => {
                 enqueueSnackbar("Fetching user data failed!", {variant: "error"});
@@ -35,8 +34,7 @@ export default function useUserHome() {
         return axios.get(urls.BASIC[0] + urls.BASIC[2] + "/" + currentUser.id + urls.BASIC[1])
             .then(response => response.data)
             .then(data => {
-                const userDataUpdated: UserDataType = {...currentUser.userData, currentOffers: data}
-                setCurrentUser({...currentUser, userData: userDataUpdated})
+                setCurrentUser((currentUser: UserType) => ({...currentUser, currentOffers: data}))
             })
             .catch(_ => {
                 enqueueSnackbar("Fetching offer data for user with id " + currentUser.id + " failed!", {variant: "error"});

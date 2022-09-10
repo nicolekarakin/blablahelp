@@ -33,7 +33,7 @@ import ConfirmationNewOfferDialog from "../../components/user/ConfirmationNewOff
 import {useNavigate} from "react-router";
 import {urls} from "../../shared/UrlMapping";
 import axios from "axios";
-import userType, {UserDataType} from "../../types/UserType";
+import userType from "../../types/UserType";
 import useUserHome from "../../hooks/useUserHome";
 
 
@@ -108,13 +108,11 @@ export default function OfferForm() {
             .post(urls.BASIC[0] + urls.BASIC[2] + "/" + currentUser.id + urls.BASIC[3], newOfferData)
             .then(response => {
                 const ownOfferData: OwnOfferType = response?.data
-                console.debug("submitting new offer")
-                const updatedOffers: OwnOfferType[] = [...currentUser.userData.currentOffers, ownOfferData]
-                // const userDataUpdated: UserDataType = {...currentUser.userData, currentOffers: data}
-                const updatedUserData: UserDataType = {...currentUser?.userData, currentOffers: updatedOffers}
+                const updatedOffers: OwnOfferType[] = [...currentUser.currentOffers, ownOfferData]
                 setCurrentUser((currentUser: userType) => ({
-                    ...currentUser, userData: updatedUserData
+                    ...currentUser, currentOffers: updatedOffers
                 }));
+                console.debug(currentUser.currentOffers)
             })
             .finally(() => {
                 if (useSaved === "false") getUserData()

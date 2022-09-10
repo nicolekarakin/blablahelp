@@ -20,18 +20,16 @@ function UserHome() {
         else {
             getPrivateHomeData(setUserMessage);
 
-            if(!currentUser.userData || !currentUser.userData.accountId) {
+            if (!currentUser.userData || !currentUser.userData.accountId) {
                 setLoading(true);
                 getUserData()
                     .then((_: any) => {
                         getUserOffers().finally(() => setLoading(false))
                     })
 
-            }
-            else if(currentUser.userData && !currentUser.userData.userOffers) {
+            } else if (!currentUser.userOffers) {
                 setLoading(true);
-                getUserOffers()
-                    .finally(() => setLoading(false))
+                getUserOffers().finally(() => setLoading(false))
             }
 
         }
@@ -78,8 +76,8 @@ function UserHome() {
                 <CircularProgress/>
             )}
 
-            {(!!currentUser && (currentUser?.userData?.currentOffers?.length > 0)) && (
-                <CurrentOwnOfferList offers={currentUser.userData?.currentOffers}/>
+            {(!!currentUser && (currentUser?.currentOffers?.length > 0)) && (
+                <CurrentOwnOfferList offers={currentUser.currentOffers}/>
             )}
 
         </Stack>

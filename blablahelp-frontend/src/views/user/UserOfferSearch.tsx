@@ -38,7 +38,7 @@ export default function UserOfferSearch() {
     const [mitshopperAddress, setMitshopperAddress] = useState<AddressType>({
         city: "", country: currentCountry, street: "", zip: ""
     });
-    const [offers, setOffers] = useState<NotOwnOfferType[]>([])
+    const [matchingOffers, setMatchingOffers] = useState<NotOwnOfferType[]>([])
     const navigate = useNavigate()
     const {enqueueSnackbar} = useSnackbar();
 
@@ -53,12 +53,13 @@ export default function UserOfferSearch() {
         return axios.post(urls.BASIC[0] + urls.BASIC[2] + urls.BASIC[4], addressWith)
             .then(response => response.data)
             .then(data => {
-                setOffers([...data])
+                setMatchingOffers([...data])
             })
             .catch(_ => {
                 enqueueSnackbar("Fetching search data failed!", {variant: "error"});
             });
     }
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true);
@@ -230,8 +231,8 @@ export default function UserOfferSearch() {
                 <CircularProgress/>
             )}
             {
-                (!loading && (!!offers && offers.length > 0)) &&
-                <MatchedOffers offers={offers} mitshopperAddress={mitshopperAddress}/>
+                (!loading && (!!matchingOffers && matchingOffers.length > 0)) &&
+                <MatchedOffers offers={matchingOffers} mitshopperAddress={mitshopperAddress}/>
             }
 
         </>

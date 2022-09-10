@@ -2,6 +2,7 @@ import OwnOfferType from "./OwnOfferType";
 import {AddressWrapType} from "./AddressType";
 import OwnInquiryType from "./OwnInquiryType";
 import {ReviewType} from "./ReviewType";
+
 export type UserDataType={
     accountId:string,
     version?:number,
@@ -11,22 +12,22 @@ export type UserDataType={
     shoppingCount?:number,
     shoppingRating?:number,
 
-    mitShoppingCancellation?:number,
-    mitShoppingCount?:number,
-    mitShoppingRating?:number,
+    mitShoppingCancellation?: number,
+    mitShoppingCount?: number,
+    mitShoppingRating?: number,
 
-    usedAddresses:AddressWrapType[],
-    currentOffers?:OwnOfferType[],
-    currentInquiries?:OwnInquiryType[],
+    usedAddresses: AddressWrapType[],
 
-    reviewsForMitshopping?:ReviewType[],
-    reviewsForShopping?:ReviewType[],
+    reviewsForMitshopping?: ReviewType[],
+    reviewsForShopping?: ReviewType[],
 }
-type UserType = {
+export type UserType = {
     id: string,
     firstname: string,
     email: string,
     city: string,
-    userData?:UserDataType,
+    userData?: UserDataType,
+    currentOffers?: OwnOfferType[],
+    currentInquiries?: OwnInquiryType[],
 }
 export default UserType
