@@ -109,7 +109,8 @@ export default function OfferForm() {
             .then(response => {
                 const ownOfferData: OwnOfferType = response?.data
                 console.debug("submitting new offer")
-                const updatedOffers: OwnOfferType[] = [...currentUser?.userData?.currentOffers ?? [], ownOfferData]
+                const updatedOffers: OwnOfferType[] = [...currentUser.userData.currentOffers, ownOfferData]
+                // const userDataUpdated: UserDataType = {...currentUser.userData, currentOffers: data}
                 const updatedUserData: UserDataType = {...currentUser?.userData, currentOffers: updatedOffers}
                 setCurrentUser((currentUser: userType) => ({
                     ...currentUser, userData: updatedUserData
