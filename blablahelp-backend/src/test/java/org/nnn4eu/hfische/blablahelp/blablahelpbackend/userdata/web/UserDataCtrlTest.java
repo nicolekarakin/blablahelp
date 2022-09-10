@@ -59,7 +59,7 @@ class UserDataCtrlTest {
     @DirtiesContext
     @Test
     void getUserData_throw() throws Exception {
-        UserData userData = new UserData(id);
+        UserData userData = new UserData(id, "whoever");
         mockMvc.perform(
                         get(UrlMapping.USERDATA + "/" + id))
                 .andExpect(status().isConflict());
@@ -72,7 +72,7 @@ class UserDataCtrlTest {
     void getUserData() throws Exception {
         String accountId = account.getId();
         accountService.saveNew(account);
-        UserData userData = new UserData(accountId);
+        UserData userData = new UserData(accountId, account.getFirstname());
         userData.setVersion(0L);
         mockMvc.perform(
                         get(UrlMapping.USERDATA + "/" + accountId))

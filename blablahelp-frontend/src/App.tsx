@@ -12,6 +12,7 @@ import Impressum from "./views/public/Impressum";
 import Profile from "./views/user/Profile";
 import How from "./views/public/How";
 import OfferForm from "./views/user/OfferForm";
+import UserOfferSearch from "./views/user/UserOfferSearch";
 
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
                     <Route path="/account" element={<UserHome/>}/>
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/newOffer" element={<OfferForm/>}/>
+                    <Route path="/offerSearch" element={<UserOfferSearch/>}/>
                 </Routes>
 
             </Container>

@@ -1,4 +1,6 @@
 package org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model;
 
-public record OfferSearchRequest(String addressStr) {
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
+
+public record OfferSearchRequest(String accountId, Address address, String firstname) {
 }

@@ -91,7 +91,7 @@ public class AdminCtrl {
     @GetMapping(path = "/match")
     public ResponseEntity<List<Offer>> searchOffers(@NotBlank @RequestParam double lat, @NotBlank @RequestParam double lng) {
         GeoJsonPoint point = new GeoJsonPoint(lng, lat);
-        List<Offer> offers = geoSearchService.findMatchingOffer(point);
+        List<Offer> offers = geoSearchService.findMatchingNotExpiredOffers(point);
         return new ResponseEntity<>(offers, HttpStatus.OK);
     }
 

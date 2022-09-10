@@ -2,25 +2,16 @@ import {Card, CardActions, CardContent, Rating, Typography} from "@mui/material"
 import {capitalise, dateFromInstant} from "../../shared/util";
 import {useContext} from "react";
 import {AuthContext} from "../../shared/AuthProvider";
+import CurrentPublicOfferType from "../../types/CurrentPublicOfferType";
 
-export type CurrentPublicOfferProp = {
-    firstname: string,
-    shoppingDay: number,
-    motto: string,
-    shopname:string,
-    shopCity:string,
-    shoppingRating:number,
-    shoppingCount:number,
-    shoppingCancellation:number,
-}
 
-export default function CurrentPublicOffer(props: CurrentPublicOfferProp) {
+export default function CurrentPublicOffer(props: CurrentPublicOfferType) {
     const {currentLang, currentCountry} = useContext(AuthContext);
-    const locale=currentLang+"-"+currentCountry
+    const locale = currentLang + "-" + currentCountry
 
     return (
 
-        <Card sx={{minWidth: 275, marginBottom:'1.3rem'}} >
+        <Card sx={{minWidth: 275, marginBottom: '1.3rem'}}>
             <CardContent>
                 <Typography sx={{fontSize: ".9rem"}} color="text.secondary" gutterBottom>
                     {props.shopname} – Lebensmitteleinkauf ist geplannt

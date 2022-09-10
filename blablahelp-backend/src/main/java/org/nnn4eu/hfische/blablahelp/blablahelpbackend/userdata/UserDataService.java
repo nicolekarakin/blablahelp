@@ -8,7 +8,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.AddressWrap;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.EAddressType;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
-import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferResponse;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferPublicResponse;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
 import org.springframework.http.HttpStatus;
@@ -35,19 +35,21 @@ public class UserDataService {
     private final AccountService accountService;
     private final GeoService geoService;
 
-    public UserData findUserDataById(@NotBlank String accountId){
-        boolean ok=accountService.accountExistsById(accountId);
-        if(!ok)throw new IllegalArgumentException("account with given id doesn't exist");
-        return userDataRepo.findById(accountId).orElseGet(()->userDataRepo.save(new UserData(accountId)));
+    public UserData findUserDataById(@NotBlank String accountId) {
+        boolean ok = accountService.accountExistsById(accountId);
+        if (!ok) throw new IllegalArgumentException("account with given id doesn't exist");
+        String firstname = accountService.findAccountById(accountId).getFirstname();
+        return userDataRepo.findById(accountId).orElseGet(() -> userDataRepo.save(new UserData(accountId, firstname)));
     }
 
-    public AddressWrap addNewUsedAddress(Address address, String accountId){
-        UserData userData=findUserDataById(accountId);
-        AddressWrap destination=new AddressWrap(EAddressType.PRIVATE,address);
+    public AddressWrap addNewUsedAddress(Address address, String accountId) {
+        UserData userData = findUserDataById(accountId);
+        AddressWrap destination = new AddressWrap(EAddressType.PRIVATE, address);
         userData.getUsedAddresses().add(destination);
         userDataRepo.save(userData);
         return destination;
     }
+
     public Offer saveNewOffer(@NotBlank @Valid Offer newOffer) {
         newOffer.setOfferId(UUID.randomUUID().toString());
         GeoJsonPoint geoJson = geoService.getCoordinatesForAddress(newOffer.getDestinationAddress());
@@ -63,23 +65,22 @@ public class UserDataService {
 
 
     public List<Offer> findOffersByIsExpired(boolean b) {
-        List<Offer> offers=offerRepo.findByIsExpired(b);
+        List<Offer> offers = offerRepo.findByIsExpired(b);
 
-        checkForExpired(offers,0);
+        checkForExpired(offers, 0);
 
-        offers=offerRepo.saveAll(offers);
-        return offers.stream().filter(a->b==a.isExpired())
+        offers = offerRepo.saveAll(offers);
+        return offers.stream().filter(a -> b == a.isExpired())
                 .sorted(Comparator.comparingLong(Offer::getTimeFrom))
                 .collect(Collectors.toList());
     }
 
-    public List<OfferResponse> findPublicOffersByIsExpired(boolean b){
-        List<OfferResponse> offers = new ArrayList<>();
-        findOffersByIsExpired(b).forEach(a->{
-            String name=accountService.findAccountById(a.getAccountId()).getFirstname();
+    public List<OfferPublicResponse> findPublicOffersByIsExpired(boolean b) {
+        List<OfferPublicResponse> offers = new ArrayList<>();
+        findOffersByIsExpired(b).forEach(a -> {
             UserData userData = findUserDataById(a.getAccountId());
-            OfferResponse response=new OfferResponse(
-                    name,
+            OfferPublicResponse response = new OfferPublicResponse(
+                    userData.getFirstname(),
                     a.getShopAddress().getCity(),
                     a.getShopname(),
                     Instant.ofEpochMilli(a.getShoppingDay()),

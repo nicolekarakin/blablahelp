@@ -1,21 +1,23 @@
 import {Box, CircularProgress, Typography} from "@mui/material";
-import CurrentPublicOffer, {CurrentPublicOfferProp} from "./CurrentPublicOffer";
+import CurrentPublicOffer from "./CurrentPublicOffer";
 import axios from "axios";
 import {urls} from "../../shared/UrlMapping";
 import {useSnackbar} from "notistack";
 import React, {useEffect, useState} from "react";
+import CurrentPublicOfferType from "../../types/CurrentPublicOfferType";
 
 export default function CurrentPublicOffers(){
     const [loading, setLoading] = useState(false);
-    const [currentOffers, setCurrentOffers] = useState<CurrentPublicOfferProp[]>([]);
+    const [currentOffers, setCurrentOffers] = useState<CurrentPublicOfferType[]>([]);
     const {enqueueSnackbar} = useSnackbar();
 
     const getPublicOffers = () => {
         return axios
             .get(urls.PUBLIC[0] + urls.PUBLIC[1])
             .then(response => {
-                const offers:CurrentPublicOfferProp[] = response.data
-                setCurrentOffers(offers)
+                const offers: CurrentPublicOfferType[] = response.data
+                setCurrentOffers([...offers])
+
             })
             .catch(_ => {
                 enqueueSnackbar('Failed to load current offers', {variant: "error"})
@@ -24,7 +26,10 @@ export default function CurrentPublicOffers(){
 
     useEffect(() => {
         setLoading(true);
-        getPublicOffers().finally(() => setLoading(false));
+        getPublicOffers()
+            .finally(() => {
+                setLoading(false)
+            });
     }, []);
 
     return (
@@ -39,7 +44,9 @@ export default function CurrentPublicOffers(){
                     Aktuelle Angebote
                 </Typography>
                 {
-                    currentOffers.map((a, index) => (<CurrentPublicOffer key={index} {...a}/>))
+                    currentOffers.map((a, index) => {
+                        return (<CurrentPublicOffer key={index} {...a}/>)
+                    })
                 }
             </Box>
             : <></>
