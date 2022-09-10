@@ -104,11 +104,11 @@ export default function OfferForm() {
     };
 
     const handleNewOfferSubmit = () => {
-        console.debug("agreed and submiting!!");
         axios
             .post(urls.BASIC[0] + urls.BASIC[2] + "/" + currentUser.id + urls.BASIC[3], newOfferData)
             .then(response => {
                 const ownOfferData: OwnOfferType = response?.data
+                console.debug("submitting new offer")
                 const updatedOffers: OwnOfferType[] = [...currentUser?.userData?.currentOffers ?? [], ownOfferData]
                 const updatedUserData: UserDataType = {...currentUser?.userData, currentOffers: updatedOffers}
                 setCurrentUser((currentUser: userType) => ({
