@@ -49,11 +49,13 @@ class OfferRepoTest {
     private final Map<String, Offer> offersMap = new HashMap<>();
     @Mock
     ShopService shopService;
+    @Mock
+    UserDataRepo userDataRepo;
 
     @BeforeAll
     void init() throws JsonProcessingException {
         geoService = new GeoService(shopService);
-        geoSearchService = new GeoSearchService(mongoTemplate, geoService);
+        geoSearchService = new GeoSearchService(mongoTemplate, geoService, userDataRepo);
 
         log.info("offerCount: " + offerRepo.count());
 
@@ -138,7 +140,7 @@ class OfferRepoTest {
     }
 
     List<String> searchOffersPolygon(GeoJsonPoint p) {
-        List<Offer> offers = geoSearchService.findMatchingOffer(p);
+        List<Offer> offers = geoSearchService.findMatchingNotExpiredOffers(p);
         List<String> ids = offers.stream().map(a -> a.getOfferId()).toList();
         log.info("\n================================\n" + p.getX() + " " + p.getY() +
                 "\nids: " + Arrays.toString(ids.toArray()));
@@ -274,5 +276,17 @@ lat: 0.000707 long:0.001267 >>> 4 metres or roughly .000036036 >>> 111km or 1deg
 .004km/111km >> 0.00003603603 degree
 
 
+{
+Query query = new Query();
+query.with(Sort.by(Sort.Direction.DESC, "timeFrom"));
+query.addCriteria(
+     new Criteria().andOperator(
+                        Criteria.where("accountId").ne(accountId),
+                        Criteria.where("mpolygon").intersects(p),
+                        Criteria.where("isExpired").is(false)
+     )
+);
+return mongoTemplate.find(query, Offer.class);
+}
 
  */

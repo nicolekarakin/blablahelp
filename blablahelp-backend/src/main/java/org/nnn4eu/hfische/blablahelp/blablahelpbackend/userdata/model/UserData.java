@@ -1,13 +1,14 @@
 package org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.AddressWrap;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Review;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class UserData {
     @Id
     private final String accountId;
+    private final String firstname;
     @Version
     private Long version;
     private Set<AddressWrap> usedAddresses=new HashSet<>();

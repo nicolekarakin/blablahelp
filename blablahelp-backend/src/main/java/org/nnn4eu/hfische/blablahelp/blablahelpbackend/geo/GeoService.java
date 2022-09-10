@@ -26,6 +26,8 @@ public class GeoService {
     private static final String DEFAULT_COUNTRY = "DE";
     private final ShopService shopService;
     private final WebClient webClient = WebClient.create("http://api.positionstack.com");
+//    https://github.com/reactor/reactor-netty/issues/1774
+//    https://stackoverflow.com/questions/67316160/what-is-wrong-with-below-webclient-config
 
     public void addCoordinatesToShops(String shopListId) {
         String alpha3Country = getIso3CountryFromShopListId(shopListId);

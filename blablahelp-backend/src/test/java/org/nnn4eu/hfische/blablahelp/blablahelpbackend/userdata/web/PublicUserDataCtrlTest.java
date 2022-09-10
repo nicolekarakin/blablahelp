@@ -11,7 +11,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.UserDataService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
-import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferResponse;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferPublicResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -77,7 +77,7 @@ class PublicUserDataCtrlTest {
                 .andReturn();
 
         String actualStr = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        List<OfferResponse> actual = objectMapper.readValue(actualStr, new TypeReference<>() {
+        List<OfferPublicResponse> actual = objectMapper.readValue(actualStr, new TypeReference<>() {
         });
 
         assertThat(actual.get(0).firstname()).isEqualTo(account.getFirstname());

@@ -7,6 +7,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.UserDataService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferSearchRequest;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.SearchOfferResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,10 +54,10 @@ public class UserDataCtrl {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(path = "/search")
-    public ResponseEntity<List<Offer>> searchOffers(@NotBlank @RequestBody OfferSearchRequest req) {
-        List<Offer> offers = geoSearchService.searchWithinPolygon(req.addressStr());
+
+    @PostMapping(path = "/search")
+    public ResponseEntity<List<SearchOfferResponse>> searchOffers(@NotBlank @RequestBody OfferSearchRequest request) {
+        List<SearchOfferResponse> offers = geoSearchService.getMatchesForMitshopper(request);
         return new ResponseEntity<>(offers, HttpStatus.OK);
     }
-
 }
