@@ -34,6 +34,7 @@ import {useNavigate} from "react-router";
 import {urls} from "../../shared/UrlMapping";
 import axios from "axios";
 import userType, {UserDataType} from "../../types/UserType";
+import useUserHome from "../../hooks/useUserHome";
 
 
 export default function OfferForm() {
@@ -62,10 +63,11 @@ export default function OfferForm() {
     const [notes, setNotes] = useState<string | undefined>(undefined);
     const [priceOffer, setPriceOffer] = useState<number>(0);
 
-    const [newOfferData,setNewOfferData]=useState<OwnOfferType>();
+    const {getUserData} = useUserHome()
+    const [newOfferData, setNewOfferData] = useState<OwnOfferType>();
     const {enqueueSnackbar} = useSnackbar();
 
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (!currentUser) navigate("/login")
@@ -104,15 +106,17 @@ export default function OfferForm() {
     const handleNewOfferSubmit = () => {
         console.debug("agreed and submiting!!");
         axios
-            .post(urls.BASIC[0]+urls.BASIC[2]+"/"+currentUser.id+urls.BASIC[3], newOfferData)
+            .post(urls.BASIC[0] + urls.BASIC[2] + "/" + currentUser.id + urls.BASIC[3], newOfferData)
             .then(response => {
-                const ownOfferData:OwnOfferType = response?.data
-                const updatedOffers:OwnOfferType[]=[...currentUser?.userData?.currentOffers ?? [], ownOfferData]
-                const updatedUserData:UserDataType={...currentUser?.userData, currentOffers:updatedOffers}
-                setCurrentUser((currentUser:userType) => ({
+                const ownOfferData: OwnOfferType = response?.data
+                const updatedOffers: OwnOfferType[] = [...currentUser?.userData?.currentOffers ?? [], ownOfferData]
+                const updatedUserData: UserDataType = {...currentUser?.userData, currentOffers: updatedOffers}
+                setCurrentUser((currentUser: userType) => ({
                     ...currentUser, userData: updatedUserData
                 }));
-
+            })
+            .finally(() => {
+                if (useSaved === "false") getUserData()
             })
             .catch(_ => {
                 enqueueSnackbar('New Offer Submission Failed', {variant: "error"})
@@ -260,16 +264,6 @@ export default function OfferForm() {
                                             sx={{
                                                 "& .Mui-focused .MuiIconButton-root": { color: "primary.main" }
                                             }}
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <IconButton
-                                                        sx={{ visibility: shopCity ? "visible" : "hidden" }}
-                                                        onClick={()=>setShopCity(undefined)}
-                                                    >
-                                                        <ClearIcon />
-                                                    </IconButton>
-                                                ),
-                                            }}
                                         />
                                     </Grid>
                                     <Grid item md={4} xs={12} sx={{paddingLeft:"1rem",paddingBottom:"1.2rem"}}>
@@ -287,16 +281,6 @@ export default function OfferForm() {
                                             sx={{
                                                 "& .Mui-focused .MuiIconButton-root": { color: "primary.main" }
                                             }}
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <IconButton
-                                                        sx={{ visibility: shopCity ? "visible" : "hidden" }}
-                                                        onClick={()=>setShopCity(undefined)}
-                                                    >
-                                                        <ClearIcon />
-                                                    </IconButton>
-                                                ),
-                                            }}
                                         />
                                     </Grid>
                                     <Grid item md={12} xs={12} sx={{paddingLeft:"1rem"}}>
@@ -313,16 +297,6 @@ export default function OfferForm() {
                                             label="Straße und Hausnummer"
                                             sx={{
                                                 "& .Mui-focused .MuiIconButton-root": { color: "primary.main" }
-                                            }}
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <IconButton
-                                                        sx={{ visibility: shopCity ? "visible" : "hidden" }}
-                                                        onClick={()=>setShopCity(undefined)}
-                                                    >
-                                                        <ClearIcon />
-                                                    </IconButton>
-                                                ),
                                             }}
                                         />
                                     </Grid>
