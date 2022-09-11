@@ -6,6 +6,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoSearchService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.UserDataService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.MitshopperInquiryRecord;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferSearchRequest;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.SearchOfferResponse;
 import org.springframework.http.HttpStatus;
@@ -54,10 +55,15 @@ public class UserDataCtrl {
         return ResponseEntity.noContent().build();
     }
 
-
     @PostMapping(path = "/search")
     public ResponseEntity<List<SearchOfferResponse>> searchOffers(@NotBlank @RequestBody OfferSearchRequest request) {
         List<SearchOfferResponse> offers = geoSearchService.getMatchesForMitshopper(request);
         return new ResponseEntity<>(offers, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/createInquiry")
+    public ResponseEntity<Offer> createInquiry(@NotBlank @RequestBody MitshopperInquiryRecord inquiry) {
+        Offer offer = userDataService.createMitshopperInquiry(inquiry);
+        return new ResponseEntity<>(offer, HttpStatus.CREATED);
     }
 }

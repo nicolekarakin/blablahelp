@@ -2,6 +2,7 @@ package org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.Account;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
@@ -11,8 +12,10 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.AddressWrap;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.EAddressType;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.UserDataService;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.MitshopperInquiry;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.MitshopperInquiryRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +30,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -169,10 +173,48 @@ class UserDataCtrlTest {
                 .andExpect(status().isNoContent());
 
         mockMvc.perform(
-                        get(UrlMapping.USERDATA+"/"+accountId+"/offers"))
+                        get(UrlMapping.USERDATA + "/" + accountId + "/offers"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(0)));
 
+    }
+
+    @WithMockUser(authorities = {"BASIC"})
+    @DirtiesContext
+    @Test
+    void createInquiry() throws Exception {
+        String accountId = account.getId();
+        accountService.saveNew(account);
+
+        Offer offer = CreateData.createOffer(accountId);
+        offer = createNewOfferTest(offer);
+
+        String mitshopperId = UUID.randomUUID().toString();
+        MitshopperInquiryRecord inquiryRecord = CreateData.createMitshopperInquiryRecord(offer.getOfferId(),
+                mitshopperId, "My favourite shopping list");
+
+
+        MvcResult mvcResult = mockMvc.perform(
+                        post(UrlMapping.USERDATA + "/createInquiry")
+                                .contentType(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8)
+                                .accept(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8)
+                                .content(objectMapper.writeValueAsString(inquiryRecord))
+                                .with(user(account))
+                                .with(csrf())
+                )
+                .andExpect(status().isCreated()).andReturn();
+
+        String actualStr = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        Offer actual = objectMapper.readValue(actualStr, Offer.class);
+
+        Assertions.assertEquals(actual.getOfferId(), offer.getOfferId());
+        Assertions.assertEquals(1, actual.getInquirys().size());
+
+        MitshopperInquiry inquiry = actual.getInquirys().iterator().next();
+        Assertions.assertEquals(offer.getOfferId(), inquiry.getOfferId());
+        Assertions.assertEquals(mitshopperId, inquiry.getMitshopperAccountId());
+        Assertions.assertEquals(inquiryRecord.shoppingList().getProducts().size(),
+                inquiry.getShoppingList().getProducts().size());
     }
 }

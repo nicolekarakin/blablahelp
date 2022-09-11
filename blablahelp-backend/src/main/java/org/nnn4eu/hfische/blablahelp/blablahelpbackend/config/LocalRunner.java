@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.Account;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.ERole;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.product.DummyProductCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -24,6 +25,8 @@ public class LocalRunner implements ApplicationRunner {
     private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
 
+    private final DummyProductCreator dummyProductCreator;
+
     @Value("${spring.data.mongodb.uri}")
     private String mongoUri;
 
@@ -36,6 +39,13 @@ public class LocalRunner implements ApplicationRunner {
         List<Account> accounts = testMongoDb();
         log.info("Runner saved=====================================" + accounts.size());
         log.info("Runner in db=====================================" + accountService.count());
+
+        dummyProductCreator.createProducts();
+        String annaId = accountService.findAccountByEmail("anna@gmail.de").get().getId();
+        dummyProductCreator.addDummyShoppingList("Gesundesessen", annaId);
+        dummyProductCreator.addDummyShoppingList("Lieblingsessen", annaId);
+        dummyProductCreator.addDummyShoppingList("Grundnahrungsmittel", annaId);
+
     }
 
 

@@ -6,8 +6,10 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.AddressWrap;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.EAddressType;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.MitshopperInquiry;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.MitshopperInquiryRecord;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferPublicResponse;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
@@ -126,14 +128,20 @@ public class UserDataService {
     }
 
     private void checkForExpired(List<Offer> offers, int daysInBetween) {
-        offers.forEach(a->{
+        offers.forEach(a -> {
             Instant now = Instant.now();//TODO think about expiration.. should it be a day with .truncatedTo(ChronoUnit.DAYS)?
             Instant day = Instant.ofEpochMilli(a.getTimeFrom());
-            if(Duration.between(now,day).toDays()< daysInBetween){
+            if (Duration.between(now, day).toDays() < daysInBetween) {
                 a.setExpired(true);
             }
         });
     }
 
-
+    public Offer createMitshopperInquiry(MitshopperInquiryRecord request) {
+        MitshopperInquiry inquiry = MitshopperInquiry.from(request);
+        Offer offer = offerRepo.findById(request.offerId())
+                .orElseThrow(() -> new IllegalArgumentException("Offer with given id doesn't exist"));
+        offer.addInquiry(inquiry);
+        return offerRepo.save(offer);
+    }
 }

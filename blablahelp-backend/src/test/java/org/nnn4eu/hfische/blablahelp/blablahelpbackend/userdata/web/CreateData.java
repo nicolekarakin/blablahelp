@@ -6,13 +6,19 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.Account;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.ERole;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.product.model.*;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.MitshopperInquiryRecord;
 import org.springframework.data.mongodb.core.geo.GeoJsonModule;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.time.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class CreateData {
@@ -194,4 +200,59 @@ public class CreateData {
         return objectMapper.readValue(jsonString, Address.class);
     }
 
+    public static MitshopperInquiryRecord createMitshopperInquiryRecord(String offerId,
+                                                                        String mitshopperId, String title) throws JsonProcessingException {
+        return new MitshopperInquiryRecord(
+                offerId,
+                mitshopperId,
+                createAddressWithLocNoth(),
+                new BigDecimal("23"),
+                CreateData.createShoppingList(mitshopperId, title),
+                "Some notes here"
+        );
+    }
+
+    public static ShoppingList createShoppingList(String accountId, String title) {
+        List<@Valid ProductWrapper> products = new ArrayList<>();
+
+        products.add(
+                ProductWrapper.builder()
+                        .amount(1f).unit(EUnit.L)
+                        .product(createAndSaveProduct(Set.of(ECategory.DAIRY), "milch"))
+                        .build());
+
+        products.add(
+                ProductWrapper.builder()
+                        .amount(1.5f).unit(EUnit.KG)
+                        .product(createAndSaveProduct(Set.of(ECategory.VEGETABLES), "Zwiebel"))
+                        .build());
+
+        products.add(
+                ProductWrapper.builder()
+                        .amount(500f).unit(EUnit.G)
+                        .note("Jakobs falls möglich und INTENSITÄT 3 aus 5")
+                        .product(createAndSaveProduct(Set.of(ECategory.DRYDRINK), "Kaffee"))
+                        .build());
+        products.add(
+                ProductWrapper.builder()
+                        .amount(500f).unit(EUnit.ML)
+                        .note("Schokolade, falls möglich eine von: Brands Zero, Ben&Jerry, Häagen-Dazs")
+                        .product(createAndSaveProduct(Set.of(ECategory.FROZEN), "Eiscreme"))
+                        .build());
+
+        return ShoppingList.builder()
+                .products(products)
+                .accountId(accountId)
+                .title(title)
+                .build();
+    }
+
+    private static Product createAndSaveProduct(Set<ECategory> categories, String title) {
+        return Product.builder()
+                .title(title)
+                .status(EProductStatus.APPROVED)
+                .category(categories)
+                .build();
+
+    }
 }
