@@ -41,40 +41,47 @@ public class DummyProductCreator {
         products.add(
                 ProductWrapper.builder()
                         .amount(1f).unit(EUnit.L)
-                        .product(productRepo.findByTitleIgnoreCase("milch").get())
+                        .title("Milch")
+                        .category(productRepo.findByTitleIgnoreCase("Milch").get().getCategory())
                         .build());
 
         products.add(
                 ProductWrapper.builder()
                         .amount(2.5f).unit(EUnit.KG)
-                        .product(productRepo.findByTitleIgnoreCase("Kartoffel").get())
+                        .title("Kartoffel")
+                        .category(productRepo.findByTitleIgnoreCase("Kartoffel").get().getCategory())
                         .build());
         products.add(
                 ProductWrapper.builder()
                         .amount(1.5f).unit(EUnit.KG)
-                        .product(productRepo.findByTitleIgnoreCase("Zwiebel").get())
+                        .title("Zwiebel")
+                        .category(productRepo.findByTitleIgnoreCase("Zwiebel").get().getCategory())
                         .build());
         products.add(
                 ProductWrapper.builder()
                         .amount(1f).unit(EUnit.PIECE)
-                        .product(productRepo.findByTitleIgnoreCase("Paprika").get())
+                        .title("Paprika")
+                        .category(productRepo.findByTitleIgnoreCase("Paprika").get().getCategory())
                         .build());
         products.add(
                 ProductWrapper.builder()
                         .amount(3f).unit(EUnit.PIECE)
-                        .product(productRepo.findByTitleIgnoreCase("Avocados").get())
+                        .title("Avocado")
+                        .category(productRepo.findByTitleIgnoreCase("Avocado").get().getCategory())
                         .build());
         products.add(
                 ProductWrapper.builder()
                         .amount(500f).unit(EUnit.G)
                         .note("Jakobs falls möglich und INTENSITÄT 3 aus 5")
-                        .product(productRepo.findByTitleIgnoreCase("Kaffee").get())
+                        .title("Kaffee")
+                        .category(productRepo.findByTitleIgnoreCase("Kaffee").get().getCategory())
                         .build());
         products.add(
                 ProductWrapper.builder()
                         .amount(500f).unit(EUnit.ML)
+                        .title("Eiscreme")
                         .note("Schokolade, falls möglich eine von: Brands Zero, Ben&Jerry, Häagen-Dazs")
-                        .product(productRepo.findByTitleIgnoreCase("Eiscreme").get())
+                        .category(productRepo.findByTitleIgnoreCase("Eiscreme").get().getCategory())
                         .build());
 
         return ShoppingList.builder()
@@ -100,7 +107,7 @@ public class DummyProductCreator {
     private void createAndSaveProducts() {
         Set<Product> allProducts = new HashSet<>();
 
-        String[] fruits = {"Äpfel", "Bananen", "Trauben", "Orangen", "Erdbeeren", "Avocados", "Pfirsiche"};
+        String[] fruits = {"Äpfel", "Bananen", "Trauben", "Orangen", "Erdbeeren", "Avocado", "Pfirsiche"};
         List<Product> prs1 = createAndSaveProducts(Set.of(ECategory.FRUITS), Set.of(fruits));
         allProducts.addAll(prs1);
 

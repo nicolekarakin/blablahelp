@@ -1,0 +1,81 @@
+{
+  "title": "Lieblingsessen",
+  "accountId": "7755edc5-074c-4141-814f-7d451f565dba",
+  "products": [
+    {
+      "product": {
+        "title": "Milch",
+        "status": "APPROVED",
+        "category": [
+          "DAIRY"
+        ]
+      },
+      "amount": 1,
+      "unit": "L"
+    },
+    {
+      "product": {
+        "title": "Kartoffel",
+        "status": "APPROVED",
+        "category": [
+          "VEGETABLES"
+        ]
+      },
+      "amount": 2.5,
+      "unit": "KG"
+    },
+    {
+      "product": {
+        "title": "Zwiebel",
+        "category": [
+          "VEGETABLES"
+        ]
+      },
+      "amount": 1.5,
+      "unit": "KG"
+    },
+    {
+      "product": {
+        "title": "Paprika",
+        "category": [
+          "VEGETABLES"
+        ]
+      },
+      "amount": 1,
+      "unit": "PIECE"
+    },
+    {
+      "product": {
+        "title": "Avocados",
+        "status": "APPROVED",
+        "category": [
+          "FRUITS"
+        ]
+      },
+      "amount": 3,
+      "unit": "PIECE"
+    },
+    {
+      "product": {
+        "title": "Kaffee",
+        "category": [
+          "DRYDRINK"
+        ]
+      },
+      "note": "Jakobs falls möglich und INTENSITÄT 3 aus 5",
+      "amount": 500,
+      "unit": "G"
+    },
+    {
+      "product": {
+        "title": "Eiscreme",
+        "category": [
+          "FROZEN"
+        ]
+      },
+      "note": "Schokolade, falls möglich eine von: Brands Zero, Ben&Jerry, Häagen-Dazs",
+      "amount": 500,
+      "unit": "ML"
+    }
+  ]
+}
