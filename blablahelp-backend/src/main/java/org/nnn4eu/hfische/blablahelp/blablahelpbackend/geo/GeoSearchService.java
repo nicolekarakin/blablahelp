@@ -31,7 +31,8 @@ public class GeoSearchService {
     public Criteria findMatchingNotExpiredOffersCriteria(GeoJsonPoint p) {
         Criteria criteria = new Criteria();
         return criteria.and("mpolygon").intersects(p)
-                .and("isExpired").is(false);
+                .and("isExpired").is(false)
+                .and("isFullyBooked").is(false);
     }
 
     public List<Offer> findMatchingNotExpiredOffers(GeoJsonPoint p) {
