@@ -40,13 +40,6 @@ public class DummyProductCreator {
 
         products.add(
                 ProductWrapper.builder()
-                        .amount(1f).unit(EUnit.L)
-                        .title("Milch")
-                        .category(productRepo.findByTitleIgnoreCase("Milch").get().getCategory())
-                        .build());
-
-        products.add(
-                ProductWrapper.builder()
                         .amount(2.5f).unit(EUnit.KG)
                         .title("Kartoffel")
                         .category(productRepo.findByTitleIgnoreCase("Kartoffel").get().getCategory())
@@ -99,6 +92,7 @@ public class DummyProductCreator {
                     .status(EProductStatus.APPROVED)
                     .category(categories)
                     .build();
+            if (i.equals("Milch")) a.getCategory().add(ECategory.LIQUID);
             prs.add(a);
         }
         return prs;
@@ -147,7 +141,7 @@ public class DummyProductCreator {
         List<Product> prs9 = createAndSaveProducts(Set.of(ECategory.BREAD), Set.of(bread));
         allProducts.addAll(prs9);
 
-        String[] drinks = {"Kaffee", "Teebeutel", "Milch", "Saft", "Limonade", "Bier", "Wein"};
+        String[] drinks = {"Kaffee", "Teebeutel", "Saft", "Limonade", "Bier", "Wein"};
         List<Product> prs10 = createAndSaveProducts(Set.of(ECategory.DRINK), Set.of(drinks));
         allProducts.addAll(prs10);
 
