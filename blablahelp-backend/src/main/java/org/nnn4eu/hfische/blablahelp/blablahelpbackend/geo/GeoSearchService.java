@@ -64,7 +64,12 @@ public class GeoSearchService {
         }
 
         List<Offer> offers = findMatchingNotExpiredOffers(point, request.accountId());
-        return offers.stream().map(a -> {
+        List<Offer> filteredOffers = offers.stream().filter(a -> {
+            List<String> ids = a.getInquiries().stream().map(a2 -> a2.getMitshopperAccountId()).toList();
+            return !ids.contains(request.accountId());
+        }).toList();
+
+        return filteredOffers.stream().map(a -> {
             UserData userData = userDataRepo.findById(a.getAccountId())
                     .orElseThrow(() -> new IllegalArgumentException("no account with this id found"));
             return SearchOfferResponse.from(a, userData);
