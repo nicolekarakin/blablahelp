@@ -209,9 +209,9 @@ class UserDataCtrlTest {
         Offer actual = objectMapper.readValue(actualStr, Offer.class);
 
         Assertions.assertEquals(actual.getOfferId(), offer.getOfferId());
-        Assertions.assertEquals(1, actual.getInquirys().size());
+        Assertions.assertEquals(1, actual.getInquiries().size());
 
-        MitshopperInquiry inquiry = actual.getInquirys().iterator().next();
+        MitshopperInquiry inquiry = actual.getInquiries().iterator().next();
         Assertions.assertEquals(offer.getOfferId(), inquiry.getOfferId());
         Assertions.assertEquals(mitshopperId, inquiry.getMitshopperAccountId());
         Assertions.assertEquals(inquiryRecord.shoppingList().getProducts().size(),

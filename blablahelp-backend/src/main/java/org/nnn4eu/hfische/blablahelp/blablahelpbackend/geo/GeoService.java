@@ -64,6 +64,7 @@ public class GeoService {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .retrieve()
                 .bodyToMono(ForwardResponse.class)
+                .retry(3)
                 .log()
                 .block();
         if (response != null) {

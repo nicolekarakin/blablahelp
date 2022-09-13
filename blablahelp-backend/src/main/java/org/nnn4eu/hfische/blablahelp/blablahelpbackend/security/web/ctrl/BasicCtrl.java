@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 public class BasicCtrl {
     @GetMapping
     public ResponseEntity<String> getPrivateHome() {
-        return new ResponseEntity<>("You are in private home!", HttpStatus.OK);
+        return new ResponseEntity<>("Sie haben keine neuen Nachrichten", HttpStatus.OK);
     }
 
     @GetMapping(path = "/logout")

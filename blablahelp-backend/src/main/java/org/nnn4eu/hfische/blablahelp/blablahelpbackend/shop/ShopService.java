@@ -48,6 +48,7 @@ public class ShopService {
         Optional<ShopList> value = shopListRepo.findById(id);
         if (value.isPresent()) {
             shopList = value.get();
+            shopList.getAddresses().removeAll(addresses);
             shopList.getAddresses().addAll(addresses);
         } else {
             shopList = new ShopList(id, addresses);

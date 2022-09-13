@@ -6,6 +6,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.GeoSearchService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.UserDataService;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.CreateInquiryResponse;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.MitshopperInquiryRecord;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferSearchRequest;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.SearchOfferResponse;
@@ -62,8 +63,21 @@ public class UserDataCtrl {
     }
 
     @PostMapping(path = "/createInquiry")
-    public ResponseEntity<Offer> createInquiry(@NotBlank @RequestBody MitshopperInquiryRecord inquiry) {
-        Offer offer = userDataService.createMitshopperInquiry(inquiry);
-        return new ResponseEntity<>(offer, HttpStatus.CREATED);
+    public ResponseEntity<CreateInquiryResponse> createInquiry(@NotBlank @RequestBody MitshopperInquiryRecord inquiry) {
+        CreateInquiryResponse createInquiryResponse = userDataService.createMitshopperInquiry(inquiry);
+        return new ResponseEntity<>(createInquiryResponse, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/{mitshopperAccountId}/inquiries/{offerId}")
+    public ResponseEntity<CreateInquiryResponse> deleteInquiry(@NotBlank @PathVariable String mitshopperAccountId,
+                                                               @NotBlank @PathVariable String offerId) {
+        userDataService.deleteMitshopperInquiry(mitshopperAccountId, offerId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping(path = "/{accountId}/inquiries")
+    public ResponseEntity<List<CreateInquiryResponse>> getUserInquiries(@NotBlank @PathVariable String accountId) {
+        List<CreateInquiryResponse> inquiries = userDataService.findInquiriesByAccountIdAndIsExpired(accountId, false);
+        return new ResponseEntity<>(inquiries, HttpStatus.OK);
     }
 }

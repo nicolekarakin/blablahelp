@@ -21,6 +21,8 @@ public class MitshopperInquiry {
     @NotNull
     private String mitshopperAccountId;
     @NotNull
+    private String mitshopperFirstname;
+    @NotNull
     @Valid
     private Address mitshopperAddress;
     @NotNull
@@ -41,6 +43,7 @@ public class MitshopperInquiry {
         return new MitshopperInquiry().toBuilder()
                 .inquiryPrice(record.inquiryPrice())
                 .mitshopperAccountId(record.mitshopperAccountId())
+                .mitshopperFirstname(record.mitshopperFirstname())
                 .mitshopperAddress(record.mitshopperAddress())
                 .notes(record.notes())
                 .offerId(record.offerId())

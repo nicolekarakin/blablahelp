@@ -66,25 +66,25 @@ public class Offer {
     private boolean isExpired = false;
 
     @Setter(AccessLevel.NONE)
-    private Collection<MitshopperInquiry> inquirys = new HashSet<>();
+    private Collection<MitshopperInquiry> inquiries = new HashSet<>();
 
     public void addInquiry(@NotBlank MitshopperInquiry inquiry) {
-        if (inquirys.size() < maxMitshoppers) {
-            inquirys.add(inquiry);
+        if (inquiries.size() < maxMitshoppers) {
+            inquiries.add(inquiry);
             inquiry.setOfferId(offerId);
             isBooked = true;
         }
-        if (inquirys.size() == maxMitshoppers) {
+        if (inquiries.size() == maxMitshoppers) {
             isFullyBooked = true;
         }
     }
 
     public void removeInquiry(@NotBlank MitshopperInquiry inquiry) {
-        inquirys.remove(inquiry);
-        if (inquirys.isEmpty()) {
+        inquiries.remove(inquiry);
+        if (inquiries.isEmpty()) {
             isBooked = false;
         }
-        if (inquirys.size() < maxMitshoppers) {
+        if (inquiries.size() < maxMitshoppers) {
             isFullyBooked = false;
         }
     }

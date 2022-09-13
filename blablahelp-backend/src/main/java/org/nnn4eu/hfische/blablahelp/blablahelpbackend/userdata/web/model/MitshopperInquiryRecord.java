@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public record MitshopperInquiryRecord(
         @NotNull String offerId,
         @NotNull String mitshopperAccountId,
+        @NotNull String mitshopperFirstname,
         @NotNull @Valid Address mitshopperAddress,
         @NotNull BigDecimal inquiryPrice,//TODO how to handle currency? for now assume euro
         @NotNull @Valid ShoppingList shoppingList,
