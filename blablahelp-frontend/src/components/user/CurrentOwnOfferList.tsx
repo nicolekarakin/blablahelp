@@ -16,7 +16,8 @@ export default function CurrentOwnOfferList(props: CurrentOwnOfferListProps) {
                 <Typography variant={'h1'} ml={2} mr={2}>
                     Shopping
                 </Typography>
-                <List sx={{width: '100%', bgcolor: 'background.paper', paddingBottom: "1rem"}}>
+                <List
+                    sx={{width: '100%', bgcolor: 'background.paper', paddingBottom: "1rem"}}>
                     {
                         props.offers.map((a, index) => (
                             <CurrentOwnOffer key={index} o={a} offerLength={props.offers.length} keyIndex={index}/>

@@ -1,4 +1,4 @@
-import {Button, Divider, ListItem, ListItemText, Typography} from "@mui/material";
+import {Button, Divider, IconButton, ListItem, ListItemText, Typography} from "@mui/material";
 import React, {useContext} from "react";
 
 import {addressToString, capitalise, timeFromInstant} from "../../shared/util";
@@ -12,6 +12,8 @@ import ListAvatarForDates from "./ListAvatarForDates";
 import axios from "axios";
 import {urls} from "../../shared/UrlMapping";
 import userType from "../../types/UserType";
+import MessageRoundedIcon from "@mui/icons-material/MessageRounded";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 type CurrentOwnInquiryProps = {
     d: OwnInquiryResponseType,
@@ -32,9 +34,6 @@ export default function CurrentOwnInquiry(props: CurrentOwnInquiryProps) {
             .then(_ => {
                 const updatedOwnInquiries: OwnInquiryResponseType[] = currentUser?.currentInquiries
                     .filter((a: OwnInquiryResponseType) => a.inquiry.offerId !== props.d.offer.offerId
-                        // {
-                        //     if(a.inquiry.offerId !== props.d.offer.offerId) return a;
-                        // }
                     )
 
                 setCurrentUser((currentUser: userType) => ({
@@ -43,66 +42,62 @@ export default function CurrentOwnInquiry(props: CurrentOwnInquiryProps) {
 
             })
             .catch(e => {
-                console.debug(e)
                 enqueueSnackbar('Inquiry Deletion Failed', {variant: "error"})
             });
     }
 
-    const handelKontakt = (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault()
-        console.debug("handelKontakt")
-    }
 
     return (
         <>
             {(props.d && props.d.offer && props.d.inquiry) &&
                 <ListItem alignItems="flex-start">
-                    <ListAvatarForDates shoppingDay={props.d.offer.shoppingDay!} locale={locale}/>
-                    <ListItemText
-                        primary={props.d.offer.shopname! + " – " + props.d.offer.shopAddress!.city}
-                        secondary={
-                            <React.Fragment>
-                                {addressToString(props.d.offer.shopAddress!)}<br/>
-                                {addressToString(props.d.inquiry.mitshopperAddress!)}<br/>
-                                <Typography
-                                    sx={{display: 'block', fontWeight: "bold", fontSize: "1rem", marginTop: ".7rem"}}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                >
-                                    {timeFromInstant(props.d.offer.timeFrom!, locale)} – {timeFromInstant(props.d.offer.timeTo!, locale)} Uhr
-                                </Typography>
-                                <ShoppingList data={props.d.inquiry.shoppingList}
-                                              shopperFirstname={capitalise(props.d.offer.firstname)}
-                                              mitshopperFirstname={capitalise(currentUser.firstname)}/>
+                    <ListAvatarForDates shoppingDay={props.d.offer.shoppingDay} locale={locale}/>
+                    <ListItemText disableTypography={true}>
+                        <Typography component="h5">
+                            {props.d.offer.shopname + " – Shopping mit " + capitalise(props.d.offer.firstname)}
+                        </Typography>
+                        <Typography component="p" variant={"body2"} color={"text.secondary"}>
+                            {addressToString(props.d.offer.shopAddress)}<br/>
+                            {addressToString(props.d.inquiry.mitshopperAddress!)}<br/>
+                        </Typography>
+                        <Typography
+                            sx={{display: 'block', fontWeight: "bold", fontSize: "1rem", marginTop: ".7rem"}}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                        >
+                            {timeFromInstant(props.d.offer.timeFrom, locale)} – {timeFromInstant(props.d.offer.timeTo, locale)} Uhr
+                        </Typography>
 
-                                <NotOwnOfferDetails data={props.d.offer}/>
+                        <Button sx={{color: "text.primary", paddingLeft: "0"}}
+                                variant={"text"} size={"small"} onClick={handelDelete}>Stornieren</Button>
+                        <NotOwnOfferDetails data={props.d.offer}/>
+                        <ShoppingList data={props.d.inquiry.shoppingList}
+                                      shopperFirstname={capitalise(props.d.offer.firstname)}
+                                      mitshopperFirstname={capitalise(currentUser.firstname)}/>
 
-                                <Typography color="text.primary" component="span"
-                                            sx={{
-                                                display: 'block', fontWeight: "bold",
-                                                fontSize: "1rem", marginTop: ".7rem"
-                                            }}>
-                                    {"Shopping mit " + capitalise(props.d.offer.firstname)}
-                                </Typography>
+                        <IconButton aria-label="add to favorites" disabled>
+                            <FavoriteIcon/>
+                        </IconButton>
+                        <IconButton aria-label="chat" disabled>
+                            <MessageRoundedIcon/>
+                        </IconButton>
 
-                                <Typography component="span"
-                                            sx={{display: 'block', fontSize: "0.875rem", lineHeight: 1.43}}>
-                                    {props.d.offer.notes}
-                                </Typography>
+                        <Typography component="span"
+                                    sx={{display: 'block', fontSize: "0.875rem", lineHeight: 1.43}}>
+                            {props.d.offer.notes}
+                        </Typography>
 
-                                <Button sx={{color: "text.primary", paddingLeft: "0"}}
-                                        variant={"text"} size={"small"} onClick={handelDelete}>Stornieren</Button>
-                                <Button sx={{color: "text.primary", paddingLeft: "0"}} disabled={true}
-                                        variant={"text"} size={"small"} onClick={handelKontakt}>Kontakt</Button>
-
-                            </React.Fragment>
-                        }
-                    />
+                    </ListItemText>
                 </ListItem>
             }
-            {!((props.offerLength - 1) === props.keyIndex) &&
-                <Divider variant="inset" component="li" sx={{marginRight: "1.2rem"}}/>
+            {((props.offerLength - 1) !== props.keyIndex) &&
+                <Divider variant="fullWidth" component="div"
+                         sx={{
+                             marginRight: "1.2rem",
+                             borderColor: (theme) => theme.palette.primary.main,
+                             borderBottomWidth: ".26rem"
+                         }}/>
             }
         </>
 

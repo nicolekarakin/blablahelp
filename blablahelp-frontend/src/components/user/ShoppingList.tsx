@@ -5,12 +5,14 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    IconButton,
     useMediaQuery,
     useTheme
 } from "@mui/material";
-import {useState} from "react";
+import React, {useState} from "react";
 import ShoppingListType from "../../types/ShoppingListType";
 import Product from "./Product";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 type ShoppingListProps = {
     data: ShoppingListType,
@@ -34,10 +36,13 @@ export default function ShoppingList(props: ShoppingListProps) {
 
     return (
         <>
-            <Button onClick={handleClickOpen}
-                    color={"primary"} variant={"text"} size={"small"}
-                    sx={{display: "inline-block", paddingLeft: "0"}}>
-                Shoppinglist</Button>
+            <IconButton aria-label="shoppinglist" onClick={handleClickOpen}>
+                <ShoppingCartIcon/>
+            </IconButton>
+            {/*<Button onClick={handleClickOpen}*/}
+            {/*        color={"primary"} variant={"text"} size={"small"}*/}
+            {/*        sx={{display: "inline-block", paddingLeft: "0"}}>*/}
+            {/*    Shoppinglist</Button>*/}
             <Dialog
                 fullScreen={fullScreen}
                 open={open}
