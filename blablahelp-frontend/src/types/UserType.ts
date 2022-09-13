@@ -1,6 +1,6 @@
 import OwnOfferType from "./OwnOfferType";
 import {AddressWrapType} from "./AddressType";
-import OwnInquiryType from "./OwnInquiryType";
+import {OwnInquiryResponseType} from "./OwnInquiryType";
 import {ReviewType} from "./ReviewType";
 
 export type UserDataType={
@@ -28,6 +28,6 @@ export type UserType = {
     city: string,
     userData?: UserDataType,
     currentOffers?: OwnOfferType[],
-    currentInquiries?: OwnInquiryType[],
+    currentInquiries?: OwnInquiryResponseType[],
 }
 export default UserType
