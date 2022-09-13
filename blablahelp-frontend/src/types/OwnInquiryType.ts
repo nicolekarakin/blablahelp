@@ -1,23 +1,25 @@
 import AddressType from "./AddressType";
+import ShoppingListType from "./ShoppingListType";
+import NotOwnOfferType from "./NotOwnOfferType";
+
+export type OwnInquiryResponseType = {
+    offer: NotOwnOfferType,
+    inquiry: OwnInquiryType,
+}
 
 type OwnInquiryType = {
-    inquiryId?: string,
-    accountId: string,
-    mitshopperAccountId:string,
     offerId: string,
+    mitshopperAccountId: string,
+    mitshopperFirstname: string,
+    mitshopperAddress: AddressType | null,
+    inquiryPrice?: string | undefined, //TODO how to handle currency? for now assume euro
+    notes?: string,
+    shoppingList: ShoppingListType,
 
-    mitshopperAddress:AddressType|null,
-
-    inquiryStatus:string|undefined,
-    shoppingList?:{}|null,
-
-    isDelivered?:boolean,
-    isReviewed?:boolean,
-    isCanceled?:boolean,
-    isExpired?:boolean,
-
-    notes?:string,
-    inquiryPrice:string| undefined, //TODO how to handle currency? for now assume euro
-
+    inquiryStatus?: string | undefined,
+    isDelivered?: boolean,
+    isReviewed?: boolean,
+    isCanceled?: boolean,
+    isExpired?: boolean,
 }
 export default OwnInquiryType

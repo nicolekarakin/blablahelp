@@ -1,9 +1,6 @@
 {
   "title": "Grundnahrungsmittel",
   "accountId": "7755edc5-074c-4141-814f-7d451f565dba",
-  "version": {
-    "$numberLong": "0"
-  },
   "products": [
     {
       "title": "Kartoffel",
@@ -63,3 +60,5 @@
     }
   ]
 }
+
+
