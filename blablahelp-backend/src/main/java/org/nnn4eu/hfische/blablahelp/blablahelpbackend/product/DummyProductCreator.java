@@ -82,7 +82,7 @@ public class DummyProductCreator {
                     ProductWrapper.builder()
                             .amount(500f).unit(EUnit.G)
                             .note("Jakobs falls möglich und INTENSITÄT 3 aus 5")
-                            .title("Kaffee")
+                            .title(str)
                             .category(optional.get().getCategory())
                             .build());
         }
