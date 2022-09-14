@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -41,11 +42,13 @@ public class LocalRunner implements ApplicationRunner {
         log.info("Runner in db=====================================" + accountService.count());
 
         dummyProductCreator.createProducts();
-        String annaId = accountService.findAccountByEmail("anna@gmail.de").get().getId();
-        dummyProductCreator.addDummyShoppingList("Gesundesessen", annaId);
-        dummyProductCreator.addDummyShoppingList("Lieblingsessen", annaId);
-        dummyProductCreator.addDummyShoppingList("Grundnahrungsmittel", annaId);
-
+        Optional<Account> accountOpt = accountService.findAccountByEmail("anna@gmail.de");
+        if (accountOpt.isPresent()) {
+            String annaId = accountOpt.get().getId();
+            dummyProductCreator.addDummyShoppingList("Gesundesessen", annaId);
+            dummyProductCreator.addDummyShoppingList("Lieblingsessen", annaId);
+            dummyProductCreator.addDummyShoppingList("Grundnahrungsmittel", annaId);
+        }
     }
 
 
