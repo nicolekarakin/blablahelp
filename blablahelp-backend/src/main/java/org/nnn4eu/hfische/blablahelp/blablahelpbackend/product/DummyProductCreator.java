@@ -163,7 +163,7 @@ public class DummyProductCreator {
         List<Product> prs9 = createAndSaveProducts(new HashSet<>(Arrays.asList(ECategory.BREAD)), Set.of(bread));
         allProducts.addAll(prs9);
 
-        String[] drinks = {"Kaffee", "Teebeutel", "Saft", "Limonade", "Bier", "Wein"};
+        String[] drinks = {"Saft", "Limonade", "Bier", "Wein"};
         List<Product> prs10 = createAndSaveProducts(new HashSet<>(Arrays.asList(ECategory.DRINK)), Set.of(drinks));
         allProducts.addAll(prs10);
 
