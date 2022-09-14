@@ -39,15 +39,15 @@ public class MitshopperInquiry {
     private boolean isCanceled = false;
     private boolean isExpired = false;
 
-    public static MitshopperInquiry from(@Valid MitshopperInquiryRecord record) {
+    public static MitshopperInquiry from(@Valid MitshopperInquiryRecord inquiryRecord) {
         return new MitshopperInquiry().toBuilder()
-                .inquiryPrice(record.inquiryPrice())
-                .mitshopperAccountId(record.mitshopperAccountId())
-                .mitshopperFirstname(record.mitshopperFirstname())
-                .mitshopperAddress(record.mitshopperAddress())
-                .notes(record.notes())
-                .offerId(record.offerId())
-                .shoppingList(record.shoppingList())
+                .inquiryPrice(inquiryRecord.inquiryPrice())
+                .mitshopperAccountId(inquiryRecord.mitshopperAccountId())
+                .mitshopperFirstname(inquiryRecord.mitshopperFirstname())
+                .mitshopperAddress(inquiryRecord.mitshopperAddress())
+                .notes(inquiryRecord.notes())
+                .offerId(inquiryRecord.offerId())
+                .shoppingList(inquiryRecord.shoppingList())
                 .build();
     }
 }

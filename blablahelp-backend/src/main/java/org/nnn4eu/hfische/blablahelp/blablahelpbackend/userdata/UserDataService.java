@@ -165,7 +165,7 @@ public class UserDataService {
         Set<Offer> offers = offerRepo.findAllByInquiries_MitshopperAccountIdEquals(accountId);
         List<CreateInquiryResponse> inquiries = new ArrayList<>();
 
-        offers.stream().forEach(a -> {
+        offers.stream().filter(a -> a.isExpired() == b).forEach(a -> {
             UserData userData = findUserDataById(a.getAccountId());
             SearchOfferResponse offerResponse = SearchOfferResponse.from(a, userData);
 

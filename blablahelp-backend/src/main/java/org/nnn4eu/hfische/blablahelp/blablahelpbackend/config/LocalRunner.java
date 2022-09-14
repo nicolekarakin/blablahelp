@@ -55,37 +55,42 @@ public class LocalRunner implements ApplicationRunner {
     private List<Account> testMongoDb() {
         List<Account> accounts = new ArrayList<>();
 
+        final String email1 = "frank@gmail.de";
         accounts.add(
-                accountService.findAccountByEmail("frank@gmail.de").orElseGet(() ->
+                accountService.findAccountByEmail(email1).orElseGet(() ->
                         accountService.saveNew(
                                 new Account(
                                         passwordEncoder.encode("blafr22"),
-                                        "frank@gmail.de", "frank", "Berlin",
+                                        email1, "frank", "Berlin",
                                         Set.of(ERole.ADMIN),
                                         true
                                 )))
         );
+
+        final String email2 = "anna@gmail.de";
         accounts.add(
-                accountService.findAccountByEmail("anna@gmail.de").orElseGet(() ->
+                accountService.findAccountByEmail(email2).orElseGet(() ->
                         accountService.saveNew(
                                 new Account(
                                         passwordEncoder.encode("blaan22"),
-                                        "anna@gmail.de", "anna", "München",
+                                        email2, "anna", "München",
                                         Set.of(ERole.BASIC),
                                         true
                                 )))
         );
 
+        final String email3 = "annafrank@gmail.de";
         accounts.add(
-                accountService.findAccountByEmail("annafrank@gmail.de").orElseGet(() ->
+                accountService.findAccountByEmail(email3).orElseGet(() ->
                         accountService.saveNew(
                                 new Account(
                                         passwordEncoder.encode("annafrank"),
-                                        "annafrank@gmail.de", "annafrank","Hulm",
+                                        email3, "annafrank", "Hulm",
                                         Set.of(ERole.ADMIN, ERole.BASIC),
                                         true
                                 )))
         );
+
         return accounts;
     }
 
