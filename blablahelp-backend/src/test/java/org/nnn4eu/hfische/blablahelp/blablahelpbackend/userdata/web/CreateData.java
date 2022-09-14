@@ -200,11 +200,12 @@ public class CreateData {
         return objectMapper.readValue(jsonString, Address.class);
     }
 
-    public static MitshopperInquiryRecord createMitshopperInquiryRecord(String offerId,
+    public static MitshopperInquiryRecord createMitshopperInquiryRecord(String offerId, String name,
                                                                         String mitshopperId, String title) throws JsonProcessingException {
         return new MitshopperInquiryRecord(
                 offerId,
                 mitshopperId,
+                name,
                 createAddressWithLocNoth(),
                 new BigDecimal("23"),
                 CreateData.createShoppingList(mitshopperId, title),
@@ -217,27 +218,28 @@ public class CreateData {
 
         products.add(
                 ProductWrapper.builder()
-                        .amount(1f).unit(EUnit.L)
-                        .product(createAndSaveProduct(Set.of(ECategory.DAIRY), "milch"))
+                        .amount(1f)
+                        .unit(EUnit.L)
+                        .title("milch")
                         .build());
 
         products.add(
                 ProductWrapper.builder()
                         .amount(1.5f).unit(EUnit.KG)
-                        .product(createAndSaveProduct(Set.of(ECategory.VEGETABLES), "Zwiebel"))
+                        .title("Zwiebel")
                         .build());
 
         products.add(
                 ProductWrapper.builder()
                         .amount(500f).unit(EUnit.G)
                         .note("Jakobs falls möglich und INTENSITÄT 3 aus 5")
-                        .product(createAndSaveProduct(Set.of(ECategory.DRYDRINK), "Kaffee"))
+                        .title("Kaffee")
                         .build());
         products.add(
                 ProductWrapper.builder()
                         .amount(500f).unit(EUnit.ML)
                         .note("Schokolade, falls möglich eine von: Brands Zero, Ben&Jerry, Häagen-Dazs")
-                        .product(createAndSaveProduct(Set.of(ECategory.FROZEN), "Eiscreme"))
+                        .title("Eiscreme")
                         .build());
 
         return ShoppingList.builder()

@@ -12,9 +12,9 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.AddressWrap;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.EAddressType;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.UserDataService;
-import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.MitshopperInquiry;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.CreateInquiryResponse;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.MitshopperInquiryRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -192,7 +192,7 @@ class UserDataCtrlTest {
 
         String mitshopperId = UUID.randomUUID().toString();
         MitshopperInquiryRecord inquiryRecord = CreateData.createMitshopperInquiryRecord(offer.getOfferId(),
-                mitshopperId, "My favourite shopping list");
+                "MitshopperName", mitshopperId, "My favourite shopping list");
 
 
         MvcResult mvcResult = mockMvc.perform(
@@ -206,15 +206,15 @@ class UserDataCtrlTest {
                 .andExpect(status().isCreated()).andReturn();
 
         String actualStr = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        Offer actual = objectMapper.readValue(actualStr, Offer.class);
+        CreateInquiryResponse actual = objectMapper.readValue(actualStr, CreateInquiryResponse.class);
 
-        Assertions.assertEquals(actual.getOfferId(), offer.getOfferId());
-        Assertions.assertEquals(1, actual.getInquiries().size());
+        Assertions.assertEquals(offer.getOfferId(), actual.getOffer().offerId());
+        Assertions.assertEquals("My favourite shopping list", actual.getInquiry().shoppingList().getTitle());
 
-        MitshopperInquiry inquiry = actual.getInquiries().iterator().next();
-        Assertions.assertEquals(offer.getOfferId(), inquiry.getOfferId());
-        Assertions.assertEquals(mitshopperId, inquiry.getMitshopperAccountId());
+        MitshopperInquiryRecord inquiry = actual.getInquiry();
+        Assertions.assertEquals(offer.getOfferId(), inquiry.offerId());
+        Assertions.assertEquals(mitshopperId, inquiry.mitshopperAccountId());
         Assertions.assertEquals(inquiryRecord.shoppingList().getProducts().size(),
-                inquiry.getShoppingList().getProducts().size());
+                inquiry.shoppingList().getProducts().size());
     }
 }

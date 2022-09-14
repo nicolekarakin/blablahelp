@@ -55,7 +55,7 @@ class BasicCtrlTest {
                         get(UrlMapping.BASIC)
                 ).andExpect(status().isOk())
                 .andReturn();
-        String expected = "You are in private home!";
+        String expected = "Sie haben keine neuen Nachrichten";
 
         String actual = mvcResult.getResponse().getContentAsString();
         assertThat(actual).isEqualToIgnoringWhitespace(expected);
