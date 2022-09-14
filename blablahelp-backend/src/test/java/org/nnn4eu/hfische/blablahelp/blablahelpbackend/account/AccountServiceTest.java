@@ -3,16 +3,16 @@ package org.nnn4eu.hfische.blablahelp.blablahelpbackend.account;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.CreateData;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
-import static java.time.temporal.ChronoUnit.DAYS;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -53,6 +53,26 @@ class AccountServiceTest {
     }
 
     @Test
+    void findAccountByUsername_throw() {
+        Account expected1 = new Account("pass1234", "Rosy@");
+        Account expected2 = new Account("pass1234", "Rosy@");
+        List<Account> expectedList = List.of(expected1, expected2);
+        String username = expected1.getEmail();
+        when(accountRepo.findByEmail(username)).thenReturn(expectedList);
+
+        String ids = expected1.getId() + ", " + expected2.getId();
+        final Exception generalEx = new IllegalStateException("username should be unique, but query returned: " + ids);
+
+        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> {
+            throw generalEx;
+        });
+        Assertions.assertEquals("username should be unique, but query returned: " + ids, exception.getMessage());
+        Assertions.assertThrowsExactly(ResponseStatusException.class, () -> accountService.findAccountById(username));
+
+
+    }
+
+    @Test
     void save() {
         Account expected = new Account("pass1234", "Rosy@");
         when(accountRepo.save(expected)).thenReturn(expected);
@@ -66,5 +86,16 @@ class AccountServiceTest {
         when(accountRepo.count()).thenReturn(expected);
         Long actual = accountService.count();
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void getBasicAccounts() {
+        Account expected1 = CreateData.createAccount();
+        Account expected2 = CreateData.createAccount();
+        List<Account> expectedList = List.of(expected1, expected2);
+        when(accountRepo.findByAuthoritiesIn(anyList())).thenReturn(expectedList);
+
+        List<Account> actual = accountService.getBasicAccounts(Set.of(ERole.BASIC));
+        Assertions.assertEquals(expectedList, actual);
     }
 }

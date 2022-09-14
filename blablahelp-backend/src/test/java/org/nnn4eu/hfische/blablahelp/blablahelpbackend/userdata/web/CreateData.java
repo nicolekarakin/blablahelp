@@ -9,7 +9,9 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.ERole;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.product.model.*;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.MitshopperInquiryRecord;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.SearchOfferResponse;
 import org.springframework.data.mongodb.core.geo.GeoJsonModule;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -256,5 +258,13 @@ public class CreateData {
                 .category(categories)
                 .build();
 
+    }
+
+    public static SearchOfferResponse createSearchOfferResponse(Offer offer, UserData userData) {
+        return SearchOfferResponse.from(offer, userData);
+    }
+
+    public static UserData createUserData(String accountId, String firstname) {
+        return new UserData(accountId, firstname);
     }
 }
