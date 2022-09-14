@@ -40,12 +40,14 @@ public class Offer {
     private Long shoppingDay;
     @NotNull
     private String shopname;
-    @NotNull @Valid
+    @NotNull
+    @Valid
     private Address shopAddress;
-    @NotNull @Valid
+    @NotNull
+    @Valid
     private Address destinationAddress;
     @NotNull
-    private BigDecimal priceOffer;//TODO how to handle currency? for now assume euro
+    private BigDecimal priceOffer;//TODO(@nicolekarakin) how to handle currency? for now assume euro
     private String notes;
     @NotNull
     private int maxMitshoppers;

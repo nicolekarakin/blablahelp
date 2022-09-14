@@ -65,7 +65,7 @@ public class GeoSearchService {
         }
 
         List<Offer> offers = findMatchingNotExpiredOffers(point, request.accountId());
-        //TODO update isExpired field like it is done in getOffers request
+        //TODO(@nicolekarakin) update isExpired field like it is done in getOffers request
         List<Offer> filteredOffers = offers.stream().filter(a -> {
             List<String> ids = a.getInquiries().stream().map(MitshopperInquiry::getMitshopperAccountId).toList();
             return !ids.contains(request.accountId());

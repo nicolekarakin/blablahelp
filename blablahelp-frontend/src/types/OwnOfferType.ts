@@ -8,13 +8,13 @@ type OwnOfferType = {
     timeFrom: number | undefined,
     timeTo: number | undefined,
 
-    shopname:string | undefined,
-    shopAddress:AddressType | null,
-    destinationAddress:AddressType |null,
+    shopname: string | undefined,
+    shopAddress: AddressType | null,
+    destinationAddress: AddressType | null,
 
-    maxMitshoppers:number|null,
-    maxLiter:number|null,
-    maxArticles:number|null,
+    maxMitshoppers: number | null,
+    maxLiter: number | null,
+    maxArticles: number | null,
     maxDistanceKm: number | null,
 
     isBooked?: boolean,
@@ -24,7 +24,7 @@ type OwnOfferType = {
     isExpired?: boolean,
 
     notes?: string,
-    priceOffer: string | undefined, //TODO how to handle currency? for now assume euro,
+    priceOffer: string | undefined, //TODO(@nicolekarakin) how to handle currency? for now assume euro,
     inquiries?: OwnInquiryType[],
 
 }

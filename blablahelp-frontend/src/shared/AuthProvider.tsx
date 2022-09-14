@@ -25,8 +25,8 @@ const AuthProvider = ({children}: AuthProviderType) => {
     const [currentCountry, setCurrentCountry] = useState<string>("DE");
     const [currentUser, setCurrentUser] = useState<UserType | null>(null);
 
-    //TODO implement manual country and language switch
-    //TODO call getIpCountry(setCurrentCountry) in useEffect
+    //TODO(@nicolekarakin) implement manual country and language switch
+    //TODO(@nicolekarakin) call getIpCountry(setCurrentCountry) in useEffect
 
     return (
         <AuthContext.Provider value={{currentUser, setCurrentUser, currentCountry, currentLang}}>

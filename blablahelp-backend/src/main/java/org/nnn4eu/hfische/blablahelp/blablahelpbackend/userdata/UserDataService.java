@@ -107,7 +107,8 @@ public class UserDataService {
         Offer toDelete = offerRepo.findById(offerId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (!toDelete.getAccountId().equals(accountId)) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         if (toDelete.isBooked()) {
-            log.debug("deleting offer that was booked, we need to handle mitshopper here");//TODO handle canselation of offer that already was booked
+            log.debug("deleting offer that was booked, we need to handle mitshopper here");
+            //TODO(@nicolekarakin) handle canselation of offer that already was booked
         }
         offerRepo.delete(toDelete);
     }

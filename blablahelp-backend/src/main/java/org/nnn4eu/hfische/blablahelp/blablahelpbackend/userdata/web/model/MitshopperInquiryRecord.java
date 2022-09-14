@@ -12,7 +12,7 @@ public record MitshopperInquiryRecord(
         @NotNull String mitshopperAccountId,
         @NotNull String mitshopperFirstname,
         @NotNull @Valid Address mitshopperAddress,
-        @NotNull BigDecimal inquiryPrice,//TODO how to handle currency? for now assume euro
+        @NotNull BigDecimal inquiryPrice,//TODO(@nicolekarakin) how to handle currency? for now assume euro
         @NotNull @Valid ShoppingList shoppingList,
         String notes
 ) {

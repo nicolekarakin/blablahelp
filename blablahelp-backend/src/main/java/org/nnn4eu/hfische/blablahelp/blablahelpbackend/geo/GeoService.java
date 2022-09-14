@@ -68,7 +68,7 @@ public class GeoService {
                 .log()
                 .block();
         if (response != null) {
-            List<Loc> locs = response.data();//TODO should we use confidence levels?
+            List<Loc> locs = response.data();//TODO(@nicolekarakin) should we use confidence levels?
             log.info("Address to Geolocation: " + Arrays.toString(locs.toArray()));
             return new GeoJsonPoint(locs.get(0).longitude(), locs.get(0).latitude());
         } else throw new IllegalArgumentException("Couldn't fetch geocoordinates for provided address");

@@ -26,7 +26,7 @@ public class MitshopperInquiry {
     @Valid
     private Address mitshopperAddress;
     @NotNull
-    private BigDecimal inquiryPrice;//TODO how to handle currency? for now assume euro
+    private BigDecimal inquiryPrice;//TODO(@nicolekarakin) how to handle currency? for now assume euro
     @NotNull
     @Valid
     private ShoppingList shoppingList;

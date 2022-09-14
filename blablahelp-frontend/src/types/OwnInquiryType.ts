@@ -12,7 +12,7 @@ type OwnInquiryType = {
     mitshopperAccountId: string,
     mitshopperFirstname: string,
     mitshopperAddress: AddressType | null,
-    inquiryPrice?: string, //TODO how to handle currency? for now assume euro
+    inquiryPrice?: string, //TODO(@nicolekarakin) how to handle currency? for now assume euro
     notes?: string,
     shoppingList: ShoppingListType,
 

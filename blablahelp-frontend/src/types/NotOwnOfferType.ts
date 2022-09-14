@@ -11,7 +11,7 @@ type NotOwnOfferType = {
 
     shopname: string,
     shopAddress: AddressType,
-    priceOffer: string, //TODO how to handle currency? for now assume euro,
+    priceOffer: string, //TODO(@nicolekarakin) how to handle currency? for now assume euro,
     notes?: string,
 
     maxMitshoppers: number,
