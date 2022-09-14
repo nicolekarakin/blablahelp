@@ -12,11 +12,11 @@ export default function ListAvatarForDates(props: { shoppingDay: number, locale:
                 variant="subtitle1"
                 color="primary"
             >
-                {new Date(props.shoppingDay!).getDate()}<br/>
-                {getShortMonthString(props.shoppingDay!, props.locale)}<br/>
-                {new Date(props.shoppingDay!).getFullYear()}<br/>
+                {new Date(props.shoppingDay).getDate()}<br/>
+                {getShortMonthString(props.shoppingDay, props.locale)}<br/>
+                {new Date(props.shoppingDay).getFullYear()}<br/>
                 <Box component={"span"} sx={{color: "text.primary", display: "inline-block", marginTop: ".8rem"}}>
-                    {weekdayFromInstant(props.shoppingDay!, props.locale)}
+                    {weekdayFromInstant(props.shoppingDay, props.locale)}
                 </Box>
             </Typography>
         </ListItemAvatar>

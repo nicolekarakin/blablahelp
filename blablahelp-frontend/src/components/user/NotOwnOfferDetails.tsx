@@ -45,13 +45,13 @@ export default function NotOwnOfferDetails(props: NotOwnOfferDetailsProps) {
                 aria-labelledby="details-ansehen"
             >
                 <DialogTitle id="details-ansehen">
-                    {props.data.shopAddress?.city}, {dateFromInstant(props.data.shoppingDay!, currentLang + "-" + currentCountry)}
+                    {props.data.shopAddress?.city}, {dateFromInstant(props.data.shoppingDay, currentLang + "-" + currentCountry)}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText component={"div"}>
                         <Typography sx={{mb: 1.5}} color="text.secondary">
                             Lieferung an die Haustür zwischen <br/>
-                            {timeFromInstant(props.data.timeFrom!, currentLang + "-" + currentCountry)} und {timeFromInstant(props.data.timeTo!, currentLang + "-" + currentCountry)} Uhr
+                            {timeFromInstant(props.data.timeFrom, currentLang + "-" + currentCountry)} und {timeFromInstant(props.data.timeTo, currentLang + "-" + currentCountry)} Uhr
                         </Typography>
                         <Typography variant="h6" color={"primary"}>Angebot – {props.data.priceOffer} Euro</Typography>
                         <Typography color="text.secondary">
@@ -63,7 +63,7 @@ export default function NotOwnOfferDetails(props: NotOwnOfferDetailsProps) {
 
                         <Typography variant="h6" color={"primary"}>Shop</Typography>
                         <Typography color="text.secondary">
-                            {props.data.shopname} – {addressToString(props.data.shopAddress!)}<br/>
+                            {props.data.shopname} – {addressToString(props.data.shopAddress)}<br/>
                         </Typography>
                         <Typography sx={{fontSize: "1rem", fontWeight: "bold", mb: 1.5}} color="text.primary">
                             Maximale Distance Breite – {props.data.maxDistanceKm} km
@@ -78,7 +78,7 @@ export default function NotOwnOfferDetails(props: NotOwnOfferDetailsProps) {
 
                         <Typography sx={{fontSize: "1rem", fontWeight: "bold", mb: 1.5}} color="text.primary">
                             Produktartikel**, maximal {props.data.maxArticles}<br/>
-                            Flüssigkeiten, maximal {props.data.maxLiter!} Liter<br/>
+                            Flüssigkeiten, maximal {props.data.maxLiter} Liter<br/>
                             <Box component={"span"} sx={{fontSize: ".8rem"}}>**ohne Flüssigkeiten</Box>
                         </Typography>
 

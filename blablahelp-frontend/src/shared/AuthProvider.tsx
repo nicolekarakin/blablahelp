@@ -11,7 +11,6 @@ type ValueProp = {
 const AuthContext = createContext<any | ValueProp>(null)
 
 function getIpCountry(setCurrenCountry: (s: string) => void) {
-    //TODO implement manual country switch
     fetch('https://api.hostip.info/country.php')
         .then(response => {
             return response.text();
@@ -26,9 +25,8 @@ const AuthProvider = ({children}: AuthProviderType) => {
     const [currentCountry, setCurrentCountry] = useState<string>("DE");
     const [currentUser, setCurrentUser] = useState<UserType | null>(null);
 
-    // useEffect(()=>{
-    //     getIpCountry(setCurrentCountry)
-    // },[])
+    //TODO implement manual country and language switch
+    //TODO call getIpCountry(setCurrentCountry) in useEffect
 
     return (
         <AuthContext.Provider value={{currentUser, setCurrentUser, currentCountry, currentLang}}>

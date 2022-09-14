@@ -27,10 +27,10 @@ export default function CurrentOwnOffer(props: CurrentOwnOfferProps) {
         axios
             .delete(urls.BASIC[0] + urls.BASIC[2] + "/" + currentUser.id + urls.BASIC[1] + "/" + props.o.offerId)
             .then(_ => {
-                const updatedOwnOffers: OwnOfferType[] = currentUser?.currentOffers.filter((a: OwnOfferType) => a.offerId !== props.o.offerId)
-
-                setCurrentUser((currentUser: userType) => ({
-                    ...currentUser, currentOffers: updatedOwnOffers
+                const updatedOwnOffers: OwnOfferType[] = currentUser?.currentOffers
+                    .filter((a: OwnOfferType) => a.offerId !== props.o.offerId)
+                setCurrentUser((user: userType) => ({
+                    ...user, currentOffers: updatedOwnOffers
                 }));
 
             })
@@ -50,7 +50,7 @@ export default function CurrentOwnOffer(props: CurrentOwnOfferProps) {
                             {props.o.shopname! + " – " + props.o.shopAddress?.city}
                         </Typography>
                         <Typography component="p" variant={"body2"} color={"text.secondary"}>
-                            {addressToString(props.o.shopAddress!)}<br/>
+                            {addressToString(props.o.shopAddress)}<br/>
                             {addressToString(props.o.destinationAddress!)}<br/>
                         </Typography>
                         <Typography

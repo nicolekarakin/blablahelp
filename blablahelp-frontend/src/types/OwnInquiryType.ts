@@ -12,11 +12,11 @@ type OwnInquiryType = {
     mitshopperAccountId: string,
     mitshopperFirstname: string,
     mitshopperAddress: AddressType | null,
-    inquiryPrice?: string | undefined, //TODO how to handle currency? for now assume euro
+    inquiryPrice?: string, //TODO how to handle currency? for now assume euro
     notes?: string,
     shoppingList: ShoppingListType,
 
-    inquiryStatus?: string | undefined,
+    inquiryStatus?: string,
     isDelivered?: boolean,
     isReviewed?: boolean,
     isCanceled?: boolean,

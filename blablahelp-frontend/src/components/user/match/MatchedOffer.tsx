@@ -45,17 +45,6 @@ export default function MatchedOffer(props: MatchedOfferProps) {
         return inquiry
     }
 
-    // const updateCurrentUserState = (ownInquiry:OwnInquiryResponse) => {
-    //     const newState = currentUser.currentInquiries.map((obj: OwnInquiryResponse) => {
-    //         if (obj.offer.offerId === ownInquiry.offer.offerId) {
-    //             return {...ownInquiry};
-    //         }
-    //         return obj;
-    //     });
-    //     setCurrentUser(newState);
-    //     console.debug(ownInquiry)
-    // }
-
     const handleSubmitInquiry = (shopListTitle: string) => {
         const inquiry = createInquiry()
         inquiry.shoppingList.title = shopListTitle
@@ -104,13 +93,13 @@ export default function MatchedOffer(props: MatchedOfferProps) {
 
                 <Typography variant="h6" color={"primary"}>
                     {dateFromInstant(props.selectedOffer.shoppingDay, locale)}<br/>
-                    {timeFromInstant(props.selectedOffer.timeFrom!, currentLang + "-" + currentCountry) + " und " + timeFromInstant(props.selectedOffer.timeTo!, currentLang + "-" + currentCountry)} Uhr
+                    {timeFromInstant(props.selectedOffer.timeFrom, currentLang + "-" + currentCountry) + " und " + timeFromInstant(props.selectedOffer.timeTo, currentLang + "-" + currentCountry)} Uhr
                 </Typography>
 
                 <Typography sx={{mb: 1.5, mt: 1.5}} color="text.secondary">
                     Maximal {props.selectedOffer.maxArticles} Produktartikel
                     <Box component={"span"} sx={{fontSize: ".8rem"}}> (ohne Flüssigkeiten)</Box><br/>
-                    Maximal an Flüssigkeiten {props.selectedOffer.maxLiter!} Liter<br/>
+                    Maximal an Flüssigkeiten {props.selectedOffer.maxLiter} Liter<br/>
                 </Typography>
                 {
                     !(props.selectedOffer.notes && props.selectedOffer.notes.length > 0) &&
