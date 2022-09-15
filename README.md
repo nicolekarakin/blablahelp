@@ -7,7 +7,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=nicolekarakin_blablahelp_backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=nicolekarakin_blablahelp_backend)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nicolekarakin_blablahelp_backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nicolekarakin_blablahelp_backend)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=nicolekarakin_blablahelp_backend&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=nicolekarakin_blablahelp_backend)
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=nicolekarakin_blablahelp_backend)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=nicolekarakin_blablahelp_backend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=nicolekarakin_blablahelp_backend)
 
 To run backend locally you need:
 
