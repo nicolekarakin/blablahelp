@@ -1,7 +1,6 @@
 package org.nnn4eu.hfische.blablahelp.blablahelpbackend.security;
 
 import lombok.RequiredArgsConstructor;
-import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.Account;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.AccountService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
