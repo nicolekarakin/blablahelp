@@ -1,8 +1,6 @@
-package org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model;
+package org.nnn4eu.hfische.blablahelp.blablahelpbackend.product.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -17,16 +15,19 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class ShoppingList {
     @Id
+    @NotBlank
+    private String title;
+    @NotBlank
     private String accountId;
     @Version
     private Long version;
     @CreatedDate
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     Instant createdAt;
-    @NotBlank
-    private String title;
     @NotEmpty
     private List<@Valid ProductWrapper> products;
 }

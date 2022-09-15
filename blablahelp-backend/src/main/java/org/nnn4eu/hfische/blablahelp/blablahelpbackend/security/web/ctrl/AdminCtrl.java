@@ -38,7 +38,7 @@ public class AdminCtrl {
     private final GeoSearchService geoSearchService;
     @GetMapping
     public ResponseEntity<String> getAdminHome() {
-        return new ResponseEntity<>("You are in admin home!", HttpStatus.OK);
+        return new ResponseEntity<>("Sie haben keine neuen Nachrichten", HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.OK)

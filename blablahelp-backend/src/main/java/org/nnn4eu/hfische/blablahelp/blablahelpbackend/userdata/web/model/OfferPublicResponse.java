@@ -10,5 +10,5 @@ public record OfferPublicResponse(String firstname,
                                   int shoppingCancellation,
                                   int shoppingCount,
                                   int shoppingRating
-) {//TODO should we include reviews?
+) {//TODO(@nicolekarakin) should we include reviews?
 }

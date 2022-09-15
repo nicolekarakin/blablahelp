@@ -112,7 +112,7 @@ export default function OfferForm() {
                 setCurrentUser((currentUser: userType) => ({
                     ...currentUser, currentOffers: updatedOffers
                 }));
-                console.debug(currentUser.currentOffers)
+
             })
             .finally(() => {
                 if (useSaved === "false") getUserData()

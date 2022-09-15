@@ -38,7 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class PublicUserDataCtrlTest {
-    private final Account account = CreateData.createAccount();
+    private final Account
+            account = CreateData.createAccount();
     @Autowired
     AccountService accountService;
     @Autowired

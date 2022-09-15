@@ -84,5 +84,18 @@ public class Account implements UserDetails {
     public String getUsername() {
         return email;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account)) return false;
+        Account account = (Account) o;
+        return id.equals(account.id) && email.equals(account.email) && Objects.equals(version, account.version);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, version);
+    }
 }
 

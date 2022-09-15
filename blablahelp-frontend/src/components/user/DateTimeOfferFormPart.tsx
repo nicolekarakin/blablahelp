@@ -1,10 +1,8 @@
 import TextField from '@mui/material/TextField';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
-
-import {TimePicker} from '@mui/x-date-pickers/TimePicker';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import React, {useEffect, useState} from 'react';
-import {ClockPickerView, LocalizationProvider} from "@mui/x-date-pickers";
+import {ClockPickerView, LocalizationProvider, MobileTimePicker} from "@mui/x-date-pickers";
 import {addMinutes} from 'date-fns'
 
 const shouldDisableMyTime=(timeValue:number, clockType:ClockPickerView) => {
@@ -64,7 +62,7 @@ export default function DateTimeOfferFormPart(p:DateTimeOfferFormPartProps) {
                     {...params} />}
             />
 
-            <TimePicker
+            <MobileTimePicker
                 disabled={timeFromDisabled}
                 shouldDisableTime={shouldDisableMyTime}
                 label="Geliefert ab"
@@ -78,7 +76,7 @@ export default function DateTimeOfferFormPart(p:DateTimeOfferFormPartProps) {
                     {...params} />}
             />
 
-            <TimePicker
+            <MobileTimePicker
                 minTime={minTimeTo}
                 disabled={timeToDisabled}
                 shouldDisableTime={shouldDisableMyTime}

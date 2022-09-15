@@ -8,8 +8,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DynamicTextInput from "../DynamicTextInput";
 
+type InquiryDialogProp = {
+    handleSubmit: (shoplistTitle: string) => void,
+}
 
-export default function InquiryDialog(props: { handleSubmit: (shoplistTitle: string) => void }) {
+export default function InquiryDialog(props: InquiryDialogProp) {
     const [open, setOpen] = useState(false);
     const [shoplistTitle, setShoplistTitle] = useState()
 
@@ -27,17 +30,18 @@ export default function InquiryDialog(props: { handleSubmit: (shoplistTitle: str
     };
 
     const getShoplistTitles = () => {
-
-        const lists = [{title: "Grundnahrungsmittel"}, {title: "Gesundesessen"}, {title: "Lieblingsessen"}]
+        const lists = [{title: "Grundnahrungsmittel", item: "Grundnahrungsmittel"},
+            {title: "Gesundesessen", item: "Gesundesessen"},
+            {title: "Lieblingsessen", item: "Lieblingsessen"}]
         return Promise.resolve([...lists]);
     }
 
     return (
         <div>
-            <Button autoFocus onClick={handleClickOpen}>Mitschopping Bestätigen</Button>
+            <Button autoFocus onClick={handleClickOpen}>Mitshopping Bestätigen</Button>
 
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Mitschopping Bestätigen</DialogTitle>
+                <DialogTitle>Mitshopping Bestätigen</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         To subscribe to this website, please enter your email address here. We

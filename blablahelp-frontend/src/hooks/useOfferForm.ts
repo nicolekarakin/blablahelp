@@ -7,7 +7,7 @@ import {AuthContext} from "../shared/AuthProvider";
 type T = { title: string, item: any }
 
 export default function useOfferForm() {
-    //TODO for addresses, check their geolocation, if null get it with mapbox and save in db
+    //TODO(@nicolekarakin) for addresses, check their geolocation, if null get it with mapbox and save in db
 
     const {currentCountry, currentLang} = useContext(AuthContext);
 

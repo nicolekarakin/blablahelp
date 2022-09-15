@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface OfferRepo extends MongoRepository<Offer, String> {
 
@@ -18,4 +19,6 @@ public interface OfferRepo extends MongoRepository<Offer, String> {
 
     @Query(value = "{'shopAddress.loc' :{'$geoWithin': { '$centerSphere' : [ [ ?0, ?1], ?2 ] }}}")
     List<Offer> findByShopAddrWithinCircle(@Param("lng") Double lng, @Param("lat") Double lat, @Param("dist") Double dist);
+
+    Set<Offer> findAllByInquiries_MitshopperAccountIdEquals(String mitshopperAccountId);
 }

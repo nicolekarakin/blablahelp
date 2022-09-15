@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,6 +52,8 @@ class OfferRepoTest {
     ShopService shopService;
     @Mock
     UserDataRepo userDataRepo;
+    @Mock
+    WebClient webClient;
 
     @BeforeAll
     void init() throws JsonProcessingException {
@@ -172,7 +175,7 @@ mongosh
 https://www.mongodb.com/docs/manual/tutorial/calculate-distances-using-spherical-geometry-with-2d-geospatial-indexes/
 
 
-//works!!!!! many results will be back!!
+//works!!!!! many results
 db.shopList.aggregate(
   // Start with a $match pipeline which can take advantage of an index and limit documents processed
   { $match : {
@@ -269,7 +272,7 @@ db.offer.createIndex({"destinationAddress.loc":"2dsphere"})
 //only if all polygons are closed and have correct order of points
 db.offer.createIndex({"mpolygon": "2dsphere" });
 
-----not
+----not working
 
 db.offer.ensureIndex({"mpolygon": "2dsphere" });
 lat: 0.000707 long:0.001267 >>> 4 metres or roughly .000036036 >>> 111km or 1degree

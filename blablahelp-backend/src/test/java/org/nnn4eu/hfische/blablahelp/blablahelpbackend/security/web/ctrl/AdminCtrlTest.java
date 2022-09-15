@@ -82,7 +82,7 @@ class AdminCtrlTest {
                         get(UrlMapping.ADMIN)
                 ).andExpect(status().isOk())
                 .andReturn();
-        String expected = "You are in admin home!";
+        String expected = "Sie haben keine neuen Nachrichten";
 
         String actual = mvcResult.getResponse().getContentAsString();
         assertThat(actual).isEqualToIgnoringWhitespace(expected);

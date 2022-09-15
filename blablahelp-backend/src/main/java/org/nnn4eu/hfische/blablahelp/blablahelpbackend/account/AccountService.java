@@ -29,8 +29,7 @@ public class AccountService {
         else if (accounts.size() == 1) return Optional.of(accounts.get(0));
         else {
             String ids = accounts.stream().map(Account::getId).reduce("", (id, s) -> s + ", " + id);
-            log.error("username should be unique, but query returned: " + ids);
-            return Optional.empty();
+            throw new IllegalStateException("username should be unique, but query returned: " + ids);
         }
     }
 

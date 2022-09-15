@@ -23,7 +23,8 @@ export default function MatchedOffers(props: MatchedOffersProp) {
 
             {
                 props.offers.map((a, index) => {
-                    return (<MatchedOffer key={index} {...a}/>)
+                    return (<MatchedOffer key={index} selectedOffer={a}
+                                          mitshopperAddress={props.mitshopperAddress}/>)
                 })
             }
         </Box>

@@ -40,12 +40,14 @@ public class Offer {
     private Long shoppingDay;
     @NotNull
     private String shopname;
-    @NotNull @Valid
+    @NotNull
+    @Valid
     private Address shopAddress;
-    @NotNull @Valid
+    @NotNull
+    @Valid
     private Address destinationAddress;
     @NotNull
-    private BigDecimal priceOffer;//TODO how to handle currency? for now assume euro
+    private BigDecimal priceOffer;//TODO(@nicolekarakin) how to handle currency? for now assume euro
     private String notes;
     @NotNull
     private int maxMitshoppers;
@@ -66,26 +68,26 @@ public class Offer {
     private boolean isExpired = false;
 
     @Setter(AccessLevel.NONE)
-    private Collection<String> inquiryIds = new HashSet<>();
+    private Collection<MitshopperInquiry> inquiries = new HashSet<>();
 
-    public void addInquiryId(@NotBlank MitshopperInquiry inquiry) {
-        if (inquiryIds.size() < maxMitshoppers) {
-            inquiryIds.add(inquiry.getInquiryId());
+    public void addInquiry(@NotBlank MitshopperInquiry inquiry) {
+        if (inquiries.size() < maxMitshoppers) {
+            inquiries.add(inquiry);
             inquiry.setOfferId(offerId);
             isBooked = true;
         }
-        if (inquiryIds.size() == maxMitshoppers) {
+        if (inquiries.size() == maxMitshoppers) {
             isFullyBooked = true;
         }
     }
 
-    public void removeId(@NotBlank String id) {
-        inquiryIds.remove(id);
-        if(inquiryIds.isEmpty()){
-            isBooked=false;
+    public void removeInquiry(@NotBlank MitshopperInquiry inquiry) {
+        inquiries.remove(inquiry);
+        if (inquiries.isEmpty()) {
+            isBooked = false;
         }
-        if(inquiryIds.size() < maxMitshoppers){
-            isFullyBooked=false;
+        if (inquiries.size() < maxMitshoppers) {
+            isFullyBooked = false;
         }
     }
 }

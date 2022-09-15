@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.AddressWrap;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.EAddressType;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.UserDataRepo;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.MitshopperInquiry;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferSearchRequest;
@@ -31,7 +32,8 @@ public class GeoSearchService {
     public Criteria findMatchingNotExpiredOffersCriteria(GeoJsonPoint p) {
         Criteria criteria = new Criteria();
         return criteria.and("mpolygon").intersects(p)
-                .and("isExpired").is(false);
+                .and("isExpired").is(false)
+                .and("isFullyBooked").is(false);
     }
 
     public List<Offer> findMatchingNotExpiredOffers(GeoJsonPoint p) {
@@ -63,7 +65,13 @@ public class GeoSearchService {
         }
 
         List<Offer> offers = findMatchingNotExpiredOffers(point, request.accountId());
-        return offers.stream().map(a -> {
+        //TODO(@nicolekarakin) update isExpired field like it is done in getOffers request
+        List<Offer> filteredOffers = offers.stream().filter(a -> {
+            List<String> ids = a.getInquiries().stream().map(MitshopperInquiry::getMitshopperAccountId).toList();
+            return !ids.contains(request.accountId());
+        }).toList();
+
+        return filteredOffers.stream().map(a -> {
             UserData userData = userDataRepo.findById(a.getAccountId())
                     .orElseThrow(() -> new IllegalArgumentException("no account with this id found"));
             return SearchOfferResponse.from(a, userData);

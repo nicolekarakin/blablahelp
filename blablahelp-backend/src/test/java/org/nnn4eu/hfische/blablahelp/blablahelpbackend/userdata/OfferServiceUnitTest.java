@@ -14,6 +14,7 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.CreateData;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.mock;
 @Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OfferServiceUnitTest {
+    WebClient webClient = mock(WebClient.class);
     private final ShopService shopService = mock(ShopService.class);
     private final GeoService geoService = new GeoService(shopService);
     final static double RADIUS_MAJOR = 6378137.0;
