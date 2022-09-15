@@ -17,17 +17,17 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class ShopServiceTest {
+class ShopServiceUnitTest {
 
-    private final ShopListRepo shopRepo=mock(ShopListRepo.class);
+    private final ShopListRepo shopRepo = mock(ShopListRepo.class);
     @Mock
-    private final ShopService shopService=new ShopService(shopRepo);
+    private final ShopService shopService = new ShopService(shopRepo);
 
 
     @Test
     void getAllShopIdsForCountry() {
-        Set<String> expected = Set.of("ALDI","LIDL");
-        Set<ShopList> shopList=Set.of(new ShopList("de-DE_aldi",null),new ShopList("de-DE_lidl",null));
+        Set<String> expected = Set.of("ALDI", "LIDL");
+        Set<ShopList> shopList = Set.of(new ShopList("de-DE_aldi", null), new ShopList("de-DE_lidl", null));
         when(shopRepo.findByIdIgnoreCaseContaining("-DE")).thenReturn(shopList);
         Set<String> actual=shopService.findAllShopIdsForCountry("DE");
         assertThat(actual).isEqualTo(expected);

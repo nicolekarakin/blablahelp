@@ -12,7 +12,7 @@ import java.util.Optional;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class UserDetailsServiceImplTest {
+class UserDetailsServiceImplUnitTest {
 
     private final AccountService accountService = mock(AccountService.class);
     private final UserDetailsServiceImpl impl = new UserDetailsServiceImpl(accountService);

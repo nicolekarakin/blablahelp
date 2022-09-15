@@ -3,98 +3,61 @@ package org.nnn4eu.hfische.blablahelp.blablahelpbackend.account;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.CreateData;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @Slf4j
+@DataMongoTest
+@ComponentScan(basePackageClasses = AccountService.class)
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class AccountServiceTest {
-    private final AccountRepo accountRepo = mock(AccountRepo.class);
-    private final AccountService accountService = new AccountService(accountRepo);
+    @Autowired
+    private AccountRepo accountRepo;
+    @Autowired
+    private AccountService accountService;//=new AccountService(accountRepo);
 
     @Test
     void findAccountById() {
-        Account expected = new Account("pass1234", "Rosy@");
-        String id = expected.getId();
-        when(accountRepo.findById(id)).thenReturn(Optional.of(expected));
-        Account actual = accountService.findAccountById(id);
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    void findAccountById_throw() {
-        String id = UUID.randomUUID().toString();
-        final Exception generalEx = new ResponseStatusException(HttpStatus.NOT_FOUND, "Account with id: " + id + " not found");
-        when(accountRepo.findById(id)).thenReturn(Optional.empty());
-        Throwable exception = Assertions.assertThrows(ResponseStatusException.class, () -> {
-            throw generalEx;
-        });
-        Assertions.assertEquals("404 NOT_FOUND \"Account with id: " + id + " not found\"", exception.getMessage());
-        Assertions.assertThrowsExactly(ResponseStatusException.class, () -> accountService.findAccountById(id));
+        Account account = CreateData.createAccount();
+        Account expected = accountRepo.save(account);
+        Account actual = accountService.findAccountById(expected.getId());
+        Assertions.assertEquals(expected.getId(), actual.getId());
     }
 
     @Test
     void findAccountByEmail() {
-        Account expected = new Account("pass1234", "Rosy@");
-        List<Account> expectedList = List.of(expected);
-        String username = expected.getEmail();
-        when(accountRepo.findByEmail(username)).thenReturn(expectedList);
-        Optional<Account> actual = accountService.findAccountByEmail(username);
-        Assertions.assertEquals(Optional.of(expected), actual);
+        Account account = CreateData.createAccount();
+        Account expected = accountRepo.save(account);
+        Optional<Account> actual = accountService.findAccountByEmail(expected.getEmail());
+        Assertions.assertEquals(expected, actual.get());
     }
 
     @Test
-    void findAccountByEmail_throw() {
-        Account expected1 = new Account("pass1234", "Rosy@");
-        Account expected2 = new Account("pass1234", "Rosy@");
-        List<Account> expectedList = List.of(expected1, expected2);
-        String username = expected1.getEmail();
-        when(accountRepo.findByEmail(username)).thenReturn(expectedList);
-
-        String ids = expected1.getId() + ", " + expected2.getId();
-
-        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> {
-            throw new IllegalStateException("username should be unique, but query returned: " + ids);
-        });
-        Assertions.assertEquals("username should be unique, but query returned: " + ids, exception.getMessage());
-        Assertions.assertThrowsExactly(ResponseStatusException.class, () -> accountService.findAccountById(username));
-
-
+    void saveNew() {
+        Account account = CreateData.createAccount();
+        Account actual = accountService.saveNew(account);
+        Assertions.assertEquals(account, actual);
     }
 
     @Test
-    void save() {
-        Account expected = new Account("pass1234", "Rosy@");
-        when(accountRepo.save(expected)).thenReturn(expected);
-        Account actual = accountService.saveNew(expected);
-        Assertions.assertEquals(expected, actual);
+    void saveNew_throw() {
+        Account account = CreateData.createAccount();
+        accountService.saveNew(account);
+        Account account2 = CreateData.createAccount();
+
+        Throwable exception = Assertions.assertThrows(IllegalArgumentException.class,
+                () -> accountService.saveNew(account2));
+        Assertions.assertEquals("account with email: " + account.getEmail() + " already in db", exception.getMessage());
+
     }
 
-    @Test
-    void count() {
-        Long expected = 0L;
-        when(accountRepo.count()).thenReturn(expected);
-        Long actual = accountService.count();
-        Assertions.assertEquals(expected, actual);
-    }
 
-    @Test
-    void getBasicAccounts() {
-        Account expected1 = CreateData.createAccount();
-        Account expected2 = CreateData.createAccount();
-        List<Account> expectedList = List.of(expected1, expected2);
-        when(accountRepo.findByAuthoritiesIn(anyList())).thenReturn(expectedList);
-
-        List<Account> actual = accountService.getBasicAccounts(Set.of(ERole.BASIC));
-        Assertions.assertEquals(expectedList, actual);
-    }
 }

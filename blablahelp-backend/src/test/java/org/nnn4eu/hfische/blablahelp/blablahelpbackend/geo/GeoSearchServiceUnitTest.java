@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class GeoSearchServiceTest {
+class GeoSearchServiceUnitTest {
     private final MongoTemplate mongoTemplate = mock(MongoTemplate.class);
     private final GeoService geoService = mock(GeoService.class);
     private final UserDataRepo userDataRepo = mock(UserDataRepo.class);
