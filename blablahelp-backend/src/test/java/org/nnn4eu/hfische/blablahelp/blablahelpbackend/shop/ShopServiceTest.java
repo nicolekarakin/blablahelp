@@ -48,9 +48,9 @@ class ShopServiceTest {
         String id = "de-DE_aldi";
         Address adr1 = CreateData.createAddressWithLocNoth();
         Address adr2 = CreateData.createAddressWithLocSouth();
-        Set<Address> mset = new HashSet<>(Arrays.asList(adr1, adr2));
-        ShopList shopList = new ShopList(id, mset);
-        Set<Address> addresses = new HashSet<>(mset);
+        Set<Address> addressHashSet = new HashSet<>(Arrays.asList(adr1, adr2));
+        ShopList shopList = new ShopList(id, addressHashSet);
+        Set<Address> addresses = new HashSet<>(addressHashSet);
 
         when(shopRepo.findById(id)).thenReturn(Optional.of(shopList));
         when(shopRepo.save(any(ShopList.class))).thenReturn(shopList);
