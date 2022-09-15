@@ -16,6 +16,8 @@ import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.UserData;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.CreateInquiryResponse;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.MitshopperInquiryRecord;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.OfferSearchRequest;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.model.SearchOfferResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -217,4 +219,55 @@ class UserDataCtrlTest {
         Assertions.assertEquals(inquiryRecord.shoppingList().getProducts().size(),
                 inquiry.shoppingList().getProducts().size());
     }
+
+    @WithMockUser(authorities = {"BASIC"})
+    @DirtiesContext
+    @Test
+    void searchOffers() throws Exception {
+
+        OfferSearchRequest offerSearchRequest = new OfferSearchRequest(UUID.randomUUID().toString(),
+                CreateData.createAddressWithLocNoth(), "Arni");
+
+        MvcResult mvcResult = mockMvc.perform(
+                        post(UrlMapping.USERDATA + "/search")
+                                .contentType(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8)
+
+                                .accept(MediaType.APPLICATION_JSON).characterEncoding(StandardCharsets.UTF_8)
+                                .content(objectMapper.writeValueAsString(offerSearchRequest))
+                                .with(user(account))
+                                .with(csrf())
+                )
+                .andExpect(status().isOk()).andReturn();
+
+        String actualStr = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        List<SearchOfferResponse> actual = objectMapper.readValue(actualStr, new TypeReference<>() {
+        });
+        Assertions.assertEquals(0, actual.size());
+    }
+
+    @WithMockUser(authorities = {"BASIC"})
+    @DirtiesContext
+    @Test
+    void deleteInquiry() throws Exception {
+        mockMvc.perform(
+                        delete(UrlMapping.USERDATA + "/" + UUID.randomUUID().toString()
+                                + "/inquiries/" + UUID.randomUUID().toString())
+                                .with(csrf()))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @WithMockUser(authorities = {"BASIC"})
+    @DirtiesContext
+    @Test
+    void getUserInquiries() throws Exception {
+        String accountId = UUID.randomUUID().toString();
+        mockMvc.perform(
+                        get(UrlMapping.USERDATA + "/" + accountId + "/inquiries"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(0)))
+        ;
+    }
 }
+

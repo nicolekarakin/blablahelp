@@ -43,7 +43,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void findAccountByUsername() {
+    void findAccountByEmail() {
         Account expected = new Account("pass1234", "Rosy@");
         List<Account> expectedList = List.of(expected);
         String username = expected.getEmail();
@@ -53,7 +53,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void findAccountByUsername_throw() {
+    void findAccountByEmail_throw() {
         Account expected1 = new Account("pass1234", "Rosy@");
         Account expected2 = new Account("pass1234", "Rosy@");
         List<Account> expectedList = List.of(expected1, expected2);
