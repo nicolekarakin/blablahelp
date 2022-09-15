@@ -61,10 +61,9 @@ class AccountServiceTest {
         when(accountRepo.findByEmail(username)).thenReturn(expectedList);
 
         String ids = expected1.getId() + ", " + expected2.getId();
-        final Exception generalEx = new IllegalStateException("username should be unique, but query returned: " + ids);
 
         Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> {
-            throw generalEx;
+            throw new IllegalStateException("username should be unique, but query returned: " + ids);
         });
         Assertions.assertEquals("username should be unique, but query returned: " + ids, exception.getMessage());
         Assertions.assertThrowsExactly(ResponseStatusException.class, () -> accountService.findAccountById(username));
