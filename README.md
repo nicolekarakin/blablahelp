@@ -18,7 +18,7 @@ For front end:
 - npm install
 - use demo users:
   - anna@gmai.de:blaan22
-    - frank@gmail.de:blafr22
+  - frank@gmail.de:blafr22
 
 excalidraw draft - v1 - [process](https://excalidraw.com/#json=wIjhotfj6wie27cewGeKW,hW-czwpHf0636T4YJzLsag)
 
