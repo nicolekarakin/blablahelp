@@ -86,7 +86,9 @@ public class GeoService {
     }
 
     public GeoJsonPolygon calculatePolygon(GeoJsonPoint loc1, GeoJsonPoint loc2, double maxDistanceKm) {
-        Point a, b;
+        Point a;
+        Point b;
+
         if (loc2.getY() >= loc1.getY()) {
             a = new Point(loc1.getX(), loc1.getY());
             b = new Point(loc2.getX(), loc2.getY());
@@ -100,7 +102,15 @@ public class GeoService {
 
         double coef = maxDistanceDegree / 2;
         double v = coef / Math.sqrt(1 + (m * m));
-        double sx, rx, tx, ux, sy, ry, ty, uy;
+        double sx;
+        double rx;
+        double tx;
+        double ux;
+        double sy;
+        double ry;
+        double ty;
+        double uy;
+
         if (m <= 0) {
             sx = b.getX() - v;
             rx = b.getX() + v;
