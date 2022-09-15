@@ -1,6 +1,6 @@
 package org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.web.model.ForwardResponse;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.web.model.Loc;
@@ -17,7 +17,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 public class GeoService {
@@ -25,9 +24,13 @@ public class GeoService {
     private String token;
     private static final String DEFAULT_COUNTRY = "DE";
     private final ShopService shopService;
-    private final WebClient webClient = WebClient.create("http://api.positionstack.com");
-//    https://github.com/reactor/reactor-netty/issues/1774
-//    https://stackoverflow.com/questions/67316160/what-is-wrong-with-below-webclient-config
+    @Setter
+    private WebClient webClient;
+
+    public GeoService(ShopService shopService) {
+        this.shopService = shopService;
+        this.webClient = WebClient.create("http://api.positionstack.com");
+    }
 
     public void addCoordinatesToShops(String shopListId) {
         String alpha3Country = getIso3CountryFromShopListId(shopListId);
@@ -55,7 +58,7 @@ public class GeoService {
 
     public GeoJsonPoint getCoordinates(String addressStr) {
         String query = addressStr.replaceAll("[:.,;@$&\\\\|/]", " ");
-        log.info("token ok " + (!token.isEmpty()) + ", Looking for address: " + addressStr);
+
         ForwardResponse response = webClient.get()
                 .uri(builder -> builder.path("/v1/forward")
                         .queryParam("access_key", token)

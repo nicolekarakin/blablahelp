@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.Account;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.account.ERole;
+import org.nnn4eu.hfische.blablahelp.blablahelpbackend.geo.web.model.Loc;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.product.model.*;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.shared.model.Address;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.model.Offer;
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class CreateData {
@@ -222,7 +224,7 @@ public class CreateData {
                 ProductWrapper.builder()
                         .amount(1f)
                         .unit(EUnit.L)
-                        .title("milch")
+                        .title("Milch")
                         .build());
 
         products.add(
@@ -266,5 +268,12 @@ public class CreateData {
 
     public static UserData createUserData(String accountId, String firstname) {
         return new UserData(accountId, firstname);
+    }
+
+    public static Loc createLoc() {
+        Random rand = new Random();
+        return new Loc(10 + rand.nextDouble(), 10 + rand.nextDouble(),
+                "132", "12345", "Somestr",
+                1, "label");
     }
 }

@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,6 +52,8 @@ class OfferRepoTest {
     ShopService shopService;
     @Mock
     UserDataRepo userDataRepo;
+    @Mock
+    WebClient webClient;
 
     @BeforeAll
     void init() throws JsonProcessingException {
