@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.nnn4eu.hfische.blablahelp.blablahelpbackend.userdata.web.CreateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -15,14 +15,18 @@ import java.util.Optional;
 
 @Slf4j
 @DataMongoTest
-@ComponentScan(basePackageClasses = AccountService.class)
+@Import(value = AccountService.class)
+//@ComponentScan(basePackageClasses = AccountService.class,
+//        excludeFilters={
+//                @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE,
+//                        value= {MongoDBTxnConfiguration.class,SecurityCloudConfig.class})})
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class AccountServiceTest {
     @Autowired
     private AccountRepo accountRepo;
     @Autowired
-    private AccountService accountService;//=new AccountService(accountRepo);
+    private AccountService accountService;
 
     @Test
     void findAccountById() {
