@@ -16,10 +16,6 @@ import java.util.Optional;
 @Slf4j
 @DataMongoTest
 @Import(value = AccountService.class)
-//@ComponentScan(basePackageClasses = AccountService.class,
-//        excludeFilters={
-//                @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE,
-//                        value= {MongoDBTxnConfiguration.class,SecurityCloudConfig.class})})
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class AccountServiceTest {
